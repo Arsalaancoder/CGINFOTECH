@@ -1,16 +1,15 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
-import gsap from 'gsap';
+import { ArrowRight, ChevronRight, Shield } from 'lucide-react';
 import { useGSAP } from '@gsap/react';
-import { motion } from 'framer-motion';
+import gsap from 'gsap';
 
 interface ServiceHeroProps {
   eyebrow: string;
   title: string;
   accentText?: string;
   shortDescription: string;
-  heroImage?: string;
+  heroImage: string;
 }
 
 export const ServiceHero: React.FC<ServiceHeroProps> = ({
@@ -21,158 +20,159 @@ export const ServiceHero: React.FC<ServiceHeroProps> = ({
   heroImage,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const bgImageRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const descRef = useRef<HTMLParagraphElement>(null);
-  const ctaRef = useRef<HTMLDivElement>(null);
+  const buttonsRef = useRef<HTMLDivElement>(null);
+  const eyebrowRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
-      if (!titleRef.current) return;
+      if (!containerRef.current) return;
 
-      const titleLines = titleRef.current.querySelectorAll('.title-line');
+      const timeline = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-      const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
-
-      tl.fromTo(
-        '.hero-pill-badge',
-        { opacity: 0, y: -15, scale: 0.95 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.6 }
-      );
-
-      if (titleLines.length > 0) {
-        tl.fromTo(
-          titleLines,
-          { yPercent: 110, opacity: 0 },
-          { yPercent: 0, opacity: 1, duration: 0.9, stagger: 0.08 },
-          '-=0.3'
-        );
-      } else {
-        tl.fromTo(
-          titleRef.current,
-          { y: 30, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.9 },
-          '-=0.3'
+      // Background scale reveal: 1.08 -> 1
+      if (bgImageRef.current) {
+        gsap.fromTo(
+          bgImageRef.current,
+          { scale: 1.08 },
+          { scale: 1, duration: 1.4, ease: 'power3.out' }
         );
       }
 
+      // Eyebrow reveal
+      if (eyebrowRef.current) {
+        timeline.fromTo(
+          eyebrowRef.current,
+          { opacity: 0, y: -15 },
+          { opacity: 1, y: 0, duration: 0.6 },
+          0.1
+        );
+      }
+
+      // Heading lines reveal
+      if (titleRef.current) {
+        const titleLines = titleRef.current.querySelectorAll('.hero-line-inner');
+        if (titleLines.length > 0) {
+          timeline.fromTo(
+            titleLines,
+            { yPercent: 110, opacity: 0 },
+            { yPercent: 0, opacity: 1, duration: 0.9, stagger: 0.08 },
+            0.2
+          );
+        } else {
+          timeline.fromTo(
+            titleRef.current,
+            { opacity: 0, y: 30 },
+            { opacity: 1, y: 0, duration: 0.8 },
+            0.2
+          );
+        }
+      }
+
+      // Description reveal
       if (descRef.current) {
-        tl.fromTo(
+        timeline.fromTo(
           descRef.current,
           { opacity: 0, y: 20 },
           { opacity: 1, y: 0, duration: 0.7 },
-          '-=0.5'
+          0.5
         );
       }
 
-      if (ctaRef.current) {
-        tl.fromTo(
-          ctaRef.current,
+      // Buttons stagger reveal
+      if (buttonsRef.current) {
+        timeline.fromTo(
+          buttonsRef.current.children,
           { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.6 },
-          '-=0.4'
+          { opacity: 1, y: 0, duration: 0.6, stagger: 0.1 },
+          0.65
         );
       }
     },
-    { scope: containerRef }
+    { scope: containerRef, dependencies: [title, heroImage] }
   );
 
-  // Helper to highlight accent word in title if provided
-  const renderTitle = () => {
-    if (!accentText || !title.includes(accentText)) {
-      return (
-        <span className="inline-block overflow-hidden pb-2">
-          <span className="title-line inline-block">{title}</span>
-        </span>
-      );
-    }
-
-    const parts = title.split(accentText);
-    return (
-      <span className="inline-block overflow-hidden pb-2">
-        <span className="title-line inline-block">
-          {parts[0]}
-          <span className="inline-block px-3 py-1 my-1 rounded-2xl bg-[#E65100] text-white shadow-md">
-            {accentText}
-          </span>
-          {parts[1]}
-        </span>
-      </span>
-    );
-  };
+  // Split title into 2 main display lines if accent text exists
+  const titleParts = accentText && title.includes(accentText)
+    ? [title.replace(accentText, '').trim(), accentText]
+    : [title];
 
   return (
     <section
       ref={containerRef}
-      className="cg-master-canvas pt-14 md:pt-20 pb-16 md:pb-24 bg-[#F6F2EA] border-b border-black/[0.06] relative overflow-hidden"
+      className="relative w-full min-h-[78vh] lg:min-h-[86vh] flex items-end justify-start overflow-hidden bg-[#0A0A0A] pt-24 pb-16 lg:pb-24 px-4 sm:px-8 lg:px-16 border-b border-white/10"
     >
-      {/* SUBTLE BACKGROUND GRID PATTERN */}
+      {/* BACKGROUND IMAGE WITH DARK GRADIENT OVERLAY */}
       <div
-        className="absolute inset-0 opacity-[0.03] pointer-events-none"
-        style={{
-          backgroundImage: `radial-gradient(#111111 1.5px, transparent 1.5px)`,
-          backgroundSize: '32px 32px',
-        }}
-      />
+        ref={bgImageRef}
+        className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat transition-transform will-change-transform"
+        style={{ backgroundImage: `url(${heroImage})` }}
+      >
+        {/* Multilayered editorial gradient overlay for maximum readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0B] via-[#0B0B0B]/75 to-[#0B0B0B]/40" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0B0B0B]/90 via-[#0B0B0B]/50 to-transparent" />
+        <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px]" />
+      </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-6">
-        {/* TOP PILL BADGE */}
-        <div className="flex justify-center">
-          <div className="hero-pill-badge inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-mono font-bold tracking-widest text-[#111111] bg-[#EBE7DF] border border-black/10 shadow-2xs uppercase">
-            <Sparkles className="w-3.5 h-3.5 text-[#E65100]" />
-            <span>WELCOME TO C&G INFOTECH • {eyebrow}</span>
-          </div>
+      {/* HERO CONTENT OVERLAY */}
+      <div className="relative z-10 max-w-4xl space-y-6 text-left">
+        {/* EYEBROW BADGE */}
+        <div ref={eyebrowRef} className="inline-flex items-center gap-2">
+          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-[#E65100]/20 text-[#FF7A33] border border-[#E65100]/40 backdrop-blur-md shadow-lg">
+            <Shield className="w-3.5 h-3.5 text-[#E65100]" />
+            {eyebrow}
+          </span>
         </div>
 
-        {/* BOLD EDITORIAL HEADING */}
+        {/* HERO TITLE WITH OVERFLOW-HIDDEN WRAPPER FOR GSAP */}
         <h1
           ref={titleRef}
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-[72px] font-black tracking-tight text-[#111111] leading-[1.04] font-heading max-w-4xl mx-auto"
+          className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white font-heading leading-[1.04]"
         >
-          {renderTitle()}
+          {titleParts.map((part, idx) => (
+            <span key={idx} className="block overflow-hidden pb-1">
+              <span className="hero-line-inner block">
+                {part}
+                {idx === titleParts.length - 1 && accentText && (
+                  <span className="text-[#E65100] font-semibold">.</span>
+                )}
+              </span>
+            </span>
+          ))}
         </h1>
 
-        {/* SUPPORTING PARAGRAPH (2-3 SHORT LINES MAX) */}
+        {/* SHORT DESCRIPTION */}
         <p
           ref={descRef}
-          className="text-[#6E6960] text-base sm:text-lg md:text-xl leading-relaxed max-w-2xl mx-auto font-normal pt-1"
+          className="text-base sm:text-xl text-neutral-300 max-w-2xl font-body font-normal leading-relaxed text-balance pt-1"
         >
           {shortDescription}
         </p>
 
-        {/* CTA BUTTONS */}
-        <div ref={ctaRef} className="pt-4 flex flex-wrap items-center justify-center gap-4">
-          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
-            <Link to="/get-quote" className="btn-primary-orange !h-[50px] !px-8 !text-sm shadow-xl">
-              <span>Get a Quote</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </motion.div>
+        {/* ACTION BUTTONS (CUSTOMIZED CHAIUI BUTTON SYSTEM) */}
+        <div ref={buttonsRef} className="flex flex-wrap items-center gap-4 pt-4">
+          <Link
+            to="/get-quote"
+            className="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full bg-[#E65100] text-white font-semibold text-sm tracking-wide transition-all duration-300 hover:bg-[#CF4700] hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-[#E65100]/25 group"
+          >
+            <span>Get a Custom Quote</span>
+            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
 
-          <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
-            <Link
-              to="/contact"
-              className="inline-flex items-center justify-center gap-2 h-[50px] px-7 rounded-full bg-white text-[#111111] border border-black/15 font-bold text-sm hover:bg-[#F9F8F5] shadow-xs transition-all"
-            >
-              <span>Talk to Engineers</span>
-            </Link>
-          </motion.div>
+          <a
+            href="#tech-overview"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-white/10 hover:bg-white/15 text-white font-medium text-sm tracking-wide border border-white/20 backdrop-blur-md transition-all duration-300 hover:border-white/40"
+          >
+            <span>Explore Technology</span>
+            <ChevronRight className="w-4 h-4 text-neutral-400" />
+          </a>
         </div>
-
-        {/* OPTIONAL HERO VISUAL SLOT */}
-        {heroImage && (
-          <div className="pt-10 max-w-4xl mx-auto">
-            <div className="relative rounded-[32px] overflow-hidden border border-black/10 shadow-2xl aspect-[16/9] bg-[#111111]">
-              <img
-                src={heroImage}
-                alt={title}
-                className="w-full h-full object-cover"
-                loading="eager"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-            </div>
-          </div>
-        )}
       </div>
+
+      {/* SUBTLE CORNER GRADIENT HIGHLIGHT */}
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#E65100]/10 rounded-full blur-3xl pointer-events-none" />
     </section>
   );
 };

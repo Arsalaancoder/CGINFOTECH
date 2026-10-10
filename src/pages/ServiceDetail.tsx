@@ -2,19 +2,18 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getServiceBySlug } from '@/data/services';
 import { ServiceHero } from '@/components/service/ServiceHero';
-import { ServiceTrustStrip } from '@/components/service/ServiceTrustStrip';
-import { ServiceWhyChoose } from '@/components/service/ServiceWhyChoose';
+import { ServiceTechnologyOverview } from '@/components/service/ServiceTechnologyOverview';
 import { ServiceFeatureSplit } from '@/components/service/ServiceFeatureSplit';
-import { ServiceCapabilities } from '@/components/service/ServiceCapabilities';
-import { ServiceMediaFeature } from '@/components/service/ServiceMediaFeature';
-import { ServiceIndustries } from '@/components/service/ServiceIndustries';
+import { ServiceBenefitsDark } from '@/components/service/ServiceBenefitsDark';
+import { ServiceProof } from '@/components/service/ServiceProof';
+import { ServiceMediaCTA } from '@/components/service/ServiceMediaCTA';
 import { ServiceFAQ } from '@/components/service/ServiceFAQ';
 import { FinalCTA } from '@/components/home/FinalCTA';
 
 export const ServiceDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
 
-  // Fetch service data based on current route slug
+  // Fetch complete service data configuration for current route
   const service = getServiceBySlug(slug || '');
 
   useEffect(() => {
@@ -25,8 +24,8 @@ export const ServiceDetail: React.FC = () => {
   }, [service, slug]);
 
   return (
-    <div className="w-full overflow-hidden bg-[#F6F2EA]">
-      {/* 01. HERO SECTION */}
+    <main className="w-full overflow-hidden bg-[#FFFFFF]">
+      {/* 01. FULL IMAGE HERO (POSITIONED DIRECTLY BELOW EXISTING NAVBAR) */}
       <ServiceHero
         eyebrow={service.heroPill || service.eyebrow}
         title={service.heroTitle || service.title}
@@ -35,52 +34,57 @@ export const ServiceDetail: React.FC = () => {
         heroImage={service.heroImage}
       />
 
-      {/* 02. TRUST / CAPABILITY STRIP */}
-      <ServiceTrustStrip items={service.trustItems} />
-
-      {/* 03. WHY CHOOSE SECTION (2X3 GRID WITH HIGHLIGHTED FIRST CARD) */}
-      <ServiceWhyChoose
-        heading={service.whyChooseTitle}
-        subtitle={service.whyChooseSubtitle}
-        cards={service.whyChooseCards}
+      {/* 02. TECHNOLOGY & FEATURE OVERVIEW (SECTION 02) */}
+      <ServiceTechnologyOverview
+        sectionTitle={service.techOverview.sectionTitle}
+        sectionSubtitle={service.techOverview.sectionSubtitle}
+        leftTitle={service.techOverview.leftTitle}
+        techItems={service.techOverview.techItems}
+        rightTitle={service.techOverview.rightTitle}
+        solutions={service.techOverview.solutions}
       />
 
-      {/* 04. ASYMMETRIC FEATURE / OUTCOME SPLIT */}
+      {/* 03. LARGE ASYMMETRIC IMAGE + TEXT SPLIT (SECTION 03) */}
       <ServiceFeatureSplit data={service.featureSplit} />
 
-      {/* 05. "EVERYTHING YOU NEED" CAPABILITIES SECTION */}
-      <ServiceCapabilities
-        title={service.capabilitiesTitle}
-        subtitle={service.capabilitiesSubtitle}
-        cards={service.capabilityCards}
+      {/* 04. DARK FEATURE SECTION (SECTION 04) */}
+      <ServiceBenefitsDark
+        badge={service.benefitsDark.badge}
+        heading={service.benefitsDark.heading}
+        subtitle={service.benefitsDark.subtitle}
+        benefits={service.benefitsDark.benefits}
       />
 
-      {/* 06. LARGE VISUAL / VIDEO FEATURE */}
-      <ServiceMediaFeature
-        title={service.mediaFeature.title}
-        subtitle={service.mediaFeature.subtitle}
-        badge={service.mediaFeature.badge}
-        imageUrl={service.mediaFeature.imageUrl}
+      {/* 05. PROOF / CLIENT EXPERIENCE SECTION (SECTION 05) */}
+      <ServiceProof
+        badge={service.proof.badge}
+        heading={service.proof.heading}
+        subtitle={service.proof.subtitle}
+        cards={service.proof.cards}
       />
 
-      {/* 07. APPLICATIONS ACROSS INDUSTRIES */}
-      <ServiceIndustries
-        title="Applications Across Industries"
-        subtitle={`Proven ${service.title.toLowerCase()} implementations engineered for commercial offices, healthcare, education, and retail environments.`}
-        cards={service.industryCards}
+      {/* 06. LARGE PROMOTIONAL VISUAL CTA (SECTION 06) */}
+      <ServiceMediaCTA
+        badge={service.mediaCTA.badge}
+        title={service.mediaCTA.title}
+        subtitle={service.mediaCTA.subtitle}
+        imageUrl={service.mediaCTA.imageUrl}
+        ctaText={service.mediaCTA.ctaText}
+        ctaLink={service.mediaCTA.ctaLink}
+        metrics={service.mediaCTA.metrics}
       />
 
-      {/* 08. FREQUENTLY ASKED QUESTIONS */}
+      {/* 07. CHAIUI ACCORDION FAQS (SECTION 07) */}
       <ServiceFAQ
         title={`${service.title} FAQs`}
         subtitle={`Find answers to common questions about our ${service.title.toLowerCase()} solutions, site inspections, and maintenance.`}
         faqs={service.faqs}
       />
 
-      {/* 09. FINAL CTA SECTION */}
-      <div className="py-12 bg-[#F6F2EA] px-3 sm:px-6 lg:px-8">
+      {/* 08. FINAL CTA SECTION BEFORE FOOTER */}
+      <div className="bg-[#FFFFFF]">
         <FinalCTA />
       </div>
-    </div>
+    </main>
   );
 };

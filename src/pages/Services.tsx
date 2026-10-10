@@ -56,10 +56,10 @@ export const Services: React.FC = () => {
                     </p>
 
                     <div className="space-y-1.5 pt-2">
-                      {srv.capabilityCards.slice(0, 4).map((cap, idx) => (
+                      {srv.techOverview.techItems.slice(0, 4).map((tech, idx) => (
                         <div key={idx} className="flex items-center gap-2 text-xs text-[#111111]">
                           <CheckCircle2 className="w-3.5 h-3.5 text-[#E65100] shrink-0" />
-                          <span>{cap.title} — {cap.tag}</span>
+                          <span>{tech.title} — {tech.desc.slice(0, 45)}...</span>
                         </div>
                       ))}
                     </div>

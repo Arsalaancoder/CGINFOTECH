@@ -1,130 +1,103 @@
-import React, { useState } from 'react';
-import { Plus, Minus, ArrowRight, PhoneCall, HelpCircle } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useRef } from 'react';
+import * as Accordion from '@radix-ui/react-accordion';
+import { ChevronDown, HelpCircle } from 'lucide-react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import type { ServiceFAQItem } from '@/data/services';
 
-export interface ServiceFAQItem {
-  q: string;
-  a: string;
-}
+gsap.registerPlugin(ScrollTrigger);
 
 interface ServiceFAQProps {
-  title?: string;
-  subtitle?: string;
+  title: string;
+  subtitle: string;
   faqs: ServiceFAQItem[];
 }
 
 export const ServiceFAQ: React.FC<ServiceFAQProps> = ({
-  title = 'Frequently Asked Questions',
-  subtitle = 'Find answers to common questions about our technical solutions, site audits, equipment supply, and AMC support.',
+  title,
+  subtitle,
   faqs,
 }) => {
-  const [openIndex, setOpenIndex] = useState<number>(0);
+  const sectionRef = useRef<HTMLElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      if (!sectionRef.current || !containerRef.current) return;
+
+      gsap.fromTo(
+        containerRef.current.children,
+        { opacity: 0, y: 25 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          stagger: 0.08,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 82%',
+            toggleActions: 'play none none none',
+          },
+        }
+      );
+    },
+    { scope: sectionRef, dependencies: [faqs] }
+  );
 
   return (
-    <section className="cg-master-canvas py-16 md:py-24 bg-[#F6F2EA]">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-        
-        {/* HEADING */}
-        <div className="text-center max-w-3xl mx-auto space-y-3">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#111111] tracking-tight font-heading leading-tight">
+    <section
+      ref={sectionRef}
+      className="w-full bg-[#FFFFFF] py-20 sm:py-28 lg:py-32 px-4 sm:px-8 lg:px-16 border-b border-black/[0.06]"
+    >
+      <div className="max-w-5xl mx-auto">
+        {/* CENTERED HEADER MATCHING REFERENCE SECTION 07 */}
+        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider text-[#E65100] bg-[#E65100]/10 border border-[#E65100]/20 font-mono">
+            <HelpCircle className="w-3.5 h-3.5" />
+            FREQUENTLY ASKED QUESTIONS
+          </span>
+          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-[#111111] font-heading tracking-tight">
             {title}
           </h2>
-          {subtitle && (
-            <p className="text-[#6E6960] text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
-              {subtitle}
-            </p>
-          )}
+          <p className="text-base sm:text-lg text-[#66635C] font-body leading-relaxed">
+            {subtitle}
+          </p>
         </div>
 
-        {/* LAYOUT: LEFT ACCORDION (7 COLS), RIGHT CTA CARD (5 COLS) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-          
-          {/* LEFT ACCORDION (7 COLS) */}
-          <div className="lg:col-span-7 space-y-3">
-            {faqs.map((faq, idx) => {
-              const isOpen = openIndex === idx;
-
-              return (
-                <div
-                  key={idx}
-                  className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
-                    isOpen
-                      ? 'bg-white border-black/15 shadow-md p-5 sm:p-6'
-                      : 'bg-white/70 hover:bg-white border-black/[0.08] p-4 sm:p-5 cursor-pointer'
-                  }`}
-                  onClick={() => setOpenIndex(isOpen ? -1 : idx)}
-                >
-                  <div className="flex items-center justify-between gap-4">
-                    <h3 className="font-bold text-base sm:text-lg text-[#111111] leading-snug font-heading">
-                      {faq.q}
-                    </h3>
-                    <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-colors ${
-                        isOpen ? 'bg-[#E65100] text-white' : 'bg-[#F6F2EA] text-[#111111]'
-                      }`}
-                    >
-                      {isOpen ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+        {/* CHAIUI STYLED RADIX ACCORDION */}
+        <div ref={containerRef}>
+          <Accordion.Root
+            type="single"
+            collapsible
+            defaultValue="faq-0"
+            className="space-y-4"
+          >
+            {faqs.map((faq, idx) => (
+              <Accordion.Item
+                key={idx}
+                value={`faq-${idx}`}
+                className="rounded-2xl bg-[#F8F7F4] border border-black/[0.06] overflow-hidden transition-all duration-300 data-[state=open]:border-[#E65100]/40 data-[state=open]:bg-white data-[state=open]:shadow-lg"
+              >
+                <Accordion.Header className="flex">
+                  <Accordion.Trigger className="flex flex-1 items-center justify-between p-6 sm:p-7 text-left font-bold text-base sm:text-lg text-[#111111] font-heading hover:text-[#E65100] transition-colors group cursor-pointer">
+                    <span className="pr-4">{faq.q}</span>
+                    <div className="w-8 h-8 rounded-full bg-black/5 group-data-[state=open]:bg-[#E65100]/10 group-data-[state=open]:text-[#E65100] flex items-center justify-center shrink-0 transition-transform duration-300 group-data-[state=open]:rotate-180">
+                      <ChevronDown className="w-4 h-4" />
                     </div>
+                  </Accordion.Trigger>
+                </Accordion.Header>
+
+                <Accordion.Content className="data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up overflow-hidden transition-all text-sm sm:text-base text-[#66635C] font-body leading-relaxed px-6 sm:px-7 pb-6 pt-0">
+                  <div className="pt-2 border-t border-black/5">
+                    {faq.a}
                   </div>
-
-                  <AnimatePresence>
-                    {isOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <p className="text-xs sm:text-sm text-[#6E6960] leading-relaxed pt-3 border-t border-black/5 mt-3">
-                          {faq.a}
-                        </p>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* RIGHT HIGHLIGHT CTA CARD (5 COLS) */}
-          <div className="lg:col-span-5">
-            <div className="rounded-[28px] bg-[#111111] text-white p-6 sm:p-8 space-y-6 shadow-xl border border-black/20 relative overflow-hidden sticky top-24">
-              {/* SUBTLE GLOW */}
-              <div className="absolute top-0 right-0 w-48 h-48 bg-[#E65100]/20 rounded-full filter blur-2xl pointer-events-none" />
-
-              <div className="w-12 h-12 rounded-2xl bg-[#E65100] text-white flex items-center justify-center shadow-md">
-                <HelpCircle className="w-6 h-6" />
-              </div>
-
-              <div className="space-y-2">
-                <h3 className="text-2xl font-bold tracking-tight text-white font-heading">
-                  Need help choosing the right solution?
-                </h3>
-                <p className="text-xs sm:text-sm text-white/70 leading-relaxed">
-                  Talk to C&G Infotech engineers for a free site audit, technical consultation, or custom budget quote.
-                </p>
-              </div>
-
-              <div className="pt-2 space-y-3">
-                <Link to="/get-quote" className="btn-primary-orange w-full justify-center !h-[44px] !text-sm">
-                  <span>Talk to C&G Infotech</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-
-                <Link
-                  to="/contact"
-                  className="w-full inline-flex items-center justify-center gap-2 h-[44px] rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-xs border border-white/20 transition-all"
-                >
-                  <PhoneCall className="w-3.5 h-3.5 text-[#E65100]" />
-                  <span>Call Direct Support</span>
-                </Link>
-              </div>
-            </div>
-          </div>
-
+                </Accordion.Content>
+              </Accordion.Item>
+            ))}
+          </Accordion.Root>
         </div>
-
       </div>
     </section>
   );

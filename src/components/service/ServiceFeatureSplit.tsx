@@ -1,23 +1,22 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { CheckCircle2, ArrowRight, ShieldCheck, Zap } from 'lucide-react';
+import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useGSAP } from '@gsap/react';
-import { motion } from 'framer-motion';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export interface FeatureSplitData {
   heading: string;
   description: string;
-  bulletPoints?: string[];
+  bulletPoints: string[];
   stat1: { value: string; label: string };
   stat2: { value: string; label: string };
-  badge?: string;
-  ctaText?: string;
-  ctaLink?: string;
-  image?: string;
+  badge: string;
+  ctaText: string;
+  ctaLink: string;
+  image: string;
 }
 
 interface ServiceFeatureSplitProps {
@@ -25,157 +24,146 @@ interface ServiceFeatureSplitProps {
 }
 
 export const ServiceFeatureSplit: React.FC<ServiceFeatureSplitProps> = ({ data }) => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const leftRef = useRef<HTMLDivElement>(null);
-  const rightRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const textColRef = useRef<HTMLDivElement>(null);
+  const imageWrapperRef = useRef<HTMLDivElement>(null);
+  const imgElementRef = useRef<HTMLImageElement>(null);
 
   useGSAP(
     () => {
       if (!sectionRef.current) return;
 
-      if (leftRef.current) {
+      const trigger = {
+        trigger: sectionRef.current,
+        start: 'top 80%',
+        toggleActions: 'play none none none',
+      };
+
+      // Text column fade + y reveal
+      if (textColRef.current) {
         gsap.fromTo(
-          leftRef.current,
-          { opacity: 0, x: -40 },
+          textColRef.current.children,
+          { opacity: 0, y: 35 },
           {
             opacity: 1,
-            x: 0,
+            y: 0,
             duration: 0.8,
+            stagger: 0.1,
             ease: 'power3.out',
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: 'top 75%',
-            },
+            scrollTrigger: trigger,
           }
         );
       }
 
-      if (rightRef.current) {
+      // Image clipPath reveal + scale: inset(0 100% 0 0) -> inset(0 0% 0 0)
+      if (imageWrapperRef.current && imgElementRef.current) {
         gsap.fromTo(
-          rightRef.current,
-          { opacity: 0, x: 40 },
+          imageWrapperRef.current,
+          { clipPath: 'inset(0 100% 0 0)' },
           {
-            opacity: 1,
-            x: 0,
-            duration: 0.8,
+            clipPath: 'inset(0 0% 0 0)',
+            duration: 1.2,
+            ease: 'power3.inOut',
+            scrollTrigger: trigger,
+          }
+        );
+
+        gsap.fromTo(
+          imgElementRef.current,
+          { scale: 1.12 },
+          {
+            scale: 1,
+            duration: 1.4,
             ease: 'power3.out',
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: 'top 75%',
-            },
+            scrollTrigger: trigger,
           }
         );
       }
     },
-    { scope: sectionRef }
+    { scope: sectionRef, dependencies: [data] }
   );
 
   return (
-    <section ref={sectionRef} className="cg-master-canvas py-16 md:py-24 bg-[#F6F2EA] border-y border-black/[0.06]">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-10 items-stretch">
-          
-          {/* LEFT SIDE: DARK ELEGANT CARD (Exact match to reference card 1) */}
-          <div ref={leftRef} className="lg:col-span-6 flex">
-            <div className="relative w-full rounded-[32px] bg-[#141414] p-8 sm:p-10 lg:p-12 text-white shadow-2xl border border-white/10 flex flex-col justify-between overflow-hidden">
-              {/* Subtle orange ambient glow */}
-              <div className="absolute -top-20 -right-20 w-72 h-72 bg-[#E65100]/20 rounded-full filter blur-3xl pointer-events-none" />
+    <section
+      ref={sectionRef}
+      className="w-full bg-[#F7F5EF] py-20 sm:py-28 lg:py-32 px-4 sm:px-8 lg:px-16 border-b border-black/[0.06] overflow-hidden"
+    >
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        {/* LEFT TEXT COLUMN */}
+        <div ref={textColRef} className="lg:col-span-6 space-y-6">
+          <span className="inline-block text-xs font-semibold uppercase tracking-wider text-[#E65100] font-mono px-3 py-1 rounded-full bg-[#E65100]/10 border border-[#E65100]/20">
+            {data.badge}
+          </span>
 
-              <div className="relative z-10 space-y-6">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#E65100]" />
-                  <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#E65100]">
-                    {data.badge || 'ABOUT THE SOLUTION'}
-                  </span>
+          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-[#111111] font-heading leading-[1.06] tracking-tight">
+            {data.heading}
+          </h2>
+
+          <p className="text-base sm:text-lg text-[#66635C] font-body leading-relaxed">
+            {data.description}
+          </p>
+
+          {/* BULLET POINTS */}
+          <div className="space-y-3 pt-2">
+            {data.bulletPoints.map((pt, idx) => (
+              <div key={idx} className="flex items-start gap-3">
+                <div className="w-5 h-5 rounded-full bg-[#E65100]/15 text-[#E65100] flex items-center justify-center shrink-0 mt-0.5">
+                  <CheckCircle2 className="w-3.5 h-3.5" />
                 </div>
-
-                <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black text-white tracking-tight leading-[1.08] font-heading">
-                  {data.heading}
-                </h2>
-
-                <p className="text-white/80 text-sm sm:text-base leading-relaxed font-normal">
-                  {data.description}
-                </p>
-
-                {/* 2 CTA BUTTONS */}
-                <div className="pt-2 flex flex-wrap items-center gap-3">
-                  <Link
-                    to={data.ctaLink || '/get-quote'}
-                    className="inline-flex items-center gap-2 bg-[#E65100] hover:bg-[#CF4700] text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-full shadow-lg transition-all duration-300"
-                  >
-                    <span>{data.ctaText || 'Get Started'}</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-
-                  <Link
-                    to="/contact"
-                    className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm px-5 py-3 rounded-full border border-white/20 transition-all duration-300"
-                  >
-                    <span>Explore Solutions</span>
-                  </Link>
-                </div>
+                <span className="text-sm sm:text-base font-medium text-[#111111] font-body">
+                  {pt}
+                </span>
               </div>
+            ))}
+          </div>
 
-              {/* MINI HIGHLIGHT INSET CARD AT BOTTOM */}
-              <div className="relative z-10 mt-8 pt-6 border-t border-white/10">
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/15 flex items-center justify-between gap-4">
-                  <div className="space-y-1">
-                    <span className="block text-xs font-bold text-white">
-                      Guaranteed Operational SLA
-                    </span>
-                    <span className="block text-[11px] text-white/70">
-                      Rapid breakdown dispatch & continuous backup monitoring
-                    </span>
-                  </div>
-                  <div className="w-9 h-9 rounded-full bg-[#E65100] text-white flex items-center justify-center shrink-0">
-                    <Zap className="w-4 h-4" />
-                  </div>
-                </div>
+          {/* STATS STRIP */}
+          <div className="grid grid-cols-2 gap-4 pt-4 border-t border-black/10">
+            <div className="p-4 rounded-xl bg-white border border-black/5">
+              <div className="text-2xl sm:text-3xl font-bold text-[#111111] font-heading text-[#E65100]">
+                {data.stat1.value}
+              </div>
+              <div className="text-xs font-medium text-[#66635C] font-body mt-0.5 uppercase tracking-wider">
+                {data.stat1.label}
+              </div>
+            </div>
+
+            <div className="p-4 rounded-xl bg-white border border-black/5">
+              <div className="text-2xl sm:text-3xl font-bold text-[#111111] font-heading text-[#E65100]">
+                {data.stat2.value}
+              </div>
+              <div className="text-xs font-medium text-[#66635C] font-body mt-0.5 uppercase tracking-wider">
+                {data.stat2.label}
               </div>
             </div>
           </div>
 
-          {/* RIGHT SIDE: LARGE MODERN IMAGE BLOCK WITH FLOATING STATS OVERLAYS (Exact match to reference card 2) */}
-          <div ref={rightRef} className="lg:col-span-6 flex">
-            <div className="relative w-full rounded-[32px] overflow-hidden border border-black/10 shadow-2xl bg-[#181715] min-h-[420px] sm:min-h-[480px] flex flex-col justify-end group">
-              <img
-                src={data.image || '/images/cards/card-cctv-new.jpg'}
-                alt={data.heading}
-                className="absolute inset-0 w-full h-full object-cover group-hover:scale-103 transition-transform duration-700 ease-out"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
-
-              {/* FLOATING STATS CARDS AT BOTTOM OF IMAGE */}
-              <div className="relative z-20 p-6 sm:p-8 grid grid-cols-2 gap-3 sm:gap-4">
-                {/* FLOATING STAT CARD 1 */}
-                <div className="bg-white/95 backdrop-blur-md p-4 sm:p-5 rounded-2xl border border-black/10 shadow-xl text-[#111111]">
-                  <span className="block text-2xl sm:text-3xl font-black text-[#E65100] font-heading leading-none mb-1">
-                    {data.stat1.value}
-                  </span>
-                  <span className="block text-[11px] sm:text-xs font-semibold text-[#6E6960] leading-tight">
-                    {data.stat1.label}
-                  </span>
-                  <span className="block text-[9px] font-mono text-[#E65100] font-bold mt-2">
-                    ↑ High Reliability
-                  </span>
-                </div>
-
-                {/* FLOATING STAT CARD 2 */}
-                <div className="bg-white/95 backdrop-blur-md p-4 sm:p-5 rounded-2xl border border-black/10 shadow-xl text-[#111111]">
-                  <span className="block text-2xl sm:text-3xl font-black text-[#111111] font-heading leading-none mb-1">
-                    {data.stat2.value}
-                  </span>
-                  <span className="block text-[11px] sm:text-xs font-semibold text-[#6E6960] leading-tight">
-                    {data.stat2.label}
-                  </span>
-                  <span className="block text-[9px] font-mono text-[#6E6960] font-bold mt-2">
-                    ↑ Rapid Dispatch
-                  </span>
-                </div>
-              </div>
-            </div>
+          {/* CTA LINK */}
+          <div className="pt-2">
+            <Link
+              to={data.ctaLink || '/get-quote'}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#111111] hover:bg-[#E65100] text-white font-semibold text-sm transition-all duration-300 shadow-md group"
+            >
+              <span>{data.ctaText}</span>
+              <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
           </div>
+        </div>
 
+        {/* RIGHT IMAGE COLUMN WITH REVEAL ANIMATION */}
+        <div className="lg:col-span-6">
+          <div
+            ref={imageWrapperRef}
+            className="relative w-full h-[400px] sm:h-[500px] lg:h-[560px] rounded-3xl overflow-hidden bg-neutral-200 shadow-2xl border border-black/10"
+          >
+            <img
+              ref={imgElementRef}
+              src={data.image}
+              alt={data.heading}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+          </div>
         </div>
       </div>
     </section>

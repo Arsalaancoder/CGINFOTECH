@@ -1,8 +1,37 @@
-import type { WhyChooseCardItem } from '@/components/service/ServiceWhyChoose';
-import type { FeatureSplitData } from '@/components/service/ServiceFeatureSplit';
-import type { CapabilityCardData } from '@/components/service/ServiceCapabilities';
-import type { IndustryCardData } from '@/components/service/ServiceIndustries';
-import type { ServiceFAQItem } from '@/components/service/ServiceFAQ';
+export interface TechOverviewItem {
+  iconName: string;
+  title: string;
+  desc: string;
+}
+
+export interface SolutionCardItem {
+  tag: string;
+  title: string;
+  desc: string;
+  imageUrl: string;
+  linkText?: string;
+}
+
+export interface BenefitDarkItem {
+  iconName: string;
+  title: string;
+  desc: string;
+  linkText?: string;
+}
+
+export interface ProofCardItem {
+  rating?: number;
+  title: string;
+  quote: string;
+  author: string;
+  role: string;
+  tag: string;
+}
+
+export interface ServiceFAQItem {
+  q: string;
+  a: string;
+}
 
 export interface ServiceItem {
   id: string;
@@ -14,23 +43,59 @@ export interface ServiceItem {
   heroAccent?: string;
   shortDescription: string;
   fullDescription: string;
-  heroImage?: string;
-  trustItems: string[];
-  whyChooseTitle: string;
-  whyChooseSubtitle?: string;
-  whyChooseCards: WhyChooseCardItem[];
-  featureSplit: FeatureSplitData;
-  capabilitiesTitle: string;
-  capabilitiesSubtitle?: string;
-  capabilityCards: CapabilityCardData[];
-  mediaFeature: {
+  heroImage: string;
+  
+  // Section 02: Technology Overview
+  techOverview: {
+    sectionTitle: string;
+    sectionSubtitle: string;
+    leftTitle: string;
+    techItems: TechOverviewItem[];
+    rightTitle: string;
+    solutions: SolutionCardItem[];
+  };
+
+  // Section 03: Feature Split (Asymmetric large image + text split)
+  featureSplit: {
+    heading: string;
+    description: string;
+    bulletPoints: string[];
+    stat1: { value: string; label: string };
+    stat2: { value: string; label: string };
+    badge: string;
+    ctaText: string;
+    ctaLink: string;
+    image: string;
+  };
+
+  // Section 04: Dark Feature Section
+  benefitsDark: {
+    badge: string;
+    heading: string;
+    subtitle: string;
+    benefits: BenefitDarkItem[];
+  };
+
+  // Section 05: Proof / Client Experience
+  proof: {
+    badge: string;
+    heading: string;
+    subtitle: string;
+    cards: ProofCardItem[];
+  };
+
+  // Section 06: Large Promotional Visual CTA
+  mediaCTA: {
+    badge: string;
     title: string;
     subtitle: string;
-    badge: string;
     imageUrl: string;
-    videoUrl?: string;
+    ctaText: string;
+    ctaLink: string;
+    metrics: { label: string; value: string }[];
   };
-  industryCards: IndustryCardData[];
+
+  // Section 07: FAQs
   faqs: ServiceFAQItem[];
 }
 
@@ -41,62 +106,37 @@ export const SERVICES_DATA: ServiceItem[] = [
     slug: 'cctv-surveillance',
     title: 'Security & Surveillance',
     eyebrow: 'Smarter Security. Better Visibility.',
-    heroPill: 'SECURITY & SURVEILLANCE SOLUTIONS',
-    heroTitle: 'Protecting your business with smarter surveillance.',
-    heroAccent: 'smarter surveillance.',
-    shortDescription: 'High-definition IP surveillance, 360° PTZ speed dome cameras, NVR/DVR installation, remote mobile monitoring, and access control integration.',
+    heroPill: 'SECURITY & SURVEILLANCE',
+    heroTitle: 'Protect Every Critical Space',
+    heroAccent: 'Critical Space',
+    shortDescription: 'Intelligent surveillance, recording, and access control solutions designed for modern organizations and commercial facilities.',
     fullDescription: 'Comprehensive commercial surveillance solutions engineered to protect your premises. From high-definition IP camera setups to intelligent NVR storage and remote smartphone monitoring, we design security architectures tailored to enterprise and commercial sites.',
-    heroImage: '/images/cards/card-cctv-new.jpg',
-    trustItems: [
-      'HD & IP Camera Systems',
-      '360° PTZ Speed Domes',
-      'Encrypted NVR Storage',
-      'Remote Mobile Access',
-      'Access Control & Biometrics',
-      'Video Motion Analytics',
-    ],
-    whyChooseTitle: 'Why choose our Security & Surveillance solutions?',
-    whyChooseSubtitle: 'Commercial-grade camera technology, tamper-proof recording arrays, and rapid SLA maintenance support.',
-    whyChooseCards: [
-      {
-        title: 'HD & IP Cameras',
-        desc: 'Crystal clear 4K and 1080p surveillance video capture under low-light and zero-ambient lighting conditions.',
-        iconName: 'Shield',
-        highlighted: true,
-      },
-      {
-        title: 'PTZ Surveillance',
-        desc: 'Motorized pan-tilt-zoom cameras with automated patrol sweeps and optical zoom precision.',
-        iconName: 'Activity',
-      },
-      {
-        title: 'NVR / DVR Storage',
-        desc: 'Multi-terabyte RAID storage arrays ensuring automated backup and multi-month video archives.',
-        iconName: 'Server',
-      },
-      {
-        title: 'Remote Monitoring',
-        desc: 'Secure live feed streaming on mobile devices and multi-screen corporate command centers.',
-        iconName: 'Monitor',
-      },
-      {
-        title: 'Access Control',
-        desc: 'Biometric fingerprint, RFID badge, and facial recognition access control door integration.',
-        iconName: 'Lock',
-      },
-      {
-        title: 'Preventive Maintenance',
-        desc: 'Regular lens cleaning, firmware security patches, and rapid breakdown response under AMC contracts.',
-        iconName: 'Zap',
-      },
-    ],
+    heroImage: 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=1600&q=80',
+
+    techOverview: {
+      sectionTitle: 'Technology & Solutions',
+      sectionSubtitle: 'High-definition video processing, intelligent motion sensors, and tamper-proof storage.',
+      leftTitle: 'Explore Our Technology',
+      techItems: [
+        { iconName: 'Camera', title: 'IP Surveillance', desc: '4K Ultra-HD video feeds with IR night vision and wide dynamic range.' },
+        { iconName: 'Monitor', title: 'Remote Monitoring', desc: 'Encrypted mobile apps and desktop command center video stream synchronization.' },
+        { iconName: 'Server', title: 'NVR / DVR Storage', desc: 'Multi-bay RAID disk arrays ensuring multi-month continuous backup retention.' },
+        { iconName: 'Lock', title: 'Access Control', desc: 'Biometric fingerprint, RFID badge, and facial recognition door integration.' },
+      ],
+      rightTitle: 'Latest Solutions',
+      solutions: [
+        { tag: 'COMMERCIAL PTZ', title: '360° PTZ Speed Domes', desc: 'Motorized pan-tilt-zoom cameras featuring 30x optical zoom and auto-patrol sweeps.', imageUrl: '/images/cards/card-cctv-new.jpg', linkText: 'Explore Specs' },
+        { tag: 'ANALYTICS', title: 'AI-Enabled Motion Alert', desc: 'Intelligent perimeter detection distinguishing human intrusion from ambient movement.', imageUrl: 'public/catalog/04_security_spread.jpg', linkText: 'View Architecture' },
+      ],
+    },
+
     featureSplit: {
-      heading: 'Complete visibility for your environment.',
-      description: 'We design end-to-end security architectures combining perimeter camera feeds, central NVR recording, intrusion alerts, and access control doors into a unified dashboard.',
+      heading: 'See Every Angle. Protect Every Moment.',
+      description: 'We design end-to-end security architectures combining perimeter camera feeds, central NVR recording, intrusion alerts, and access control doors into a unified command dashboard.',
       bulletPoints: [
-        'Tamper-proof storage with automated failover recording',
-        'Zero-latency remote monitoring on mobile apps and desktop clients',
-        'Seamless integration with barrier gates and biometric access',
+        'Tamper-proof storage with automated RAID failover recording',
+        'Zero-latency remote monitoring on iOS, Android, and desktop clients',
+        'Seamless integration with barrier gates and biometric access doors',
         '24/7 technical hotline and rapid SLA repair dispatch',
       ],
       stat1: { value: '100%', label: 'Perimeter Coverage' },
@@ -104,32 +144,47 @@ export const SERVICES_DATA: ServiceItem[] = [
       badge: 'SURVEILLANCE ARCHITECTURE',
       ctaText: 'Get Surveillance Quote',
       ctaLink: '/get-quote',
-      image: '/images/cards/card-cctv-new.jpg',
+      image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=80',
     },
-    capabilitiesTitle: 'Everything you need for complete Security & Surveillance',
-    capabilitiesSubtitle: 'Modular hardware and software capabilities built for zero blind spots and maximum physical security.',
-    capabilityCards: [
-      { number: '01', title: 'Cameras', tag: '4K IP & PTZ', desc: 'High-res dome, bullet, and speed dome cameras engineered for indoor and outdoor commercial sites.', iconName: 'Camera' },
-      { number: '02', title: 'Recording', tag: 'RAID NVR Storage', desc: 'Centralized recording servers with redundant hard drive bays and encrypted cloud backup options.', iconName: 'HardDrive' },
-      { number: '03', title: 'Monitoring', tag: 'Mobile & Desktop Sync', desc: 'Real-time video wall monitoring software and smartphone app access with automated motion alerts.', iconName: 'Monitor' },
-      { number: '04', title: 'Access Control', tag: 'Biometric & RFID', desc: 'Secure door access systems linked with visitor logs and employee attendance databases.', iconName: 'Lock' },
-    ],
-    mediaFeature: {
-      title: '" Engineered for 99.99% Operational Reliability across Commercial Sites "',
-      subtitle: 'Watch how C&G Infotech engineers inspect camera placements, route conduit cabling, and configure secure video feeds.',
-      badge: 'SURVEILLANCE SHOWCASE',
-      imageUrl: '/images/cards/card-cctv-new.jpg',
+
+    benefitsDark: {
+      badge: 'SYSTEM BENEFITS',
+      heading: 'Built for Complete Business Protection',
+      subtitle: 'Commercial-grade camera hardware, tamper-proof recording arrays, and rapid SLA maintenance support.',
+      benefits: [
+        { iconName: 'Shield', title: '24/7 Active Monitoring', desc: 'Continuous camera surveillance ensuring zero downtime across office towers, retail, and industrial plants.', linkText: 'Learn More' },
+        { iconName: 'Monitor', title: 'Remote Access Sync', desc: 'Stream high-definition live feeds directly onto mobile devices and multi-screen control rooms.', linkText: 'View Features' },
+        { iconName: 'Maximize2', title: 'Scalable Coverage', desc: 'Modular camera expansions allowing smooth growth from single buildings to multi-city campuses.', linkText: 'Explore Systems' },
+      ],
     },
-    industryCards: [
-      { title: 'Corporate Offices', subtitle: 'Workspaces & Towers', desc: 'Lobby visitor cameras, floor access doors, and server room surveillance.', iconName: 'Building2' },
-      { title: 'Educational Institutions', subtitle: 'Schools & Colleges', desc: 'Perimeter gate monitoring, hallway coverage, and administrative security.', iconName: 'School' },
-      { title: 'Hospitals & Clinics', subtitle: 'Healthcare Facilities', desc: '24/7 pharmacy vault protection, ICU corridor surveillance, and door access logs.', iconName: 'Hospital' },
-      { title: 'Retail & Showrooms', subtitle: 'Commercial Outlets', desc: 'POS checkout camera angles, stockroom monitoring, and intrusion alerts.', iconName: 'ShoppingBag' },
-      { title: 'Industrial Plants', subtitle: 'Warehouses & Mills', desc: 'Ruggedized weatherproof PTZ cameras for heavy machinery and loading docks.', iconName: 'Factory' },
-      { title: 'Commercial Tech Parks', subtitle: 'Multi-Tenant Complexes', desc: 'Barrier gate license plate recognition and centralized command center feeds.', iconName: 'Shield' },
-    ],
+
+    proof: {
+      badge: 'PROVEN OUTCOMES',
+      heading: 'Why Organizations Choose C&G',
+      subtitle: 'Delivering uncompromised security and bulletproof reliability across commercial environments.',
+      cards: [
+        { rating: 5, title: 'Zero Blind-Spot Security', quote: 'C&G redesigned our multi-story corporate headquarters surveillance with 4K IP cameras and RAID NVR storage.', author: 'Industrial Tech Client', role: 'Head of Facilities', tag: 'CORPORATE TOWER' },
+        { rating: 5, title: 'Rapid Incident Retrieval', quote: 'The instant playback and mobile monitoring app allowed our team to respond to perimeter alerts in seconds.', author: 'Retail Logistics Partner', role: 'Operations Director', tag: 'LOGISTICS PARK' },
+        { rating: 5, title: 'Flawless AMC Support', quote: 'Their annual maintenance contract ensures routine lens cleaning and instant breakdown technician dispatches.', author: 'Commercial Real Estate', role: 'Security Manager', tag: 'COMMERCIAL PARK' },
+      ],
+    },
+
+    mediaCTA: {
+      badge: 'COMMERCIAL SURVEILLANCE',
+      title: 'Secure Your Critical Spaces Today',
+      subtitle: 'Schedule an on-site security audit with C&G Infotech engineers to specify the exact camera placements and NVR storage arrays for your facility.',
+      imageUrl: 'https://images.unsplash.com/photo-1508873696983-2df515122519?auto=format&fit=crop&w=1600&q=80',
+      ctaText: 'Get a Custom Quote',
+      ctaLink: '/get-quote',
+      metrics: [
+        { label: 'Uptime SLA', value: '99.99%' },
+        { label: 'Response Time', value: '< 2 Hrs' },
+        { label: 'Camera Warranty', value: '3 Years' },
+      ],
+    },
+
     faqs: [
-      { q: 'Which CCTV camera system is best for my commercial facility?', a: 'High-definition IP camera systems are ideal for commercial premises due to superior image clarity, power-over-ethernet (PoE) wiring, and remote mobile access capability.' },
+      { q: 'Which CCTV camera system is best for my commercial facility?', a: 'High-definition IP camera systems are ideal for commercial premises due to superior image clarity, Power-over-Ethernet (PoE) wiring, and remote mobile access capability.' },
       { q: 'Can I monitor security camera feeds remotely from my mobile phone?', a: 'Yes. All our IP NVR systems include secure mobile application sync for iOS and Android, allowing real-time viewing and recorded playback from anywhere.' },
       { q: 'How long can the NVR system store recorded video footage?', a: 'Storage retention depends on hard drive capacity and recording resolution. We typically size RAID NVR arrays for 30 to 90 days of continuous recording.' },
       { q: 'Do you provide Annual Maintenance Contracts (AMC) for existing camera setups?', a: 'Yes. We offer complete AMC packages covering routine lens cleaning, power supply checks, hard drive health audits, and breakdown repairs.' },
@@ -143,37 +198,37 @@ export const SERVICES_DATA: ServiceItem[] = [
     slug: 'networking',
     title: 'Networking Solutions',
     eyebrow: 'Infrastructure Built For Reliable Business.',
-    heroPill: 'ENTERPRISE NETWORKING SOLUTIONS',
-    heroTitle: 'Reliable connectivity across your organization.',
-    heroAccent: 'across your organization.',
+    heroPill: 'ENTERPRISE NETWORKING',
+    heroTitle: 'Connectivity Built For Zero Interruptions',
+    heroAccent: 'Zero Interruptions',
     shortDescription: 'Enterprise LAN/WAN architecture, structured Cat6/Fiber cabling, high-density Wi-Fi setups, VPN tunnels, and proactive bandwidth management.',
     fullDescription: 'Reliable, high-bandwidth networking designed for zero downtime. We install structured fiber optic and ethernet cabling, enterprise wireless access points, managed switches, and failover routers to keep your business operating at peak performance.',
-    heroImage: '/images/cards/card-networking-new.jpg',
-    trustItems: [
-      'Enterprise LAN / WAN Setup',
-      'High-Density Wi-Fi Roaming',
-      'Managed Gigabit Switches',
-      'Structured Cat6 & Fiber',
-      'Multi-site VPN Tunnels',
-      'Bandwidth Traffic Shaping',
-    ],
-    whyChooseTitle: 'Why choose our Networking Solutions?',
-    whyChooseSubtitle: 'Clean structured cabling, zero-lag enterprise Wi-Fi handoffs, and hardened firewall routing.',
-    whyChooseCards: [
-      { title: 'LAN / WAN Architecture', desc: 'Custom network topology design connecting workstations, servers, and cloud gateways seamlessly.', iconName: 'Network', highlighted: true },
-      { title: 'Enterprise Wi-Fi', desc: 'High-density ceiling access points with seamless roaming across multi-story office floors.', iconName: 'Wifi' },
-      { title: 'Managed Switches', desc: 'Layer 2/3 PoE switches providing dedicated bandwidth channels for VoIP, cameras, and PCs.', iconName: 'Server' },
-      { title: 'Routing & Hardware Failover', desc: 'Dual-WAN routers with automatic ISP backup failover for zero internet downtime.', iconName: 'Zap' },
-      { title: 'Secure VPN Tunnels', desc: 'Encrypted site-to-site and remote worker VPN connections for secure data access.', iconName: 'Lock' },
-      { title: 'Structured Cabling', desc: 'Neat patch panel termination, cable labeling, and Fluke certified Cat6/Fiber runs.', iconName: 'Cpu' },
-    ],
+    heroImage: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1600&q=80',
+
+    techOverview: {
+      sectionTitle: 'Network Engineering Stack',
+      sectionSubtitle: 'High-speed gigabit backbones, managed switch stacks, and zero-drop wireless roaming.',
+      leftTitle: 'Explore Our Technology',
+      techItems: [
+        { iconName: 'Network', title: 'LAN / WAN Design', desc: 'Custom network topology connecting workstations, servers, and gateways.' },
+        { iconName: 'Wifi', title: 'Enterprise Wi-Fi 6', desc: 'High-density ceiling access points with seamless multi-floor roaming.' },
+        { iconName: 'Server', title: 'Managed PoE Switches', desc: 'Layer 2/3 switches providing dedicated VLAN bandwidth channels.' },
+        { iconName: 'Zap', title: 'Dual-WAN Failover', desc: 'Auto-switching ISP failover ensuring 100% internet uptime continuity.' },
+      ],
+      rightTitle: 'Latest Solutions',
+      solutions: [
+        { tag: 'FIBER BACKBONE', title: 'Structured Fiber Cabling', desc: 'Single-mode and multi-mode fiber optic cabling terminated into server rack patch panels.', imageUrl: '/images/cards/card-networking-new.jpg', linkText: 'Explore Cabling' },
+        { tag: 'VPN & SECURITY', title: 'Site-to-Site Encrypted VPN', desc: 'Secure SSL and IPSec VPN tunnels connecting corporate branches to headquarters.', imageUrl: 'public/catalog/05_networking_spread.jpg', linkText: 'View Network Specs' },
+      ],
+    },
+
     featureSplit: {
-      heading: 'Reliable connectivity across your organization.',
+      heading: 'High-Bandwidth Network Backbone Built To Scale.',
       description: 'We eliminate network dropouts, dead zones, and bottlenecked bandwidth by engineering robust network backbones using enterprise-grade hardware and organized rack management.',
       bulletPoints: [
         'Dual-WAN auto failover switching between primary and secondary ISPs',
-        'Separate isolated VLANs for corporate devices, guest Wi-Fi, and CCTV feeds',
-        'Neatly organized, labeled server rack patch panels for easy maintenance',
+        'Isolated VLANs for corporate computers, guest Wi-Fi, and CCTV feeds',
+        'Neatly organized, labeled server rack patch panels for easy servicing',
         '24/7 proactive bandwidth monitoring and switch port health checks',
       ],
       stat1: { value: '10 Gbps', label: 'Fiber Backbone Speed' },
@@ -181,30 +236,45 @@ export const SERVICES_DATA: ServiceItem[] = [
       badge: 'NETWORK ARCHITECTURE',
       ctaText: 'Get Network Audit',
       ctaLink: '/get-quote',
-      image: '/images/cards/card-networking-new.jpg',
+      image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80',
     },
-    capabilitiesTitle: 'Everything you need for complete Networking',
-    capabilitiesSubtitle: 'From cable conduit pulling to managed switch stack configuration and Wi-Fi heatmapping.',
-    capabilityCards: [
-      { number: '01', title: 'Routing', tag: 'Dual-WAN & Failover', desc: 'High-throughput enterprise routers with automated ISP failover and load balancing.', iconName: 'Network' },
-      { number: '02', title: 'Switching', tag: 'Managed PoE+ Stack', desc: 'Gigabit and 10G PoE switches delivering clean power and data to access points and cameras.', iconName: 'Server' },
-      { number: '03', title: 'Wi-Fi', tag: 'Seamless Roaming', desc: 'Commercial wireless access points configured for zero-drop roaming across office spaces.', iconName: 'Wifi' },
-      { number: '04', title: 'Cabling', tag: 'Cat6 & Fiber Optic', desc: 'Structured copper ethernet and multi-mode fiber optic cabling terminated in server racks.', iconName: 'Cpu' },
-    ],
-    mediaFeature: {
-      title: '" High-Bandwidth Networking Engineered for Zero Operational Interruption "',
-      subtitle: 'See how our network technicians audit signal coverage, dress server racks, and certify speed throughput.',
-      badge: 'NETWORKING SHOWCASE',
-      imageUrl: '/images/cards/card-networking-new.jpg',
+
+    benefitsDark: {
+      badge: 'NETWORK PROMISE',
+      heading: 'Enterprise Performance Without Bottlenecks',
+      subtitle: 'Clean structured cabling, zero-lag Wi-Fi handoffs, and hardened firewall routing.',
+      benefits: [
+        { iconName: 'Zap', title: 'Stable Connectivity', desc: 'Enterprise switches and failover routers configured to eliminate random drops during peak office hours.', linkText: 'Learn More' },
+        { iconName: 'Activity', title: 'High-Density Wi-Fi', desc: 'Seamless wireless roaming across multi-story office floors without reconnecting or losing calls.', linkText: 'View Access Points' },
+        { iconName: 'Shield', title: 'Hardened Routing', desc: 'VLAN segmentation protecting sensitive financial databases from general guest Wi-Fi traffic.', linkText: 'Explore VLANs' },
+      ],
     },
-    industryCards: [
-      { title: 'Corporate Offices', subtitle: 'Headquarters & Branches', desc: 'High-density Wi-Fi, desk ethernet ports, and inter-office VPN networks.', iconName: 'Building2' },
-      { title: 'Educational Campuses', subtitle: 'Colleges & Schools', desc: 'Fiber backbones linking administration blocks, computer labs, and libraries.', iconName: 'School' },
-      { title: 'Hospitals', subtitle: 'Healthcare Systems', desc: 'Isolated medical equipment networks, guest portals, and secure EMR connectivity.', iconName: 'Hospital' },
-      { title: 'Retail Chains', subtitle: 'Multi-Store Outlets', desc: 'POS terminal network reliability, cloud inventory sync, and guest Wi-Fi.', iconName: 'ShoppingBag' },
-      { title: 'Logistics Parks', subtitle: 'Warehouses & Docks', desc: 'Long-distance fiber links and outdoor wireless bridges for barcode scanners.', iconName: 'Factory' },
-      { title: 'Co-Working Spaces', subtitle: 'Shared Offices', desc: 'VLAN bandwidth allocation per tenant and automated Wi-Fi user login portals.', iconName: 'Shield' },
-    ],
+
+    proof: {
+      badge: 'CASE STUDIES',
+      heading: 'Why Organizations Choose C&G',
+      subtitle: 'Engineered networking backbones supporting hundreds of simultaneous workstations.',
+      cards: [
+        { rating: 5, title: 'Zero Network Outages', quote: 'Their dual-WAN ISP failover architecture prevented three major internet dropouts this quarter without employees noticing.', author: 'Financial Firm', role: 'IT Manager', tag: 'FINANCIAL SECTOR' },
+        { rating: 5, title: 'Clean Rack Re-organization', quote: 'C&G transformed our messy server room cable clutter into a pristine, labeled Cat6 patch rack.', author: 'Software Tech Hub', role: 'CTO', tag: 'TECH PARK' },
+        { rating: 5, title: 'Multi-Floor Wi-Fi Roaming', quote: 'Staff can move between meeting rooms across 4 floors with zero dropped VoIP video calls.', author: 'Enterprise HQ', role: 'Infrastructure Lead', tag: 'CORPORATE HQ' },
+      ],
+    },
+
+    mediaCTA: {
+      badge: 'ENTERPRISE NETWORKING',
+      title: 'Upgrade Your Network Architecture Today',
+      subtitle: 'Request an expert network survey to audit cable runs, wireless heatmaps, and switch throughput before scaling your team.',
+      imageUrl: 'https://images.unsplash.com/photo-1517433670267-08bbd4be890f?auto=format&fit=crop&w=1600&q=80',
+      ctaText: 'Schedule Site Audit',
+      ctaLink: '/get-quote',
+      metrics: [
+        { label: 'Throughput', value: '10 Gbps' },
+        { label: 'Port Density', value: '48-Port PoE' },
+        { label: 'Coverage', value: 'Zero Deadzones' },
+      ],
+    },
+
     faqs: [
       { q: 'Can you design and deploy complete office networking from scratch?', a: 'Yes. We handle end-to-end office networking including site audits, CAD cable mapping, server rack assembly, switch programming, and Wi-Fi tuning.' },
       { q: 'Do you support fiber optic cable installation and fusion splicing?', a: 'Yes. We install single-mode and multi-mode fiber optic cables with professional fusion splicing and OTDR certification.' },
@@ -221,31 +291,31 @@ export const SERVICES_DATA: ServiceItem[] = [
     title: 'IT Infrastructure',
     eyebrow: 'End-to-End Enterprise Hardware & Maintenance.',
     heroPill: 'ENTERPRISE IT INFRASTRUCTURE',
-    heroTitle: 'Solid technology foundation for growing business.',
-    heroAccent: 'technology foundation',
+    heroTitle: 'Infrastructure That Scales With You',
+    heroAccent: 'Scales With You',
     shortDescription: 'Turnkey server room design, UTM firewall configuration, online UPS battery backups, hardware supply, data center rack management, and 24/7 AMC support.',
     fullDescription: 'Complete hardware foundation for enterprise productivity. We supply, configure, and maintain racks, rack servers, enterprise firewalls, power backups, and storage arrays backed by dedicated Annual Maintenance Contracts (AMC).',
-    heroImage: '/images/cards/card-servers-new.jpg',
-    trustItems: [
-      'Rack & Tower Servers',
-      'UTM Firewalls',
-      'Online UPS Power Backup',
-      'Data Center Racks',
-      'Storage RAID Arrays',
-      'Comprehensive AMC Support',
-    ],
-    whyChooseTitle: 'Why choose our IT Infrastructure solutions?',
-    whyChooseSubtitle: 'Commercial-grade server hardware, thermal airflow management, and rapid SLA hardware replacement.',
-    whyChooseCards: [
-      { title: 'Server Procurement', desc: 'High-performance rack and tower servers from Dell, HP, and Lenovo tailored to corporate workloads.', iconName: 'Server', highlighted: true },
-      { title: 'UTM Firewalls', desc: 'Next-generation gateway security blocking ransomware, unauthorized ports, and web threats.', iconName: 'Lock' },
-      { title: 'Online UPS Systems', desc: 'Double-conversion power backups protecting sensitive server hardware from voltage spikes.', iconName: 'Zap' },
-      { title: 'Data Center Racks', desc: 'Server cabinets with cable trays, power distribution units (PDUs), and lockable doors.', iconName: 'Cpu' },
-      { title: 'Hardware Procurement', desc: 'Single-vendor supply for corporate PCs, laptops, network cards, and server parts.', iconName: 'Laptop' },
-      { title: 'AMC Support', desc: 'Annual Maintenance Contracts with scheduled health checks and guaranteed SLA emergency dispatch.', iconName: 'CheckCircle' },
-    ],
+    heroImage: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1600&q=80',
+
+    techOverview: {
+      sectionTitle: 'Infrastructure Component Suite',
+      sectionSubtitle: 'Hardware compute nodes, thermal airflow management, and double-conversion power backup.',
+      leftTitle: 'Explore Our Technology',
+      techItems: [
+        { iconName: 'Server', title: 'Enterprise Servers', desc: 'Rack & tower server nodes tailored to virtualization and database workloads.' },
+        { iconName: 'Lock', title: 'UTM Firewalls', desc: 'Next-generation firewall appliances blocking ransomware and unauthorized ports.' },
+        { iconName: 'Zap', title: 'Online UPS Backups', desc: 'Clean double-conversion power backups protecting sensitive hardware.' },
+        { iconName: 'Cpu', title: 'Server Rack Cabinets', desc: '42U enclosed racks fitted with smart PDUs, cable trays, and fan trays.' },
+      ],
+      rightTitle: 'Latest Solutions',
+      solutions: [
+        { tag: 'SERVER COMPUTE', title: 'Rack Server Clusters', desc: 'Dell PowerEdge and HP ProLiant servers configured with ESXi and Hyper-V.', imageUrl: '/images/cards/card-servers-new.jpg', linkText: 'Explore Server Specs' },
+        { tag: 'POWER & THERMAL', title: 'Smart PDU & Cooling', desc: 'Thermal airflow routing and smart power metering for data center cabinets.', imageUrl: 'public/catalog/06_storage_spread.jpg', linkText: 'View Racks' },
+      ],
+    },
+
     featureSplit: {
-      heading: 'Turnkey server room engineering.',
+      heading: 'Turnkey Server Room Engineering & Supply.',
       description: 'We construct server room environments engineered for uptime, clean power delivery, structured cabling, thermal cooling, and continuous remote hardware monitoring.',
       bulletPoints: [
         'Single point of contact for hardware supply, configuration, and maintenance',
@@ -258,30 +328,45 @@ export const SERVICES_DATA: ServiceItem[] = [
       badge: 'INFRASTRUCTURE ENGINEERING',
       ctaText: 'Get Infrastructure Quote',
       ctaLink: '/get-quote',
-      image: '/images/cards/card-servers-new.jpg',
+      image: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1200&q=80',
     },
-    capabilitiesTitle: 'Everything you need for complete IT Infrastructure',
-    capabilitiesSubtitle: 'Comprehensive hardware components and maintenance options tailored to your business scale.',
-    capabilityCards: [
-      { number: '01', title: 'Servers', tag: 'Rack & Tower', desc: 'Multi-core compute servers configured with ESXi, Hyper-V, or Windows Server OS.', iconName: 'Server' },
-      { number: '02', title: 'Firewalls', tag: 'Perimeter Defense', desc: 'Enterprise UTM gateways with deep packet inspection and antivirus filters.', iconName: 'Lock' },
-      { number: '03', title: 'Data Center', tag: 'Rack & Airflow', desc: 'Heavy-duty 42U racks equipped with smart PDUs, cable managers, and fan modules.', iconName: 'Cpu' },
-      { number: '04', title: 'AMC Contracts', tag: 'Annual SLA Coverage', desc: 'Comprehensive hardware support contracts covering quarterly servicing and part replacement.', iconName: 'CheckCircle' },
-    ],
-    mediaFeature: {
-      title: '" Powering Commercial Enterprises with Dependable Server Room Architecture "',
-      subtitle: 'Explore our server room installations engineered for thermal efficiency, organized cabling, and clean backup power.',
-      badge: 'INFRASTRUCTURE SHOWCASE',
-      imageUrl: '/images/cards/card-servers-new.jpg',
+
+    benefitsDark: {
+      badge: 'INFRASTRUCTURE ADVANTAGE',
+      heading: 'Built for Uninterrupted Enterprise Compute',
+      subtitle: 'Commercial-grade server hardware, thermal airflow management, and rapid SLA hardware replacement.',
+      benefits: [
+        { iconName: 'Server', title: 'Custom Compute Sizing', desc: 'Scalable rack server nodes matching your exact database, CRM, and cloud workload requirements.', linkText: 'Explore Servers' },
+        { iconName: 'Zap', title: 'Zero Power Downtime', desc: 'Online double-conversion UPS battery banks ensuring smooth server operation during blackout switchovers.', linkText: 'View UPS Specs' },
+        { iconName: 'Shield', title: 'Annual SLA AMC Support', desc: 'Quarterly hardware preventive audits and guaranteed on-site breakdown response times.', linkText: 'Explore AMC Plans' },
+      ],
     },
-    industryCards: [
-      { title: 'Corporate Headquarters', subtitle: 'Enterprise IT', desc: 'Dedicated server racks, virtualization clusters, and active-active firewalls.', iconName: 'Building2' },
-      { title: 'Financial Services', subtitle: 'Banking & Firms', desc: 'Hardened server room security, encrypted backups, and dual UPS battery banks.', iconName: 'Shield' },
-      { title: 'Healthcare Organizations', subtitle: 'Hospitals & Labs', desc: 'High-availability server infrastructure supporting PACS and electronic records.', iconName: 'Hospital' },
-      { title: 'Manufacturing Facilities', subtitle: 'Factories & Plants', desc: 'Industrial server cabinets, surge protection, and factory network racks.', iconName: 'Factory' },
-      { title: 'Software & Tech Firms', subtitle: 'Development Hubs', desc: 'High-compute server nodes, high-speed storage SANs, and sandbox networks.', iconName: 'Laptop' },
-      { title: 'Government & Public Offices', subtitle: 'Institutional IT', desc: 'Secure data center server racks, hardware AMC, and compliance maintenance.', iconName: 'School' },
-    ],
+
+    proof: {
+      badge: 'ENTERPRISE PROOF',
+      heading: 'Why Organizations Choose C&G',
+      subtitle: 'Deploying high-reliability server rooms and enterprise hardware support.',
+      cards: [
+        { rating: 5, title: 'Flawless Data Center Migration', quote: 'C&G supplied, racked, and configured our 6-node server cluster and UPS backups within 48 hours without operational downtime.', author: 'Healthcare System', role: 'IT Director', tag: 'HEALTHCARE IT' },
+        { rating: 5, title: 'Proactive SLA Maintenance', quote: 'Their annual maintenance contract caught a failing RAID disk array before any data loss occurred.', author: 'Manufacturing Plant', role: 'General Manager', tag: 'MANUFACTURING' },
+        { rating: 5, title: 'Turnkey Server Room Build', quote: 'From server racks and thermal fans to firewall gateways, C&G delivered our entire server room turnkey.', author: 'Corporate Park Tenant', role: 'Head of IT', tag: 'ENTERPRISE HQ' },
+      ],
+    },
+
+    mediaCTA: {
+      badge: 'SERVER ROOM ENGINEERING',
+      title: 'Build Your Enterprise Hardware Foundation',
+      subtitle: 'Schedule a technical infrastructure assessment to size server compute, UPS battery runtimes, and firewall requirements.',
+      imageUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1600&q=80',
+      ctaText: 'Request Hardware Proposal',
+      ctaLink: '/get-quote',
+      metrics: [
+        { label: 'SLA Hotline', value: '24/7' },
+        { label: 'Dispatch', value: '< 2 Hrs' },
+        { label: 'Support', value: 'Full AMC' },
+      ],
+    },
+
     faqs: [
       { q: 'What hardware components are included in a turnkey IT infrastructure setup?', a: 'A turnkey setup includes server racks, compute servers, UTM firewall gateways, network switches, online UPS power backups, NAS/SAN storage, and structured cabling.' },
       { q: 'What is included in a C&G Infotech Annual Maintenance Contract (AMC)?', a: 'Our AMC covers scheduled preventive maintenance visits, hardware health audits, thermal checks, OS updates, and priority emergency breakdown repairs.' },
@@ -297,32 +382,32 @@ export const SERVICES_DATA: ServiceItem[] = [
     slug: 'cybersecurity',
     title: 'Cybersecurity',
     eyebrow: 'Protecting Your Business Infrastructure.',
-    heroPill: 'CYBERSECURITY & NETWORK DEFENSE',
-    heroTitle: 'Shielding your enterprise from modern cyber threats.',
-    heroAccent: 'modern cyber threats.',
+    heroPill: 'CYBERSECURITY & DEFENSE',
+    heroTitle: 'Defend Before Threats Become Incidents',
+    heroAccent: 'Become Incidents',
     shortDescription: 'Next-generation firewall management, centralized endpoint protection, network intrusion prevention, strict zero-trust access controls, and system vulnerability hardening.',
     fullDescription: 'Comprehensive defense against ransomware, malware, and unauthorized access. We deploy multi-layered security protocols across your network perimeter, workstations, and servers to ensure total operational integrity.',
-    heroImage: '/images/cards/card-cybersecurity-new.jpg',
-    trustItems: [
-      'Next-Gen Firewalls',
-      'Endpoint EDR Protection',
-      'Intrusion Prevention (IPS)',
-      'Zero-Trust Security',
-      'Patch Management',
-      'Ransomware Defense',
-    ],
-    whyChooseTitle: 'Why choose our Cybersecurity solutions?',
-    whyChooseSubtitle: 'Multi-layered perimeter defense, automated endpoint containment, and proactive vulnerability scanning.',
-    whyChooseCards: [
-      { title: 'Perimeter Firewalls', desc: 'Next-generation UTM gateways inspecting encrypted traffic, blocking malicious ports, and filtering web content.', iconName: 'Lock', highlighted: true },
-      { title: 'Endpoint Protection', desc: 'Centralized EDR antivirus suites detecting and containing ransomware on desktops and laptops.', iconName: 'Shield' },
-      { title: 'Intrusion Prevention', desc: 'Real-time network sensors analyzing traffic anomalies and preventing internal network attacks.', iconName: 'Activity' },
-      { title: 'Zero-Trust Access', desc: 'Strict identity verification, multi-factor authentication, and granular VLAN access controls.', iconName: 'Cpu' },
-      { title: 'Patch Management', desc: 'Automated OS and software security patching to close vulnerabilities before exploits occur.', iconName: 'Zap' },
-      { title: 'Data Loss Prevention', desc: 'Enforcing USB storage locks, email attachment filters, and encrypted automated cloud backups.', iconName: 'Server' },
-    ],
+    heroImage: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1600&q=80',
+
+    techOverview: {
+      sectionTitle: 'Security & Defense Stack',
+      sectionSubtitle: 'Perimeter gateway filtering, endpoint containment, and proactive vulnerability scanning.',
+      leftTitle: 'Explore Our Technology',
+      techItems: [
+        { iconName: 'Lock', title: 'Perimeter Firewalls', desc: 'Next-generation UTM gateways inspecting encrypted traffic and blocking malicious ports.' },
+        { iconName: 'Shield', title: 'Endpoint EDR Antivirus', desc: 'Centralized malware detection software deployed across all company workstations.' },
+        { iconName: 'Activity', title: 'Intrusion Prevention (IPS)', desc: 'Real-time network traffic sensors identifying and containing network attacks.' },
+        { iconName: 'Cpu', title: 'Zero-Trust Access', desc: 'Strict multi-factor authentication and granular VLAN access controls.' },
+      ],
+      rightTitle: 'Latest Solutions',
+      solutions: [
+        { tag: 'RANSOMWARE DEFENSE', title: 'Automated Endpoint Containment', desc: 'Instant automatic isolation of compromised computers to prevent network-wide infection.', imageUrl: '/images/cards/card-cybersecurity-new.jpg', linkText: 'Explore Defense' },
+        { tag: 'BACKUP & RECOVERY', title: 'Air-Gapped Encrypted Backup', desc: 'Automated offline and cloud backup arrays guaranteeing rapid ransomware data recovery.', imageUrl: 'public/catalog/04_security_spread.jpg', linkText: 'View Backup Specs' },
+      ],
+    },
+
     featureSplit: {
-      heading: 'Multi-layered defense for total data security.',
+      heading: 'Multi-Layered Cyber Security Defense.',
       description: 'We safeguard your business against ransomware encryption, phishing breaches, and internal data theft by establishing strict perimeter rules and automated endpoint protection.',
       bulletPoints: [
         'Centralized dashboard monitoring security health across all company computers',
@@ -335,30 +420,45 @@ export const SERVICES_DATA: ServiceItem[] = [
       badge: 'CYBER DEFENSE SYSTEM',
       ctaText: 'Request Security Audit',
       ctaLink: '/get-quote',
-      image: '/images/cards/card-cybersecurity-new.jpg',
+      image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80',
     },
-    capabilitiesTitle: 'Everything you need for complete Cybersecurity',
-    capabilitiesSubtitle: 'Proactive threat monitoring, gateway hardening, and rapid incident response tools.',
-    capabilityCards: [
-      { number: '01', title: 'Firewalls', tag: 'NGFW Gateway', desc: 'Hardware firewall appliances providing deep packet inspection and intrusion blocking.', iconName: 'Lock' },
-      { number: '02', title: 'Endpoint EDR', tag: 'Managed Antivirus', desc: 'Real-time malware scanning and behavior detection software deployed across PCs.', iconName: 'Shield' },
-      { number: '03', title: 'VPN Security', tag: 'Encrypted Tunnels', desc: 'Secure SSL VPN gateways enabling encrypted remote work connectivity.', iconName: 'Network' },
-      { number: '04', title: 'Backups', tag: 'Air-Gapped Recovery', desc: 'Automated offline and cloud backup setups ensuring rapid ransomware recovery.', iconName: 'Server' },
-    ],
-    mediaFeature: {
-      title: '" Proactive Cybersecurity Engineering Safeguarding Corporate Data "',
-      subtitle: 'Learn how our security team configures firewall rules, conducts vulnerability assessments, and deploys endpoint protection.',
-      badge: 'SECURITY SHOWCASE',
-      imageUrl: '/images/cards/card-cybersecurity-new.jpg',
+
+    benefitsDark: {
+      badge: 'SECURITY PROMISE',
+      heading: 'Proactive Security Built For Zero Compromise',
+      subtitle: 'Multi-layered perimeter defense, automated endpoint containment, and proactive vulnerability scanning.',
+      benefits: [
+        { iconName: 'Lock', title: 'Perimeter Shielding', desc: 'Next-Gen firewalls blocking malicious ports, suspicious IPs, and unauthorized incoming connections.', linkText: 'Explore Firewalls' },
+        { iconName: 'Shield', title: 'Endpoint EDR Security', desc: 'Real-time behavioral sensors detecting stealthy malware and isolating compromised PCs instantly.', linkText: 'View EDR' },
+        { iconName: 'Zap', title: 'Rapid Incident Response', desc: '24/7 technical containment hotline mitigating cyber threats before business operations suffer.', linkText: 'Learn Response' },
+      ],
     },
-    industryCards: [
-      { title: 'Corporate Offices', subtitle: 'Enterprise Networks', desc: 'Securing corporate IP, staff devices, and internal database servers.', iconName: 'Building2' },
-      { title: 'Financial & Accounting', subtitle: 'Sensitive Financial Data', desc: 'Strict compliance hardening, encrypted backups, and multi-factor auth.', iconName: 'Shield' },
-      { title: 'Healthcare Organizations', subtitle: 'Patient Records', desc: 'Protecting medical databases against ransomware encryption attacks.', iconName: 'Hospital' },
-      { title: 'E-commerce & Retail', subtitle: 'Payment Gateways', desc: 'PCI-DSS perimeter compliance and secure customer portal hosting.', iconName: 'ShoppingBag' },
-      { title: 'Educational Institutions', subtitle: 'Student Networks', desc: 'Web content filtering, guest Wi-Fi isolation, and network threat sensors.', iconName: 'School' },
-      { title: 'Legal & Consulting Firms', subtitle: 'Client Documents', desc: 'Confidential file encryption, USB port locks, and secure remote VPNs.', iconName: 'Lock' },
-    ],
+
+    proof: {
+      badge: 'DEFENSE PROOF',
+      heading: 'Why Organizations Choose C&G',
+      subtitle: 'Shielding commercial enterprises from data breaches and ransomware attacks.',
+      cards: [
+        { rating: 5, title: 'Blocked Ransomware Intrusion', quote: 'The EDR security deployed by C&G caught a weaponized email attachment and quarantined the workstation in under 3 seconds.', author: 'Legal & Accounting Firm', role: 'Managing Partner', tag: 'FINANCIAL DEFENSE' },
+        { rating: 5, title: 'Clean Security Compliance', quote: 'Their security audit helped our infrastructure pass strict international client compliance audits effortlessly.', author: 'Commercial Tech Hub', role: 'Compliance Officer', tag: 'COMPLIANCE' },
+        { rating: 5, title: 'Encrypted Remote Work', quote: 'Our remote team works securely over encrypted SSL VPN tunnels without exposing internal servers.', author: 'Software Solutions', role: 'Head of Security', tag: 'REMOTE SECURITY' },
+      ],
+    },
+
+    mediaCTA: {
+      badge: 'CYBER DEFENSE',
+      title: 'Fortify Your Enterprise Network Today',
+      subtitle: 'Schedule a thorough cybersecurity audit with C&G security specialists to identify open vulnerabilities and harden gateway firewalls.',
+      imageUrl: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1600&q=80',
+      ctaText: 'Request Security Audit',
+      ctaLink: '/get-quote',
+      metrics: [
+        { label: 'Perimeter', value: 'NGFW Firewall' },
+        { label: 'Containment', value: '< 5 Seconds' },
+        { label: 'EDR Coverage', value: '100% Desktops' },
+      ],
+    },
+
     faqs: [
       { q: 'What is a Next-Generation Firewall (NGFW) and why does my business need one?', a: 'An NGFW inspects data traffic at the application layer, blocking advanced malware, unauthorized VPNs, and malicious web traffic before it reaches your internal computers.' },
       { q: 'How does Endpoint Detection & Response (EDR) protect computers from ransomware?', a: 'EDR software monitors system processes for suspicious encryption behaviors, instantly isolating infected PCs from the local network.' },
@@ -374,32 +474,32 @@ export const SERVICES_DATA: ServiceItem[] = [
     slug: 'computers-laptops',
     title: 'Computer & Laptop Solutions',
     eyebrow: 'Corporate Hardware Supply & Maintenance.',
-    heroPill: 'CORPORATE COMPUTER & LAPTOP SUPPLY',
-    heroTitle: 'Enterprise hardware configured for business performance.',
-    heroAccent: 'business performance.',
+    heroPill: 'CORPORATE WORKSTATION SOLUTIONS',
+    heroTitle: 'Performance Engineered For Your Teams',
+    heroAccent: 'For Your Teams',
     shortDescription: 'Bulk workstation procurement, high-performance laptops, custom desktop assembly, hardware upgrades, NVMe SSD deployment, and complete repair services.',
     fullDescription: 'Authorized corporate hardware partner supplying desktops, laptops, displays, peripherals, and accessories from leading global brands. We handle bulk provisioning, custom configurations, and post-purchase hardware support.',
-    heroImage: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=1200&q=80',
-    trustItems: [
-      'Bulk Desktop Supply',
-      'Corporate Laptops',
-      'Custom Workstations',
-      'NVMe SSD Upgrades',
-      'Licensed OS Imaging',
-      'Hardware Repairs & AMC',
-    ],
-    whyChooseTitle: 'Why choose our Computer & Laptop solutions?',
-    whyChooseSubtitle: 'Genuine brand-authorized hardware, pre-loaded corporate software, and rapid on-site service response.',
-    whyChooseCards: [
-      { title: 'Corporate Desktops', desc: 'Commercial minitower and small form factor PCs built for reliable office multitasking.', iconName: 'Laptop', highlighted: true },
-      { title: 'Business Laptops', desc: 'Durable, lightweight laptops with long battery life from Dell, HP, Lenovo, and Apple.', iconName: 'Cpu' },
-      { title: 'Custom CAD Workstations', desc: 'High-performance PCs equipped with dedicated NVIDIA graphics and multi-core processors.', iconName: 'Server' },
-      { title: 'Hardware Upgrades', desc: 'RAM expansion and high-speed NVMe SSD installations reviving existing slow office computers.', iconName: 'Zap' },
-      { title: 'Licensed Software Imaging', desc: 'Pre-loading licensed Windows OS, MS Office, antivirus, and corporate security agents.', iconName: 'CheckCircle' },
-      { title: 'Repair Services', desc: 'On-site desktop and laptop diagnostics, screen replacements, and motherboard repair.', iconName: 'Shield' },
-    ],
+    heroImage: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=1600&q=80',
+
+    techOverview: {
+      sectionTitle: 'Hardware Provisioning Options',
+      sectionSubtitle: 'Brand-authorized commercial desktops, ultrabooks, and custom workstations.',
+      leftTitle: 'Explore Our Technology',
+      techItems: [
+        { iconName: 'Laptop', title: 'Corporate Desktops', desc: 'Commercial minitowers and small form factor PCs built for office multitasking.' },
+        { iconName: 'Cpu', title: 'Enterprise Laptops', desc: 'Durable, lightweight laptops with long battery life from Dell, HP, and Lenovo.' },
+        { iconName: 'Server', title: 'Custom CAD Workstations', desc: 'High-performance PCs equipped with dedicated NVIDIA graphics and multi-core CPUs.' },
+        { iconName: 'Zap', title: 'SSD & RAM Upgrades', desc: 'Reviving legacy slow computers with high-speed NVMe SSDs and RAM expansions.' },
+      ],
+      rightTitle: 'Latest Solutions',
+      solutions: [
+        { tag: 'BULK PROVISIONING', title: 'Corporate Workstation Fleets', desc: 'Pre-configured, image-loaded desktop fleets ready for immediate desk deployment.', imageUrl: '/images/cards/card-computers-new.jpg', linkText: 'Explore Fleets' },
+        { tag: 'CAD & GRAPHICS', title: 'High-Performance Render Workstations', desc: 'Custom workstation builds optimized for 3D architecture, video editing, and CAD software.', imageUrl: 'public/catalog/01_desktops_spread.jpg', linkText: 'View Specs' },
+      ],
+    },
+
     featureSplit: {
-      heading: 'Hardware provisioning simplified for growing teams.',
+      heading: 'Hardware Supply Simplified For Growing Businesses.',
       description: 'We eliminate IT procurement headaches by supplying authentic, pre-configured computers and laptops directly to your desks ready for immediate work.',
       bulletPoints: [
         'Bulk corporate pricing discounts for office expansions and hardware refreshes',
@@ -412,30 +512,45 @@ export const SERVICES_DATA: ServiceItem[] = [
       badge: 'HARDWARE PROVISIONING',
       ctaText: 'Get Bulk Hardware Quote',
       ctaLink: '/get-quote',
-      image: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=800&q=80',
+      image: 'https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?auto=format&fit=crop&w=1200&q=80',
     },
-    capabilitiesTitle: 'Everything you need for complete Computer Solutions',
-    capabilitiesSubtitle: 'Hardware supply, custom configurations, warranty management, and post-purchase repair.',
-    capabilityCards: [
-      { number: '01', title: 'Desktops', tag: 'Intel Core & Ryzen', desc: 'Small form factor commercial desktops built for corporate efficiency.', iconName: 'Laptop' },
-      { number: '02', title: 'Laptops', tag: 'Enterprise Ultrabooks', desc: 'Slim, durable commercial laptops with long battery runtime and security chips.', iconName: 'Cpu' },
-      { number: '03', title: 'Upgrades', tag: 'SSD & RAM Boosts', desc: 'Upgrading legacy mechanical drives to high-speed NVMe SSDs for 5x speed.', iconName: 'Zap' },
-      { number: '04', title: 'Maintenance', tag: 'On-Site Repairs', desc: 'Dedicated hardware AMC contracts covering component diagnostics and servicing.', iconName: 'CheckCircle' },
-    ],
-    mediaFeature: {
-      title: '" Supply and Deployment of Authorized Corporate Computer Systems "',
-      subtitle: 'See how C&G Infotech prepares, images, tests, and deploys bulk workstation fleets for corporate clients.',
-      badge: 'HARDWARE SHOWCASE',
-      imageUrl: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=1200&q=80',
+
+    benefitsDark: {
+      badge: 'HARDWARE QUALITY',
+      heading: 'Commercial Grade Reliability At Scale',
+      subtitle: 'Genuine brand-authorized hardware, pre-loaded corporate software, and rapid on-site service response.',
+      benefits: [
+        { iconName: 'Laptop', title: 'Authorized Supply', desc: '100% genuine brand-new computers with official manufacturer warranties and local service.', linkText: 'View Brands' },
+        { iconName: 'CheckCircle', title: 'Corporate Pre-Config', desc: 'Delivered pre-loaded with licensed Windows OS, MS Office, and company domain settings.', linkText: 'Explore Config' },
+        { iconName: 'Zap', title: 'Performance Upgrades', desc: 'Boosting existing office PCs with high-speed NVMe SSDs for 5x faster boot times.', linkText: 'Learn Upgrades' },
+      ],
     },
-    industryCards: [
-      { title: 'Corporate Offices', subtitle: 'Workstation Fleets', desc: 'Pre-configured desktops, dual monitors, and docking station setups.', iconName: 'Building2' },
-      { title: 'Software Companies', subtitle: 'Developer PCs', desc: 'High-RAM workstations optimized for compilation and virtual machines.', iconName: 'Laptop' },
-      { title: 'Design & Architecture', subtitle: 'CAD & 3D Render', desc: 'Workstations with workstation-grade GPUs and color-accurate displays.', iconName: 'Server' },
-      { title: 'Educational Labs', subtitle: 'Computer Classrooms', desc: 'Bulk desktop lab deployments with student access control software.', iconName: 'School' },
-      { title: 'Call Centers & BPOs', subtitle: 'High-Density Desks', desc: 'Compact mini PCs with noise-canceling headsets and domain setup.', iconName: 'Shield' },
-      { title: 'Retail Outlets', subtitle: 'Billing Counters', desc: 'Compact POS computers with barcode scanner and receipt printer links.', iconName: 'ShoppingBag' },
-    ],
+
+    proof: {
+      badge: 'CLIENT PROOF',
+      heading: 'Why Organizations Choose C&G',
+      subtitle: 'Supplying bulk computer hardware to commercial offices and tech parks.',
+      cards: [
+        { rating: 5, title: '50-Workstation Office Setup', quote: 'C&G delivered, unboxed, and configured 50 desktops with custom OS imaging over a single weekend.', author: 'Software Firm', role: 'Operations Manager', tag: 'BULK DEPLOYMENT' },
+        { rating: 5, title: 'CAD Workstation Reliability', quote: 'Our architecture team needed high-RAM workstations with Quadro GPUs. C&G delivered exact specs.', author: 'Design & Engineering Studio', role: 'Lead Architect', tag: 'DESIGN STUDIO' },
+        { rating: 5, title: 'Rapid Warranty Replacement', quote: 'When a power surge affected two power supplies, C&G replaced them on-site within 3 hours.', author: 'Financial Services', role: 'IT Lead', tag: 'AMC CUSTOMER' },
+      ],
+    },
+
+    mediaCTA: {
+      badge: 'CORPORATE SUPPLY',
+      title: 'Equip Your Workforce With Reliable Hardware',
+      subtitle: 'Contact C&G hardware specialists for bulk workstation pricing, custom laptop quotes, or SSD upgrade packages.',
+      imageUrl: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&w=1600&q=80',
+      ctaText: 'Get Bulk Hardware Quote',
+      ctaLink: '/get-quote',
+      metrics: [
+        { label: 'Brands', value: 'Dell, HP, Lenovo' },
+        { label: 'Warranty', value: '1 to 3 Years' },
+        { label: 'Imaging', value: 'Pre-Loaded OS' },
+      ],
+    },
+
     faqs: [
       { q: 'Are all computers and laptops supplied by C&G Infotech genuine and warranted?', a: 'Yes. We are authorized corporate channel partners supplying 100% authentic brand-new computers with official manufacturer warranties.' },
       { q: 'Can you pre-install our company software and security rules before delivery?', a: 'Yes. We provide disk imaging services to deliver machines pre-loaded with your licensed OS, corporate software, and domain settings.' },
@@ -445,115 +560,38 @@ export const SERVICES_DATA: ServiceItem[] = [
     ],
   },
 
-  // 6. DIGITAL SOLUTIONS
-  {
-    id: 'digital-solutions',
-    slug: 'digital-solutions',
-    title: 'Digital Solutions',
-    eyebrow: 'Software Built Around Your Business.',
-    heroPill: 'ENTERPRISE DIGITAL & SOFTWARE SOLUTIONS',
-    heroTitle: 'Transforming operational workflows with custom software.',
-    heroAccent: 'custom software.',
-    shortDescription: 'Modern corporate web development, scalable web applications, iOS/Android mobile apps, custom ERP/CRM tools, and bespoke software automation.',
-    fullDescription: 'Transforming operational workflows with high-performance software. From modern responsive company websites to complex SaaS applications, visitor management software, and custom internal management portals.',
-    heroImage: '/images/cards/card-attendance-new.jpg',
-    trustItems: [
-      'Corporate Web Development',
-      'Custom Web Portals',
-      'iOS & Android Mobile Apps',
-      'Visitor & Attendance Tools',
-      'Cloud Hosting & APIs',
-      'Custom ERP Automation',
-    ],
-    whyChooseTitle: 'Why choose our Digital Solutions?',
-    whyChooseSubtitle: 'Clean modern codebases, lightning-fast user interfaces, and full source code ownership.',
-    whyChooseCards: [
-      { title: 'Web Development', desc: 'Responsive corporate websites built using React, Next.js, and modern CSS frameworks.', iconName: 'Globe', highlighted: true },
-      { title: 'Custom Web Portals', desc: 'Internal management tools, customer dashboards, and cloud ERP systems.', iconName: 'Server' },
-      { title: 'Mobile Applications', desc: 'Native and cross-platform mobile apps for iOS and Android devices.', iconName: 'Smartphone' },
-      { title: 'Attendance Software', desc: 'Biometric shift roster tracking, leave approvals, and automated payroll reports.', iconName: 'Clock' },
-      { title: 'Visitor Management', desc: 'Lobby QR registration, badge printing, host approvals, and visitor logs.', iconName: 'UserCheck' },
-      { title: 'API Integration', desc: 'Seamlessly connecting third-party databases, payment gateways, and cloud tools.', iconName: 'Code' },
-    ],
-    featureSplit: {
-      heading: 'Custom software designed for your exact operations.',
-      description: 'We build tailor-made web and mobile software platforms that automate manual paperwork, streamline staff management, and represent your brand with distinction.',
-      bulletPoints: [
-        'Full source code ownership with no lock-in recurring software fees',
-        'Scalable cloud database architecture ready for high user concurrency',
-        'Modern responsive UI design optimized for mobile and desktop screens',
-        'Dedicated maintenance, security updates, and cloud hosting support',
-      ],
-      stat1: { value: '100%', label: 'Custom Codebase' },
-      stat2: { value: '99.9%', label: 'Cloud Uptime' },
-      badge: 'SOFTWARE ENGINEERING',
-      ctaText: 'Discuss Software Project',
-      ctaLink: '/get-quote',
-      image: '/images/cards/card-attendance-new.jpg',
-    },
-    capabilitiesTitle: 'Everything you need for complete Digital Solutions',
-    capabilitiesSubtitle: 'End-to-end engineering from UI wireframing to cloud database deployment.',
-    capabilityCards: [
-      { number: '01', title: 'Websites', tag: 'React & Next.js', desc: 'Fast, secure, SEO-optimized corporate websites and landing pages.', iconName: 'Globe' },
-      { number: '02', title: 'Mobile Apps', tag: 'iOS & Android', desc: 'Cross-platform mobile applications for field teams and customers.', iconName: 'Smartphone' },
-      { number: '03', title: 'Portals', tag: 'Custom ERP & CRM', desc: 'Internal web tools automating inventory, sales, and employee rosters.', iconName: 'Server' },
-      { number: '04', title: 'APIs & Cloud', tag: 'AWS & Database', desc: 'High-speed cloud backend setup with secure database schemas.', iconName: 'Code' },
-    ],
-    mediaFeature: {
-      title: '" Custom Digital Solutions Elevating Commercial Operational Efficiency "',
-      subtitle: 'Watch how our software engineers design wireframes, code backend APIs, and deploy cloud portals.',
-      badge: 'SOFTWARE SHOWCASE',
-      imageUrl: '/images/cards/card-attendance-new.jpg',
-    },
-    industryCards: [
-      { title: 'Corporate Offices', subtitle: 'Internal Software', desc: 'Employee portals, digital visitor logs, and intranet databases.', iconName: 'Building2' },
-      { title: 'Retail & Outlets', subtitle: 'E-commerce & POS', desc: 'Custom POS software, online store fronts, and inventory sync.', iconName: 'ShoppingBag' },
-      { title: 'Healthcare Facilities', subtitle: 'Patient Portals', desc: 'Appointment booking web portals and digital doctor schedules.', iconName: 'Hospital' },
-      { title: 'Educational Institutions', subtitle: 'Student Systems', desc: 'Student attendance tracking portals and fee payment gateways.', iconName: 'School' },
-      { title: 'Logistics Companies', subtitle: 'Tracking Systems', desc: 'Driver dispatch mobile apps and real-time cargo status portals.', iconName: 'Factory' },
-      { title: 'Commercial Real Estate', subtitle: 'Tenant Portals', desc: 'Visitor QR pass generation and maintenance request tracking.', iconName: 'Shield' },
-    ],
-    faqs: [
-      { q: 'Do you build completely custom software or use pre-made templates?', a: 'We build custom software tailored precisely to your operational requirements using clean frameworks like React, Node.js, and Python.' },
-      { q: 'Will our business own the source code for the custom software developed?', a: 'Yes. Upon project completion and handoff, full intellectual property and source code ownership belong to your company.' },
-      { q: 'Can custom software be integrated with our existing biometric attendance hardware?', a: 'Yes. We write custom API bridge connectors to sync local biometric hardware databases with cloud web portals.' },
-      { q: 'Do you provide cloud hosting and maintenance after launch?', a: 'Yes. We provide complete cloud server setup on AWS or DigitalOcean with continuous backup monitoring and security maintenance.' },
-      { q: 'How long does it take to develop a custom corporate web application?', a: 'Timelines vary based on scope. Typical corporate web projects range from 3 to 8 weeks from wireframing to live deployment.' },
-    ],
-  },
-
-  // 7. ATTENDANCE SOFTWARE
+  // 6. ATTENDANCE SOFTWARE
   {
     id: 'attendance-software',
     slug: 'attendance-software',
     title: 'Attendance Software',
     eyebrow: 'Biometrics & Shift Roster Automation.',
-    heroPill: 'BIOMETRIC & ATTENDANCE SOFTWARE',
-    heroTitle: 'Automate employee attendance and payroll rosters.',
-    heroAccent: 'payroll rosters.',
+    heroPill: 'BIOMETRIC ATTENDANCE SOFTWARE',
+    heroTitle: 'Automate Staff Attendance & Payroll Rosters',
+    heroAccent: 'Payroll Rosters',
     shortDescription: 'Biometric fingerprint & facial recognition software, multi-shift roster management, overtime tracking, leave management, and automated payroll reports.',
     fullDescription: 'Comprehensive employee attendance and shift management software engineered to link seamlessly with biometric hardware. Automate daily attendance calculations, overtime hours, leave requests, and monthly payroll summaries.',
-    heroImage: '/images/cards/card-attendance-new.jpg',
-    trustItems: [
-      'Biometric Fingerprint Sync',
-      'Facial Recognition Sync',
-      'Multi-Shift Roster Engine',
-      'Leave Approval Portal',
-      'Overtime & Late Calculations',
-      'Automated Payroll Exports',
-    ],
-    whyChooseTitle: 'Why choose our Attendance Software?',
-    whyChooseSubtitle: 'Eliminate manual register errors, buddy punching, and tedious month-end payroll calculation hours.',
-    whyChooseCards: [
-      { title: 'Biometric Hardware Sync', desc: 'Real-time automatic log syncing from fingerprint, palm, and face recognition punch devices.', iconName: 'Clock', highlighted: true },
-      { title: 'Shift Roster Engine', desc: 'Supports complex rotational shifts, night shifts, and flexible grace-period rules.', iconName: 'Activity' },
-      { title: 'Leave Management', desc: 'Self-service employee portal for requesting leaves with manager approval workflows.', iconName: 'UserCheck' },
-      { title: 'Overtime & Grace Period', desc: 'Automatic calculation of overtime hours, late mark deductions, and half-day rules.', iconName: 'Zap' },
-      { title: 'Mobile Punching & GPS', desc: 'Geofenced mobile attendance marking for remote and field sales staff.', iconName: 'Smartphone' },
-      { title: 'Payroll Ready Reports', desc: 'Export monthly attendance summaries directly to Excel, Tally, or HRMS systems.', iconName: 'Server' },
-    ],
+    heroImage: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1600&q=80',
+
+    techOverview: {
+      sectionTitle: 'Biometric & Software Features',
+      sectionSubtitle: 'Hardware sync drivers, multi-shift engine, and automated payroll export.',
+      leftTitle: 'Explore Our Technology',
+      techItems: [
+        { iconName: 'Clock', title: 'Biometric Hardware Sync', desc: 'Real-time punch sync from fingerprint, palm, and facial recognition terminals.' },
+        { iconName: 'Activity', title: 'Shift Roster Engine', desc: 'Automated roster calculations supporting day, night, and rotational shifts.' },
+        { iconName: 'UserCheck', title: 'Leave Portal', desc: 'Self-service employee web portal for requesting leaves and viewing punch logs.' },
+        { iconName: 'Zap', title: 'Overtime & Grace Rules', desc: 'Automatic tracking of late marks, early exits, overtime hours, and half days.' },
+      ],
+      rightTitle: 'Latest Solutions',
+      solutions: [
+        { tag: 'BIOMETRIC SYNC', title: 'Multi-Location Cloud Sync', desc: 'Centralized cloud dashboard syncing attendance punches from branch offices nationwide.', imageUrl: '/images/cards/card-attendance-new.jpg', linkText: 'Explore Cloud Sync' },
+        { tag: 'PAYROLL READY', title: '1-Click Payroll Reports', desc: 'Export monthly attendance summaries directly to Excel, Tally, or custom HRMS.', imageUrl: 'public/catalog/07_biometrics_spread.jpg', linkText: 'View Sample Report' },
+      ],
+    },
+
     featureSplit: {
-      heading: 'Seamless biometric integration for exact payroll.',
+      heading: 'Seamless Biometric Integration for Exact Payroll.',
       description: 'Our attendance software bridges local biometric hardware punches directly into a centralized cloud database, generating instant attendance summaries with zero manual intervention.',
       bulletPoints: [
         'Real-time punch notifications sent straight to HR dashboards',
@@ -566,30 +604,45 @@ export const SERVICES_DATA: ServiceItem[] = [
       badge: 'ATTENDANCE SYSTEM',
       ctaText: 'Get Software Demo',
       ctaLink: '/get-quote',
-      image: '/images/cards/card-attendance-new.jpg',
+      image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=80',
     },
-    capabilitiesTitle: 'Everything you need for complete Attendance Software',
-    capabilitiesSubtitle: 'Hardware connectors, roster engines, employee self-service portals, and analytics.',
-    capabilityCards: [
-      { number: '01', title: 'Hardware Sync', tag: 'Finger & Face DB', desc: 'Direct network driver syncing punches from ZK, Realtime, and Hikvision devices.', iconName: 'Clock' },
-      { number: '02', title: 'Roster Engine', tag: 'Multi-Shift Rules', desc: 'Automated shift matching for day, night, and rotational workforce schedules.', iconName: 'Activity' },
-      { number: '03', title: 'Employee Portal', tag: 'Leave & Attendance', desc: 'Web and mobile portal for staff to view attendance logs and apply for leave.', iconName: 'UserCheck' },
-      { number: '04', title: 'Payroll Exports', tag: 'Excel & Tally Ready', desc: 'Generate itemized monthly attendance reports ready for salary processing.', iconName: 'Server' },
-    ],
-    mediaFeature: {
-      title: '" Automated Employee Attendance Management Engineered for Precision "',
-      subtitle: 'See how our attendance software captures biometric punches, processes shift rules, and generates instant reports.',
-      badge: 'ATTENDANCE SHOWCASE',
-      imageUrl: '/images/cards/card-attendance-new.jpg',
+
+    benefitsDark: {
+      badge: 'SOFTWARE ADVANTAGE',
+      heading: 'Eliminate Manual Register Errors & Buddy Punching',
+      subtitle: 'Direct hardware connection, automated shift rules, and hassle-free month-end payroll exports.',
+      benefits: [
+        { iconName: 'Clock', title: 'Direct Terminal Sync', desc: 'Supports ZK Teco, Realtime, Essl, and Hikvision biometric hardware devices out of the box.', linkText: 'View Supported Devices' },
+        { iconName: 'Activity', title: 'Rotational Shift Engine', desc: 'Handles overnight cross-midnight shifts, break deductions, and flexible grace windows automatically.', linkText: 'Explore Roster' },
+        { iconName: 'Server', title: 'Instant Payroll Export', desc: 'Generates itemized monthly attendance reports compatible with Tally and Excel in one click.', linkText: 'View Formats' },
+      ],
     },
-    industryCards: [
-      { title: 'Corporate Offices', subtitle: 'Staff Attendance', desc: 'Biometric face punch machines linked to central HR web dashboards.', iconName: 'Building2' },
-      { title: 'Manufacturing Plants', subtitle: 'Factory Shifts', desc: 'Multi-shift rotational roster tracking for high-volume worker fleets.', iconName: 'Factory' },
-      { title: 'Educational Campuses', subtitle: 'Staff & Faculty', desc: 'Tracking professor lecture schedules, department leaves, and registers.', iconName: 'School' },
-      { title: 'Hospitals', subtitle: 'Nursing Shifts', desc: '24/7 rotating shift roster management for medical staff and technicians.', iconName: 'Hospital' },
-      { title: 'Retail Outlets', subtitle: 'Store Employees', desc: 'Mobile GPS attendance for store managers across multiple city branches.', iconName: 'ShoppingBag' },
-      { title: 'Construction Sites', subtitle: 'Field Workers', desc: 'Portable rugged biometric punch devices with mobile SIM data upload.', iconName: 'Shield' },
-    ],
+
+    proof: {
+      badge: 'HR PROOF',
+      heading: 'Why Organizations Choose C&G',
+      subtitle: 'Streamlining workforce management and month-end payroll processing.',
+      cards: [
+        { rating: 5, title: 'Saved 20 Hours Monthly', quote: 'Our HR team used to spend 3 full days manually calculating attendance. Now payroll exports take 5 minutes.', author: 'Manufacturing Unit', role: 'HR Manager', tag: 'WORKFORCE MANAGEMENT' },
+        { rating: 5, title: 'Multi-Branch Centralization', quote: 'We sync biometric punches across 8 branch offices into one cloud dashboard seamlessly.', author: 'Retail Chain Partner', role: 'Operations Head', tag: 'MULTI-BRANCH' },
+        { rating: 5, title: 'Zero Buddy Punching', quote: 'Facial recognition terminals integrated with C&G software eliminated proxy attendance completely.', author: 'Educational Campus', role: 'Admin Officer', tag: 'CAMPUS ATTENDANCE' },
+      ],
+    },
+
+    mediaCTA: {
+      badge: 'ATTENDANCE AUTOMATION',
+      title: 'Upgrade Your Attendance & Payroll System',
+      subtitle: 'Request a live software demonstration to see how biometric sync and automated roster rules simplify your HR workflow.',
+      imageUrl: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1600&q=80',
+      ctaText: 'Request Live Demo',
+      ctaLink: '/get-quote',
+      metrics: [
+        { label: 'Punches', value: 'Real-Time Sync' },
+        { label: 'Export', value: '1-Click Tally' },
+        { label: 'Support', value: 'Multi-Branch' },
+      ],
+    },
+
     faqs: [
       { q: 'Can the attendance software connect to our existing biometric devices?', a: 'Yes. Our software supports direct network database sync with leading biometric brands including ZK Teco, Realtime, Essl, and Hikvision.' },
       { q: 'Does the software support complex rotational and night shifts?', a: 'Yes. The roster engine allows custom shift windows, overnight cross-midnight calculations, and flexible break deductions.' },
@@ -599,38 +652,38 @@ export const SERVICES_DATA: ServiceItem[] = [
     ],
   },
 
-  // 8. VISITOR MANAGEMENT SOFTWARE
+  // 7. VISITOR MANAGEMENT SOFTWARE
   {
     id: 'visitor-management',
     slug: 'visitor-management',
     title: 'Visitor Management Software',
     eyebrow: 'Lobby Security & Digital Check-In.',
     heroPill: 'DIGITAL VISITOR MANAGEMENT',
-    heroTitle: 'Streamline lobby check-ins with digital visitor passes.',
-    heroAccent: 'digital visitor passes.',
+    heroTitle: 'Streamline Lobby Check-Ins With Digital Passes',
+    heroAccent: 'Digital Passes',
     shortDescription: 'Touchless QR check-in, host SMS/WhatsApp approvals, digital badge printing, visitor photo capture, and comprehensive lobby security audit logs.',
     fullDescription: 'Modernize your building lobby security with digital visitor registration. Replace paper guest books with sleek tablet check-in, instant host notifications, QR code visitor passes, and searchable digital security logs.',
-    heroImage: '/images/cards/card-visitor-new.jpg',
-    trustItems: [
-      'Tablet Self Check-In',
-      'Instant Host Notifications',
-      'Digital Badge Printing',
-      'QR Code Pre-Registration',
-      'Photo & ID Capture',
-      'Lobby Security Logs',
-    ],
-    whyChooseTitle: 'Why choose our Visitor Management Software?',
-    whyChooseSubtitle: 'Replace slow paper logbooks with instant, professional tablet check-in and automated host approvals.',
-    whyChooseCards: [
-      { title: 'Tablet Self Check-In', desc: 'Sleek iPad or Android kiosk interface for guests to input contact details, company, and host name.', iconName: 'UserCheck', highlighted: true },
-      { title: 'Instant Host Alerts', desc: 'Automated SMS, WhatsApp, or email notifications sent to the host employee upon visitor arrival.', iconName: 'Zap' },
-      { title: 'QR Pre-Registration', desc: 'Hosts can email pre-approved QR codes to visitors for 5-second express lobby entry.', iconName: 'Code' },
-      { title: 'Badge Printing', desc: 'Automatic printing of customized visitor badges with guest photo, name, and host details.', iconName: 'Server' },
-      { title: 'Emergency Evacuation Log', desc: 'Instant 1-click roster of all active visitors currently inside the building during emergencies.', iconName: 'Shield' },
-      { title: 'Security Audit Logs', desc: 'Searchable web dashboard showing complete visitor history, entry times, and checkout times.', iconName: 'Monitor' },
-    ],
+    heroImage: 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1600&q=80',
+
+    techOverview: {
+      sectionTitle: 'Lobby Security Features',
+      sectionSubtitle: 'Tablet self check-in, instant host alerts, and digital badge printing.',
+      leftTitle: 'Explore Our Technology',
+      techItems: [
+        { iconName: 'UserCheck', title: 'Tablet Self Check-In', desc: 'Sleek touchscreen kiosk interface for visitors to input contact details and host.' },
+        { iconName: 'Zap', title: 'Instant Host Alerts', desc: 'Automated SMS, WhatsApp, or email notifications sent to employee when guest arrives.' },
+        { iconName: 'Code', title: 'QR Pre-Registration', desc: 'Hosts email pre-approved QR codes for 5-second express lobby entry.' },
+        { iconName: 'Shield', title: 'Security Audit Logs', desc: 'Searchable cloud dashboard tracking active guests, check-outs, and emergency logs.' },
+      ],
+      rightTitle: 'Latest Solutions',
+      solutions: [
+        { tag: 'BADGE PRINTING', title: 'Instant Visitor Pass Print', desc: 'Compact thermal printer outputting guest passes with photo, name, and QR pass.', imageUrl: '/images/cards/card-visitor-new.jpg', linkText: 'Explore Kiosks' },
+        { tag: 'EMERGENCY ROSTER', title: '1-Click Evacuation Log', desc: 'Instant live roster showing all visitors currently inside the facility during emergencies.', imageUrl: 'public/catalog/08_pos_spread.jpg', linkText: 'View Dashboard' },
+      ],
+    },
+
     featureSplit: {
-      heading: 'Modern lobby security for corporate buildings.',
+      heading: 'Modern Lobby Security For Corporate Buildings.',
       description: 'Create a flawless first impression while strengthening premises security. Our visitor management system verifies guest identities, notifies hosts instantly, and maintains digital logs.',
       bulletPoints: [
         'Instant host notifications via WhatsApp, SMS, or Teams when guests arrive',
@@ -643,30 +696,45 @@ export const SERVICES_DATA: ServiceItem[] = [
       badge: 'VISITOR SECURITY',
       ctaText: 'Request Lobby Software Demo',
       ctaLink: '/get-quote',
-      image: '/images/cards/card-visitor-new.jpg',
+      image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=80',
     },
-    capabilitiesTitle: 'Everything you need for complete Visitor Management',
-    capabilitiesSubtitle: 'Tablet kiosks, host notification gateways, badge printers, and security logs.',
-    capabilityCards: [
-      { number: '01', title: 'Tablet Kiosk', tag: 'Self-Service Check-In', desc: 'Touchscreen kiosk software capturing guest name, phone, photo, and purpose.', iconName: 'UserCheck' },
-      { number: '02', title: 'Host Alerts', tag: 'SMS & WhatsApp', desc: 'Automated alerts sent straight to employee phones when their guest arrives.', iconName: 'Zap' },
-      { number: '03', title: 'Badge Printer', tag: 'Instant Badge Print', desc: 'Compact thermal printer outputting guest passes with QR codes.', iconName: 'Server' },
-      { number: '04', title: 'Security Log', tag: 'Cloud Audit Trail', desc: 'Searchable cloud dashboard tracking active guests, check-outs, and blacklists.', iconName: 'Shield' },
-    ],
-    mediaFeature: {
-      title: '" Smart Lobby Visitor Registration Enhancing Corporate Building Security "',
-      subtitle: 'See how digital visitor management elevates reception workflows, host notifications, and lobby check-ins.',
-      badge: 'VISITOR SOFTWARE SHOWCASE',
-      imageUrl: '/images/cards/card-visitor-new.jpg',
+
+    benefitsDark: {
+      badge: 'LOBBY SYSTEM',
+      heading: 'Elevate Reception Workflow & Building Defense',
+      subtitle: 'Replace slow paper logbooks with instant, professional tablet check-in and automated host approvals.',
+      benefits: [
+        { iconName: 'UserCheck', title: 'Touchless iPad Kiosk', desc: 'Sleek self-service kiosk capturing guest details, photo, and host employee name.', linkText: 'Explore Kiosk UI' },
+        { iconName: 'Zap', title: 'Instant Host WhatsApp Alerts', desc: 'Host employees receive an instant phone ping with visitor photo as soon as they register.', linkText: 'View Alerts' },
+        { iconName: 'Shield', title: 'Compliant Security Logs', desc: 'Searchable web dashboard maintaining digital entry logs and automatic privacy data purges.', linkText: 'View Security' },
+      ],
     },
-    industryCards: [
-      { title: 'Corporate Headquarters', subtitle: 'Lobby Receptions', desc: 'Sleek iPad check-in kiosks with instant host notifications.', iconName: 'Building2' },
-      { title: 'Tech Parks & Towers', subtitle: 'Multi-Tenant Lobby', desc: 'Central lobby registration dispatching guests to tenant floors.', iconName: 'Shield' },
-      { title: 'Manufacturing Plants', subtitle: 'Factory Gates', desc: 'Contractor safety induction tracking and visitor badge printing.', iconName: 'Factory' },
-      { title: 'Healthcare Facilities', subtitle: 'Hospital Entry', desc: 'Visitor pass limits per patient and digital check-in logs.', iconName: 'Hospital' },
-      { title: 'Educational Institutions', subtitle: 'Campus Security', desc: 'Parent and vendor registration with gate pass verification.', iconName: 'School' },
-      { title: 'Co-Working Spaces', subtitle: 'Shared Offices', desc: 'Member guest check-in linked to co-working management portals.', iconName: 'Laptop' },
-    ],
+
+    proof: {
+      badge: 'LOBBY PROOF',
+      heading: 'Why Organizations Choose C&G',
+      subtitle: 'Replacing paper logbooks with digital visitor management systems.',
+      cards: [
+        { rating: 5, title: 'Flawless First Impression', quote: 'Our corporate lobby transformed from cluttered paper logs to sleek iPad kiosks. Guests love the express entry.', author: 'Tech Park Receptionist', role: 'Head of Hospitality', tag: 'CORPORATE LOBBY' },
+        { rating: 5, title: 'Instant Host Alerts', quote: 'Employees know instantly when their meeting guests arrive without reception making phone calls.', author: 'Consulting Group', role: 'Office Manager', tag: 'CONSULTING HQ' },
+        { rating: 5, title: 'Instant Emergency Roster', quote: 'During a fire drill, the 1-click active visitor log allowed safety marshals to account for every guest.', author: 'Commercial Complex', role: 'Safety Director', tag: 'SAFETY AUDIT' },
+      ],
+    },
+
+    mediaCTA: {
+      badge: 'LOBBY AUTOMATION',
+      title: 'Modernize Your Reception Lobby Today',
+      subtitle: 'Schedule a live demonstration of our Visitor Management Software and see tablet check-in and badge printing in action.',
+      imageUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80',
+      ctaText: 'Request Lobby Software Demo',
+      ctaLink: '/get-quote',
+      metrics: [
+        { label: 'Check-In', value: '< 15 Seconds' },
+        { label: 'Alerts', value: 'WhatsApp & SMS' },
+        { label: 'Badges', value: 'Instant Thermal' },
+      ],
+    },
+
     faqs: [
       { q: 'How does the host get notified when a visitor arrives at the lobby?', a: 'When a visitor enters host details on the tablet kiosk, the system instantly sends an automated SMS, WhatsApp message, or email to the employee.' },
       { q: 'Can hosts pre-register expected visitors in advance?', a: 'Yes. Employees can enter expected guest details in advance. The visitor receives an email with a QR code for instant scan-and-enter entry.' },
@@ -676,38 +744,38 @@ export const SERVICES_DATA: ServiceItem[] = [
     ],
   },
 
-  // 9. REFURBISHED LAPTOPS
+  // 8. REFURBISHED LAPTOPS
   {
     id: 'refurbished-laptops',
     slug: 'refurbished-laptops',
     title: 'Refurbished Laptops',
     eyebrow: 'Certified Grade-A Commercial Laptops.',
-    heroPill: 'CERTIFIED REFURBISHED HARDWARE',
-    heroTitle: 'Premium commercial laptops at budget pricing.',
-    heroAccent: 'budget pricing.',
+    heroPill: 'CERTIFIED REFURBISHED LAPTOPS',
+    heroTitle: 'Premium Commercial Laptops At Budget Pricing',
+    heroAccent: 'Budget Pricing',
     shortDescription: 'Grade-A business laptops from Dell, HP, Lenovo, and Apple. 50+ point quality tested, fitted with high-speed SSDs, licensed OS, and local warranty coverage.',
     fullDescription: 'High-performance commercial laptops tested and certified for enterprise productivity. We supply Grade-A refurbished business laptops equipped with Intel Core processors, SSD storage, genuine Windows OS, and comprehensive warranty support.',
-    heroImage: '/images/cards/card-computers-new.jpg',
-    trustItems: [
-      'Grade-A Commercial Condition',
-      '50+ Point Quality Inspection',
-      'High-Speed NVMe SSDs',
-      'Licensed Windows OS',
-      'Clean Battery Health Certified',
-      '6 to 12 Month Warranty',
-    ],
-    whyChooseTitle: 'Why choose our Refurbished Laptops?',
-    whyChooseSubtitle: 'Get commercial-grade ThinkPad, Latitude, and EliteBook durability at 50% to 60% lower cost than new consumer laptops.',
-    whyChooseCards: [
-      { title: 'Grade-A Commercial Build', desc: 'Durable magnesium/aluminum alloy business series laptops built to outlast cheap retail plastic laptops.', iconName: 'Laptop', highlighted: true },
-      { title: '50+ Point Testing', desc: 'Every laptop undergoes rigorous diagnostics for screen pixels, keyboard, ports, RAM, and thermals.', iconName: 'CheckCircle' },
-      { title: 'NVMe SSD Installed', desc: 'Pre-fitted with brand-new high-speed SSDs ensuring fast boot times and rapid application loading.', iconName: 'Zap' },
-      { title: 'Licensed Windows OS', desc: 'Delivered pre-installed with genuine licensed Windows 10/11 Pro and updated drivers.', iconName: 'Server' },
-      { title: 'Tested Battery Health', desc: 'Guaranteed healthy battery backup performance tested under continuous video playback loads.', iconName: 'Activity' },
-      { title: 'Warranty Coverage', desc: 'Backed by C&G Infotech local warranty support with immediate part replacement coverage.', iconName: 'Shield' },
-    ],
+    heroImage: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=1600&q=80',
+
+    techOverview: {
+      sectionTitle: 'Refurbished Quality Architecture',
+      sectionSubtitle: 'Grade-A aluminum/magnesium commercial bodies, 50-point diagnostics, and SSD boosts.',
+      leftTitle: 'Explore Our Technology',
+      techItems: [
+        { iconName: 'Laptop', title: 'Grade-A Commercial Series', desc: 'ThinkPad, Latitude, and EliteBook ultrabooks built for heavy office durability.' },
+        { iconName: 'CheckCircle', title: '50-Point Quality Inspection', desc: 'Thorough testing of display pixels, motherboard, keyboard, ports, and thermals.' },
+        { iconName: 'Zap', title: 'New NVMe SSD Installed', desc: 'Pre-fitted with brand-new SSDs ensuring fast boot times and software execution.' },
+        { iconName: 'Shield', title: '6-12 Months Warranty', desc: 'Backed by C&G Infotech local warranty support and component replacement.' },
+      ],
+      rightTitle: 'Latest Solutions',
+      solutions: [
+        { tag: 'BULK LAPTOPS', title: 'Call Center & Startup Fleets', desc: 'Cost-effective laptop fleets for coding bootcamps, BPOs, and startup teams.', imageUrl: 'public/catalog/02_laptops_spread.jpg', linkText: 'Explore Stock' },
+        { tag: 'COMMERCIAL GRADE', title: 'Core i5 & i7 Business Laptops', desc: 'Intel Core i5/i7 ultrabooks with 16GB RAM, licensed Windows 11 Pro, and clean batteries.', imageUrl: '/images/cards/card-computers-new.jpg', linkText: 'View Laptop Specs' },
+      ],
+    },
+
     featureSplit: {
-      heading: 'Enterprise performance at a fraction of the cost.',
+      heading: 'Enterprise Laptop Performance At 50% Lower Cost.',
       description: 'Equip your workforce with top-tier commercial laptops (Dell Latitude, HP EliteBook, Lenovo ThinkPad) backed by thorough testing and genuine warranty.',
       bulletPoints: [
         'Save 50% to 60% compared to new commercial laptop retail prices',
@@ -720,30 +788,45 @@ export const SERVICES_DATA: ServiceItem[] = [
       badge: 'CERTIFIED LAPTOPS',
       ctaText: 'Get Laptop Pricing List',
       ctaLink: '/get-quote',
-      image: '/images/cards/card-computers-new.jpg',
+      image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=1200&q=80',
     },
-    capabilitiesTitle: 'Everything you need for Refurbished Laptop Fleet',
-    capabilitiesSubtitle: 'Fully tested hardware, custom RAM/SSD specs, warranty, and bulk delivery.',
-    capabilityCards: [
-      { number: '01', title: 'Grade-A Stocks', tag: 'Dell, HP, Lenovo', desc: 'Commercial series ultrabooks thoroughly cleaned and cosmetically audited.', iconName: 'Laptop' },
-      { number: '02', title: 'SSD & RAM', tag: 'Custom Spec Loads', desc: 'Configured with 8GB/16GB RAM and 256GB/512GB high-speed SSD storage.', iconName: 'Zap' },
-      { number: '03', title: 'OS & Software', tag: 'Windows 11 Pro', desc: 'Pre-loaded with official Windows OS, Chrome, office tools, and antivirus.', iconName: 'Server' },
-      { number: '04', title: 'Warranty', tag: '6-12 Months Coverage', desc: 'Local hardware warranty covering motherboard, RAM, storage, and display.', iconName: 'Shield' },
-    ],
-    mediaFeature: {
-      title: '" Certified Commercial Refurbished Laptops Tested for Enterprise Reliability "',
-      subtitle: 'Watch how our hardware team inspects laptop motherboards, tests thermal fans, upgrades SSDs, and certifies Grade-A quality.',
-      badge: 'REFURBISHED SHOWCASE',
-      imageUrl: '/images/cards/card-computers-new.jpg',
+
+    benefitsDark: {
+      badge: 'CERTIFIED QUALITY',
+      heading: 'Commercial Durability Built To Outlast Retail PCs',
+      subtitle: 'Get commercial-grade ThinkPad, Latitude, and EliteBook durability at 50% lower cost.',
+      benefits: [
+        { iconName: 'Laptop', title: 'Grade-A Condition', desc: 'Cosmetically pristine laptops with zero screen blemishes and 100% functional keyboards and ports.', linkText: 'Learn Specs' },
+        { iconName: 'Zap', title: 'Brand-New SSD Boost', desc: 'Every laptop is retrofitted with brand-new high-speed NVMe storage for instant boot speed.', linkText: 'View SSD Info' },
+        { iconName: 'Shield', title: 'C&G Local Warranty', desc: 'Covered by 6 to 12 months local warranty with immediate part or unit replacement dispatch.', linkText: 'View Warranty' },
+      ],
     },
-    industryCards: [
-      { title: 'Startups & Offices', subtitle: 'Employee Laptops', desc: 'Equipping new employees with fast Core i5/i7 commercial laptops on a budget.', iconName: 'Building2' },
-      { title: 'BPOs & Call Centers', subtitle: 'High-Density Fleets', desc: 'Bulk procurement of durable laptops for 24/7 rotational agent work.', iconName: 'Shield' },
-      { title: 'Training Institutes', subtitle: 'Student Labs', desc: 'Cost-effective laptop fleets for coding, accounting, and computer labs.', iconName: 'School' },
-      { title: 'Software Developers', subtitle: 'Development PCs', desc: 'High-RAM Core i7 laptops tailored for compilation and virtual machines.', iconName: 'Laptop' },
-      { title: 'Field Engineers', subtitle: 'On-Site Diagnostic', desc: 'Rugged commercial laptops for site inspections and hardware testing.', iconName: 'Factory' },
-      { title: 'Retail Outlets', subtitle: 'Store Management', desc: 'Reliable laptops for inventory entry, billing, and supplier communication.', iconName: 'ShoppingBag' },
-    ],
+
+    proof: {
+      badge: 'SAVINGS PROOF',
+      heading: 'Why Organizations Choose C&G',
+      subtitle: 'Saving enterprise clients money while delivering fast, reliable commercial laptops.',
+      cards: [
+        { rating: 5, title: 'Saved $15,000 On Fleet', quote: 'We equipped 30 new software developers with Grade-A ThinkPads. Performance is indistinguishable from brand new laptops.', author: 'SaaS Startup Founder', role: 'CEO', tag: 'STARTUP FLEET' },
+        { rating: 5, title: 'Durable BPO Laptops', quote: 'Our call center runs 24/7. These commercial Latitude laptops outlasted cheap retail plastic laptops easily.', author: 'BPO Operations', role: 'Facilities Lead', tag: '24/7 WORKFORCE' },
+        { rating: 5, title: 'Instant Warranty Service', quote: 'When a keyboard key acted up, C&G replaced the module on-site the very next morning.', author: 'Training Institute', role: 'Lab Director', tag: 'WARRANTY TEST' },
+      ],
+    },
+
+    mediaCTA: {
+      badge: 'REFURBISHED FLEET',
+      title: 'Get Premium Commercial Laptops For Less',
+      subtitle: 'Download our current Grade-A laptop inventory list featuring Intel Core i5/i7 ThinkPad, Latitude, and EliteBook laptops with local warranty.',
+      imageUrl: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1600&q=80',
+      ctaText: 'Get Laptop Pricing List',
+      ctaLink: '/get-quote',
+      metrics: [
+        { label: 'Savings', value: '50% to 60%' },
+        { label: 'Testing', value: '50-Point Audit' },
+        { label: 'Warranty', value: '6-12 Months' },
+      ],
+    },
+
     faqs: [
       { q: 'What does "Grade-A Refurbished" mean for your laptops?', a: 'Grade-A indicates laptops in excellent cosmetic condition with zero screen blemishes, 100% functional ports/keys, and tested hardware components.' },
       { q: 'What warranty is provided with refurbished laptops from C&G Infotech?', a: 'All our certified refurbished laptops include 6 to 12 months of local warranty covering hardware components and service support.' },
@@ -753,39 +836,39 @@ export const SERVICES_DATA: ServiceItem[] = [
     ],
   },
 
-  // 10. HARDWARE & SUPPLY
+  // 9. HARDWARE & SUPPLY
   {
     id: 'hardware-supply',
     slug: 'hardware-supply',
     title: 'Hardware & Hardware Supply',
     eyebrow: 'Authorized Commercial IT Hardware Distribution.',
-    heroPill: 'COMMERCIAL HARDWARE PROCUREMENT',
-    heroTitle: 'Genuine IT hardware supply for enterprise needs.',
-    heroAccent: 'enterprise needs.',
+    heroPill: 'COMMERCIAL HARDWARE SUPPLY',
+    heroTitle: 'Genuine Enterprise IT Hardware Supply',
+    heroAccent: 'IT Hardware Supply',
     shortDescription: 'Single-source procurement for server hardware, network switches, routers, CCTV equipment, biometric terminals, workstations, displays, and UPS systems.',
     fullDescription: 'Authorized corporate supply partner delivering authentic commercial IT hardware. From server processors and network switches to biometric terminals, displays, and UPS power units, we supply top global brands with full manufacturer warranty.',
-    heroImage: '/images/cards/card-computers-new.jpg',
-    trustItems: [
-      'Direct Brand Distribution',
-      'Commercial Workstations',
-      'Gigabit PoE Switches',
-      'Surveillance Hardware',
-      'Online UPS Power Units',
-      'Official Manufacturer Warranty',
-    ],
-    whyChooseTitle: 'Why choose our Hardware & Hardware Supply?',
-    whyChooseSubtitle: 'Authentic corporate hardware, transparent pricing, and complete post-delivery configuration support.',
-    whyChooseCards: [
-      { title: '100% Genuine Channels', desc: 'Direct corporate distribution sourcing authentic equipment with valid manufacturer serial numbers.', iconName: 'Shield', highlighted: true },
-      { title: 'Server & Compute Parts', desc: 'Processors, SAS hard drives, ECC RAM modules, and RAID controllers for server upgrades.', iconName: 'Server' },
-      { title: 'Networking Devices', desc: 'Managed switches, routers, fiber transceivers, patch cords, and access points.', iconName: 'Network' },
-      { title: 'Surveillance Equipment', desc: 'IP cameras, NVRs, PoE injectors, camera power boxes, and specialized surveillance hard drives.', iconName: 'Camera' },
-      { title: 'Power & UPS Systems', desc: 'Commercial online UPS units, battery banks, rack PDUs, and surge suppressors.', iconName: 'Zap' },
-      { title: 'Desktops & Peripherals', desc: 'Monitors, keyboards, mice, barcode scanners, thermal printers, and accessories.', iconName: 'Laptop' },
-    ],
+    heroImage: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1600&q=80',
+
+    techOverview: {
+      sectionTitle: 'Hardware Supply Categories',
+      sectionSubtitle: 'Direct corporate distribution sourcing authentic equipment with valid serial numbers.',
+      leftTitle: 'Explore Our Technology',
+      techItems: [
+        { iconName: 'Server', title: 'Server & Compute Parts', desc: 'Processors, SAS hard drives, ECC RAM modules, and RAID controllers.' },
+        { iconName: 'Network', title: 'Networking Devices', desc: 'Managed switches, routers, fiber transceivers, patch cords, and access points.' },
+        { iconName: 'Camera', title: 'Surveillance Hardware', desc: 'IP cameras, NVRs, PoE injectors, power boxes, and surveillance hard drives.' },
+        { iconName: 'Zap', title: 'Power & UPS Systems', desc: 'Commercial online UPS units, battery banks, rack PDUs, and surge suppressors.' },
+      ],
+      rightTitle: 'Latest Solutions',
+      solutions: [
+        { tag: 'DIRECT DISTRIBUTION', title: 'Brand-Authorized Supply', desc: 'Direct corporate channels for Dell, HP, Cisco, Hikvision, Dahua, ZK Teco, and APC.', imageUrl: 'public/catalog/03_printers_spread.jpg', linkText: 'Explore Brands' },
+        { tag: 'PRE-CONFIGURATION', title: 'Pre-Delivery Flash & Config', desc: 'Pre-delivery firmware updates, IP assignment, and RAID setup before desk delivery.', imageUrl: 'public/catalog/06_storage_hero.jpg', linkText: 'View Services' },
+      ],
+    },
+
     featureSplit: {
-      heading: 'Single-source supply for all IT hardware needs.',
-      description: 'Streamline corporate procurement. We supply, deliver, assemble, and configure authentic hardware components from global brands including Dell, HP, Cisco, Hikvision, Dahua, ZK Teco, and APC.',
+      heading: 'Single-Source Supply For All IT Hardware Needs.',
+      description: 'Streamline corporate procurement. We supply, deliver, assemble, and configure authentic hardware components from global brands with full local warranty.',
       bulletPoints: [
         'Transparent corporate quotes with competitive bulk volume discounts',
         'Official manufacturer warranty handling and local service support',
@@ -797,36 +880,143 @@ export const SERVICES_DATA: ServiceItem[] = [
       badge: 'HARDWARE SUPPLY',
       ctaText: 'Request Hardware Pricing',
       ctaLink: '/get-quote',
-      image: '/images/cards/card-computers-new.jpg',
+      image: 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=80',
     },
-    capabilitiesTitle: 'Everything you need for complete Hardware Procurement',
-    capabilitiesSubtitle: 'Servers, networking, CCTV, power backups, and peripherals under one roof.',
-    capabilityCards: [
-      { number: '01', title: 'Compute', tag: 'Servers & PCs', desc: 'Rack servers, tower workstations, laptops, and commercial mini PCs.', iconName: 'Server' },
-      { number: '02', title: 'Network', tag: 'Switches & Wi-Fi', desc: 'Gigabit PoE switches, routers, access points, and Cat6/Fiber cables.', iconName: 'Network' },
-      { number: '03', title: 'Security', tag: 'CCTV & Biometrics', desc: '4K IP cameras, NVRs, biometric attendance devices, and door locks.', iconName: 'Shield' },
-      { number: '04', title: 'Power', tag: 'UPS & PDUs', desc: 'Online double-conversion UPS units, replacement batteries, and rack PDUs.', iconName: 'Zap' },
-    ],
-    mediaFeature: {
-      title: '" Supply and Integration of Enterprise-Grade IT Equipment "',
-      subtitle: 'See how C&G Infotech manages hardware procurement, unboxing inspection, and site delivery.',
-      badge: 'HARDWARE SUPPLY SHOWCASE',
-      imageUrl: '/images/cards/card-computers-new.jpg',
+
+    benefitsDark: {
+      badge: 'SUPPLY ADVANTAGE',
+      heading: 'Genuine Corporate Sourcing & Local Support',
+      subtitle: 'Authentic corporate hardware, transparent pricing, and complete post-delivery configuration support.',
+      benefits: [
+        { iconName: 'Shield', title: '100% Genuine Distribution', desc: 'Direct channel procurement with valid manufacturer serial numbers and official warranties.', linkText: 'View Warranty Policy' },
+        { iconName: 'Zap', title: 'Pre-Delivery Staging', desc: 'Firmware upgrades, IP configuration, and component stress testing conducted before shipment.', linkText: 'Explore Staging' },
+        { iconName: 'Server', title: 'Complete AMC Backing', desc: 'Combine hardware procurement with Annual Maintenance Contracts for end-to-end peace of mind.', linkText: 'View AMC Plans' },
+      ],
     },
-    industryCards: [
-      { title: 'Corporate Offices', subtitle: 'IT Procurement', desc: 'Desktops, monitors, switches, firewalls, and server hardware.', iconName: 'Building2' },
-      { title: 'Educational Institutions', subtitle: 'Lab Equipment', desc: 'Computer lab PCs, projectors, networking switches, and UPS units.', iconName: 'School' },
-      { title: 'Healthcare Organizations', subtitle: 'Medical IT', desc: 'PACS servers, UPS power backups, and surveillance hardware.', iconName: 'Hospital' },
-      { title: 'Retail Stores', subtitle: 'Store Hardware', desc: 'Barcode scanners, thermal receipt printers, POS PCs, and cameras.', iconName: 'ShoppingBag' },
-      { title: 'Manufacturing Plants', subtitle: 'Factory IT', desc: 'Industrial network switches, NVRs, outdoor PTZ cameras, and racks.', iconName: 'Factory' },
-      { title: 'IT & Software Firms', subtitle: 'Infrastructure Hardware', desc: 'High-RAM server nodes, 10G switches, and developer workstations.', iconName: 'Laptop' },
-    ],
+
+    proof: {
+      badge: 'SUPPLY PROOF',
+      heading: 'Why Organizations Choose C&G',
+      subtitle: 'Single-source corporate hardware supply for enterprises and contractors.',
+      cards: [
+        { rating: 5, title: 'Single-Vendor Procurement', quote: 'C&G supplied our servers, switches, cameras, and UPS units under a single unified purchase order.', author: 'Commercial Real Estate', role: 'Head of Procurement', tag: 'UNIFIED SUPPLY' },
+        { rating: 5, title: 'Ready Stock Availability', quote: 'When our network switch failed, C&G delivered a genuine replacement switch within 2 hours.', author: 'Tech Park Tenant', role: 'IT Lead', tag: 'READY STOCK' },
+        { rating: 5, title: 'Pre-Configured Out Of Box', quote: 'All switches were pre-loaded with our VLAN settings before arriving at our desk.', author: 'Financial Firm', role: 'Network Admin', tag: 'PRE-CONFIGURED' },
+      ],
+    },
+
+    mediaCTA: {
+      badge: 'IT HARDWARE PROCUREMENT',
+      title: 'Streamline Your Hardware Supply Chain',
+      subtitle: 'Send us your hardware requirement bill of materials (BOM) for an immediate corporate quote with volume discounts.',
+      imageUrl: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=1600&q=80',
+      ctaText: 'Request Hardware Pricing',
+      ctaLink: '/get-quote',
+      metrics: [
+        { label: 'Sourcing', value: '100% Genuine' },
+        { label: 'Brands', value: 'Top Global' },
+        { label: 'Staging', value: 'Pre-Configured' },
+      ],
+    },
+
     faqs: [
       { q: 'Are all hardware items supplied by C&G Infotech brand-new and authentic?', a: 'Yes. We supply 100% genuine brand-new commercial hardware with official manufacturer serial numbers and warranties.' },
       { q: 'Can C&G Infotech configure the hardware before delivering it to our office?', a: 'Yes. We offer pre-configuration services including firmware updates, IP assignment, RAID setup, and software load prior to delivery.' },
       { q: 'Do you provide hardware supply under Annual Maintenance Contracts (AMC)?', a: 'Yes. We supply hardware and provide comprehensive AMC maintenance covering ongoing servicing and breakdown support.' },
       { q: 'What top brands do you supply for networking and CCTV hardware?', a: 'We supply leading brands including Cisco, Hikvision, Dahua, Dell, HP, Lenovo, APC, ZK Teco, and TP-Link.' },
       { q: 'How can we request a formal corporate quote for hardware procurement?', a: 'Click the "Get a Quote" button or contact our sales department with your hardware requirement list for immediate pricing.' },
+    ],
+  },
+
+  // 10. DIGITAL SOLUTIONS
+  {
+    id: 'digital-solutions',
+    slug: 'digital-solutions',
+    title: 'Digital Solutions',
+    eyebrow: 'Software Built Around Your Business.',
+    heroPill: 'ENTERPRISE DIGITAL SOLUTIONS',
+    heroTitle: 'Transforming Workflows With Custom Software',
+    heroAccent: 'Custom Software',
+    shortDescription: 'Modern corporate web development, scalable web applications, iOS/Android mobile apps, custom ERP/CRM tools, and bespoke software automation.',
+    fullDescription: 'Transforming operational workflows with high-performance software. From modern responsive company websites to complex SaaS applications, visitor management software, and custom internal management portals.',
+    heroImage: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1600&q=80',
+
+    techOverview: {
+      sectionTitle: 'Digital Engineering Capabilities',
+      sectionSubtitle: 'Modern frontend frameworks, scalable cloud backends, and mobile applications.',
+      leftTitle: 'Explore Our Technology',
+      techItems: [
+        { iconName: 'Globe', title: 'Corporate Web Apps', desc: 'Responsive corporate web platforms built using React, Next.js, and TypeScript.' },
+        { iconName: 'Server', title: 'Custom ERP & CRM Portals', desc: 'Internal web tools automating inventory, attendance, and client workflows.' },
+        { iconName: 'Smartphone', title: 'Mobile Applications', desc: 'Cross-platform mobile apps for iOS and Android tailored for field teams.' },
+        { iconName: 'Code', title: 'API & Cloud Integrations', desc: 'Connecting third-party databases, biometric hardware, and payment gateways.' },
+      ],
+      rightTitle: 'Latest Solutions',
+      solutions: [
+        { tag: 'CUSTOM PORTALS', title: 'Enterprise Web Dashboards', desc: 'High-speed cloud management portals automating company rosters, logs, and assets.', imageUrl: '/images/cards/card-attendance-new.jpg', linkText: 'Explore Dashboards' },
+        { tag: 'CLOUD BACKEND', title: 'Scalable Microservice APIs', desc: 'Node.js and Python backend architectures built for high user concurrency.', imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80', linkText: 'View Architecture' },
+      ],
+    },
+
+    featureSplit: {
+      heading: 'Custom Software Designed For Your Exact Operations.',
+      description: 'We build tailor-made web and mobile software platforms that automate manual paperwork, streamline staff management, and represent your brand with distinction.',
+      bulletPoints: [
+        'Full source code ownership with no lock-in recurring software fees',
+        'Scalable cloud database architecture ready for high user concurrency',
+        'Modern responsive UI design optimized for mobile and desktop screens',
+        'Dedicated maintenance, security updates, and cloud hosting support',
+      ],
+      stat1: { value: '100%', label: 'Custom Codebase' },
+      stat2: { value: '99.9%', label: 'Cloud Uptime' },
+      badge: 'SOFTWARE ENGINEERING',
+      ctaText: 'Discuss Software Project',
+      ctaLink: '/get-quote',
+      image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80',
+    },
+
+    benefitsDark: {
+      badge: 'SOFTWARE STACK',
+      heading: 'Clean Codebases Engineered For Business Growth',
+      subtitle: 'Clean modern codebases, lightning-fast user interfaces, and full source code ownership.',
+      benefits: [
+        { iconName: 'Code', title: 'Full Code Ownership', desc: 'Complete intellectual property and source code ownership handoff upon project completion.', linkText: 'Learn More' },
+        { iconName: 'Globe', title: 'Ultra-Fast Performance', desc: 'Lightweight React & Next.js frontend architectures achieving 90+ Google PageSpeed scores.', linkText: 'View Specs' },
+        { iconName: 'Server', title: 'Secure Cloud Hosting', desc: 'Automated deployment on AWS with SSL encryption, database backups, and DDoS protection.', linkText: 'Explore Hosting' },
+      ],
+    },
+
+    proof: {
+      badge: 'SOFTWARE PROOF',
+      heading: 'Why Organizations Choose C&G',
+      subtitle: 'Custom digital platforms built for operational efficiency.',
+      cards: [
+        { rating: 5, title: 'Automated Manual Workflows', quote: 'Their custom inventory and attendance software replaced 4 manual Excel sheets with 1 central portal.', author: 'Logistics Enterprise', role: 'Operations Director', tag: 'ERP AUTOMATION' },
+        { rating: 5, title: '100% Code Ownership', quote: 'Unlike SaaS vendors charging per-user subscriptions, C&G built us a custom portal we own outright.', author: 'Commercial Group', role: 'Chief Information Officer', tag: 'OWNERSHIP' },
+        { rating: 5, title: 'Seamless Biometric API', quote: 'The API bridge linking our hardware punch terminals to our web portal works flawlessly 24/7.', author: 'Manufacturing Client', role: 'HR Lead', tag: 'API INTEGRATION' },
+      ],
+    },
+
+    mediaCTA: {
+      badge: 'DIGITAL TRANSFORMATION',
+      title: 'Accelerate Your Digital Workflows',
+      subtitle: 'Schedule a technical software consultation to map out custom web portal, API integration, or mobile app scope.',
+      imageUrl: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1600&q=80',
+      ctaText: 'Discuss Software Project',
+      ctaLink: '/get-quote',
+      metrics: [
+        { label: 'Codebase', value: '100% Custom' },
+        { label: 'Ownership', value: 'Full IP Rights' },
+        { label: 'Hosting', value: 'AWS Cloud' },
+      ],
+    },
+
+    faqs: [
+      { q: 'Do you build completely custom software or use pre-made templates?', a: 'We build custom software tailored precisely to your operational requirements using clean frameworks like React, Node.js, and Python.' },
+      { q: 'Will our business own the source code for the custom software developed?', a: 'Yes. Upon project completion and handoff, full intellectual property and source code ownership belong to your company.' },
+      { q: 'Can custom software be integrated with our existing biometric attendance hardware?', a: 'Yes. We write custom API bridge connectors to sync local biometric hardware databases with cloud web portals.' },
+      { q: 'Do you provide cloud hosting and maintenance after launch?', a: 'Yes. We provide complete cloud server setup on AWS or DigitalOcean with continuous backup monitoring and security maintenance.' },
+      { q: 'How long does it take to develop a custom corporate web application?', a: 'Timelines vary based on scope. Typical corporate web projects range from 3 to 8 weeks from wireframing to live deployment.' },
     ],
   },
 
@@ -837,31 +1027,31 @@ export const SERVICES_DATA: ServiceItem[] = [
     title: 'Web Development',
     eyebrow: 'Custom Corporate Websites & Web Portals.',
     heroPill: 'CORPORATE WEB DEVELOPMENT',
-    heroTitle: 'High-performance websites crafted for modern brands.',
-    heroAccent: 'modern brands.',
+    heroTitle: 'High-Performance Corporate Web Platforms',
+    heroAccent: 'Corporate Web Platforms',
     shortDescription: 'Responsive corporate website development, modern UI/UX design, custom web portals, e-commerce platforms, and cloud hosting.',
     fullDescription: 'High-performance web development tailored for modern corporate brands. We build fast, secure, and scalable websites, customer portals, and web applications using modern technologies like React, Next.js, and Node.js.',
-    heroImage: '/images/cards/card-attendance-new.jpg',
-    trustItems: [
-      'React & Next.js Frontend',
-      'Modern UI/UX Aesthetics',
-      'Fast Cloud Hosting',
-      'Technical SEO Optimization',
-      'Responsive Mobile Layouts',
-      'Full Source Code Ownership',
-    ],
-    whyChooseTitle: 'Why choose our Web Development services?',
-    whyChooseSubtitle: 'Custom pixel-perfect design, zero bloated templates, and lightning-fast page loading speeds.',
-    whyChooseCards: [
-      { title: 'Modern UI/UX Design', desc: 'Custom visual interface design crafted to showcase your corporate identity and convert leads.', iconName: 'Globe', highlighted: true },
-      { title: 'React & Next.js Tech', desc: 'Built using modern component-driven frameworks ensuring ultra-fast page transitions.', iconName: 'Code' },
-      { title: 'Responsive Mobile Layouts', desc: 'Flawless visual experience designed specifically across mobile, tablet, and desktop viewports.', iconName: 'Smartphone' },
-      { title: 'SEO & Performance', desc: 'Full technical SEO optimization, structured Schema tags, and 90+ Google PageSpeed scores.', iconName: 'Zap' },
-      { title: 'Custom Customer Portals', desc: 'Building secure web portals for client document downloads, tracking, and inquiries.', iconName: 'Server' },
-      { title: 'Cloud Server Deployment', desc: 'Deploying on secure cloud servers (AWS, DigitalOcean) with SSL encryption and automatic backups.', iconName: 'Shield' },
-    ],
+    heroImage: 'https://images.unsplash.com/photo-1547658719-da2b51169166?auto=format&fit=crop&w=1600&q=80',
+
+    techOverview: {
+      sectionTitle: 'Web Architecture Stack',
+      sectionSubtitle: 'React & Next.js frontend, modern CSS styling, and technical SEO engine.',
+      leftTitle: 'Explore Our Technology',
+      techItems: [
+        { iconName: 'Globe', title: 'Modern UI/UX Design', desc: 'Custom visual interface design crafted to showcase corporate authority.' },
+        { iconName: 'Code', title: 'React & Next.js Stack', desc: 'Component-driven frameworks ensuring ultra-fast page load transitions.' },
+        { iconName: 'Smartphone', title: 'Responsive Mobile UI', desc: 'Flawless responsive layouts tested across smartphones, tablets, and desktops.' },
+        { iconName: 'Zap', title: 'SEO & Performance', desc: 'Full technical SEO optimization achieving 90+ Google PageSpeed scores.' },
+      ],
+      rightTitle: 'Latest Solutions',
+      solutions: [
+        { tag: 'BRAND WEBSITES', title: 'Bespoke Corporate Sites', desc: 'High-conversion corporate websites designed with smooth micro-animations and crisp typography.', imageUrl: '/images/cards/card-attendance-new.jpg', linkText: 'Explore Web Design' },
+        { tag: 'CLIENT PORTALS', title: 'Secure Client Web Portals', desc: 'Web applications for client document downloads, project tracking, and inquiries.', imageUrl: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80', linkText: 'View Portals' },
+      ],
+    },
+
     featureSplit: {
-      heading: 'Engaging web experiences engineered to convert.',
+      heading: 'Engaging Web Experiences Engineered To Convert.',
       description: 'We craft bespoke corporate websites and web platforms that present your enterprise capabilities with aesthetic authority, fast performance, and intuitive navigation.',
       bulletPoints: [
         'Custom interactive component animations using GSAP and Framer Motion',
@@ -874,30 +1064,45 @@ export const SERVICES_DATA: ServiceItem[] = [
       badge: 'WEB ENGINEERING',
       ctaText: 'Start Web Project',
       ctaLink: '/get-quote',
-      image: '/images/cards/card-attendance-new.jpg',
+      image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=80',
     },
-    capabilitiesTitle: 'Everything you need for complete Web Development',
-    capabilitiesSubtitle: 'From wireframing and UI design to frontend coding and cloud hosting.',
-    capabilityCards: [
-      { number: '01', title: 'UI/UX Design', tag: 'Figma Prototypes', desc: 'Crafting pixel-perfect interface layouts tailored to your corporate brand style.', iconName: 'Globe' },
-      { number: '02', title: 'Frontend Code', tag: 'React & TypeScript', desc: 'Clean, modular component coding with smooth micro-animations.', iconName: 'Code' },
-      { number: '03', title: 'SEO Engine', tag: 'Technical SEO', desc: 'Fast load speeds, meta tag optimization, and Google search indexing.', iconName: 'Zap' },
-      { number: '04', title: 'Hosting & SSL', tag: 'AWS Cloud', desc: 'Secure cloud hosting setup with free SSL certificates and CDN speed.', iconName: 'Server' },
-    ],
-    mediaFeature: {
-      title: '" Custom Web Platforms Engineered for High-Conversion Brand Presence "',
-      subtitle: 'See how C&G Infotech plans UI wireframes, writes frontend React code, and deploys cloud applications.',
-      badge: 'WEB SHOWCASE',
-      imageUrl: '/images/cards/card-attendance-new.jpg',
+
+    benefitsDark: {
+      badge: 'WEB PROMISE',
+      heading: 'Aesthetic Excellence Paired With Engineering Speed',
+      subtitle: 'Custom pixel-perfect design, zero bloated templates, and lightning-fast page loading speeds.',
+      benefits: [
+        { iconName: 'Globe', title: 'Bespoke UI Design', desc: 'Tailor-made layout systems reflecting your corporate brand style with zero generic template feel.', linkText: 'View Design System' },
+        { iconName: 'Zap', title: '90+ Speed Scores', desc: 'Optimized asset bundles, clean React components, and instant page routing.', linkText: 'View Benchmarks' },
+        { iconName: 'Shield', title: 'AWS Cloud Hosting', desc: 'Enterprise SSL certificates, cloud CDN delivery, and automatic daily site backups.', linkText: 'Explore Hosting' },
+      ],
     },
-    industryCards: [
-      { title: 'Corporate Enterprises', subtitle: 'Brand Websites', desc: 'High-impact corporate web portals showcasing enterprise solutions.', iconName: 'Building2' },
-      { title: 'Healthcare Organizations', subtitle: 'Hospital Sites', desc: 'Medical service portals, doctor profiles, and appointment forms.', iconName: 'Hospital' },
-      { title: 'Educational Institutions', subtitle: 'School & College Sites', desc: 'Student admissions portals, course listings, and campus updates.', iconName: 'School' },
-      { title: 'Real Estate Firms', subtitle: 'Property Portals', desc: 'Property showcase listings, interactive floor plans, and lead forms.', iconName: 'Shield' },
-      { title: 'Manufacturing Brands', subtitle: 'Industrial Portals', desc: 'Product catalogs, technical specs downloads, and quote requests.', iconName: 'Factory' },
-      { title: 'E-commerce Businesses', subtitle: 'Online Stores', desc: 'Custom online store fronts with secure payment gateway integration.', iconName: 'ShoppingBag' },
-    ],
+
+    proof: {
+      badge: 'WEB PROOF',
+      heading: 'Why Organizations Choose C&G',
+      subtitle: 'Crafting high-impact corporate web presences for industry leaders.',
+      cards: [
+        { rating: 5, title: '95 PageSpeed Score', quote: 'Our new corporate website loads in under 1 second. Lead conversions increased by 40% in month one.', author: 'Commercial Tech Brand', role: 'Marketing VP', tag: 'WEBSITE REDESIGN' },
+        { rating: 5, title: 'Mobile Perfection', quote: 'The site looks pristine on smartphones. Clients comment constantly on how modern the design feels.', author: 'Healthcare Group', role: 'Digital Director', tag: 'MOBILE FIRST' },
+        { rating: 5, title: 'Zero Maintenance Hassle', quote: 'C&G handles our AWS hosting and security patches seamlessly under their annual web AMC.', author: 'Real Estate Developer', role: 'Chief Executive', tag: 'WEB AMC' },
+      ],
+    },
+
+    mediaCTA: {
+      badge: 'WEB ENGINEERING',
+      title: 'Elevate Your Corporate Web Presence Today',
+      subtitle: 'Schedule a discovery session with C&G web designers to wireframe your next high-conversion corporate website.',
+      imageUrl: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1600&q=80',
+      ctaText: 'Start Web Project',
+      ctaLink: '/get-quote',
+      metrics: [
+        { label: 'Framework', value: 'React / Next.js' },
+        { label: 'PageSpeed', value: '90+ Score' },
+        { label: 'SEO', value: 'Fully Optimized' },
+      ],
+    },
+
     faqs: [
       { q: 'How long does it take to design and launch a custom corporate website?', a: 'Standard corporate website projects typically take between 3 to 6 weeks from initial design wireframing to live launch.' },
       { q: 'Will our website be fully responsive on mobile devices and tablets?', a: 'Yes. Every website we build is engineered with mobile-first responsive design, ensuring a perfect visual layout on all screen sizes.' },
@@ -914,31 +1119,31 @@ export const SERVICES_DATA: ServiceItem[] = [
     title: 'App Development',
     eyebrow: 'Native & Cross-Platform Mobile Apps.',
     heroPill: 'MOBILE APP ENGINEERING',
-    heroTitle: 'Intuitive mobile applications for iOS and Android.',
-    heroAccent: 'iOS and Android.',
+    heroTitle: 'Intuitive Mobile Apps For iOS & Android',
+    heroAccent: 'iOS & Android',
     shortDescription: 'Custom iOS & Android mobile applications, cross-platform React Native solutions, enterprise mobility, and app store publishing.',
     fullDescription: 'Enterprise mobile app engineering for iOS and Android platforms. We design and develop secure, intuitive mobile applications tailored for employee workflows, customer engagement, and business process automation.',
-    heroImage: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=80',
-    trustItems: [
-      'iOS & Android App Engineering',
-      'React Native Cross-Platform',
-      'Mobile UI/UX Interface Design',
-      'Push Notification Gateways',
-      'Biometric Login Sync',
-      'App Store & Play Store Launch',
-    ],
-    whyChooseTitle: 'Why choose our App Development services?',
-    whyChooseSubtitle: 'Native performance, intuitive mobile UI design, and seamless cloud database API integration.',
-    whyChooseCards: [
-      { title: 'Cross-Platform Apps', desc: 'Build once and deploy on both iOS and Android using React Native, cutting cost and development time.', iconName: 'Smartphone', highlighted: true },
-      { title: 'Mobile UI/UX Design', desc: 'Intuitive touch interfaces designed for easy navigation, fast loading, and high retention.', iconName: 'Globe' },
-      { title: 'Offline Mode Sync', desc: 'Real-time database sync allowing field apps to work smoothly even without active internet.', iconName: 'Database' },
-      { title: 'Push Notifications', desc: 'Integrated notification servers sending instant alerts and updates to users.', iconName: 'Zap' },
-      { title: 'Biometric Login', desc: 'Secure fingerprint and FaceID authentication integration for enterprise mobile tools.', iconName: 'Lock' },
-      { title: 'Store Publishing', desc: 'Complete management of Apple App Store and Google Play Store publishing compliance.', iconName: 'Shield' },
-    ],
+    heroImage: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1600&q=80',
+
+    techOverview: {
+      sectionTitle: 'Mobile App Tech Stack',
+      sectionSubtitle: 'React Native cross-platform framework, native Swift/Kotlin modules, and secure REST APIs.',
+      leftTitle: 'Explore Our Technology',
+      techItems: [
+        { iconName: 'Smartphone', title: 'Cross-Platform React Native', desc: 'Deploy a single codebase to both iOS and Android with 100% native performance.' },
+        { iconName: 'Globe', title: 'Mobile UI/UX Interface', desc: 'Intuitive touch interface wireframes designed for single-hand navigation.' },
+        { iconName: 'Database', title: 'Offline Mode Synchronization', desc: 'Local caching allowing field apps to operate without active internet connection.' },
+        { iconName: 'Shield', title: 'App Store Publishing', desc: 'Full management of Apple App Store and Google Play Store publishing compliance.' },
+      ],
+      rightTitle: 'Latest Solutions',
+      solutions: [
+        { tag: 'WORKFORCE APPS', title: 'Enterprise Field Inspection Apps', desc: 'Mobile apps for site engineers with offline form filling, photo capture, and GPS tags.', imageUrl: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=800&q=80', linkText: 'Explore Mobile Tools' },
+        { tag: 'PUSH ALERTS', title: 'Real-Time Notification Servers', desc: 'Integrated notification gateways sending instant alerts and updates to users.', imageUrl: '/images/cards/card-attendance-new.jpg', linkText: 'View Backend Specs' },
+      ],
+    },
+
     featureSplit: {
-      heading: 'Enterprise mobility tools engineered for performance.',
+      heading: 'Enterprise Mobility Tools Engineered For Speed.',
       description: 'Empower your workforce and customers with high-speed mobile apps tailored for field inspections, order tracking, visitor check-ins, or customer loyalty.',
       bulletPoints: [
         'Single codebase cross-platform apps reducing development time by 40%',
@@ -951,30 +1156,45 @@ export const SERVICES_DATA: ServiceItem[] = [
       badge: 'MOBILE ENGINEERING',
       ctaText: 'Start App Project',
       ctaLink: '/get-quote',
-      image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=800&q=80',
+      image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=1200&q=80',
     },
-    capabilitiesTitle: 'Everything you need for complete Mobile App Development',
-    capabilitiesSubtitle: 'Mobile UI design, frontend coding, backend cloud APIs, and App Store publishing.',
-    capabilityCards: [
-      { number: '01', title: 'Mobile UI', tag: 'Figma Mobile Design', desc: 'Designing interactive mobile wireframes optimized for single-hand use.', iconName: 'Smartphone' },
-      { number: '02', title: 'App Coding', tag: 'React Native & Swift', desc: 'Building fast, responsive mobile screens with smooth touch gestures.', iconName: 'Code' },
-      { number: '03', title: 'Backend APIs', tag: 'Node & Cloud DB', desc: 'Secure REST API backends enabling real-time app data synchronization.', iconName: 'Server' },
-      { number: '04', title: 'App Stores', tag: 'iOS & Android Launch', desc: 'Handling App Store guidelines, developer accounts, and live release.', iconName: 'Shield' },
-    ],
-    mediaFeature: {
-      title: '" Custom Mobile Applications Engineered for Operational Seamlessness "',
-      subtitle: 'Discover how C&G Infotech builds, tests, and deploys mobile applications for enterprise teams.',
-      badge: 'MOBILE APP SHOWCASE',
-      imageUrl: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1200&q=80',
+
+    benefitsDark: {
+      badge: 'MOBILE PROMISE',
+      heading: 'Native Performance With Single Codebase Speed',
+      subtitle: 'Native performance, intuitive mobile UI design, and seamless cloud database API integration.',
+      benefits: [
+        { iconName: 'Smartphone', title: 'Dual-Platform Launch', desc: 'Build once and launch on both Apple App Store and Google Play Store simultaneously.', linkText: 'Explore React Native' },
+        { iconName: 'Database', title: 'Offline Data Cache', desc: 'Allows field agents to submit forms offline, syncing automatically when internet resumes.', linkText: 'View Offline DB' },
+        { iconName: 'Lock', title: 'Biometric FaceID Login', desc: 'Secure fingerprint and FaceID authentication integration for enterprise mobile security.', linkText: 'View Auth Security' },
+      ],
     },
-    industryCards: [
-      { title: 'Corporate Enterprises', subtitle: 'Workforce Apps', desc: 'Employee task management, expense approvals, and staff communications.', iconName: 'Building2' },
-      { title: 'Logistics & Delivery', subtitle: 'Driver Mobile Tools', desc: 'Real-time GPS route guidance, barcode scanning, and proof of delivery.', iconName: 'Factory' },
-      { title: 'Healthcare Organizations', subtitle: 'Patient & Doctor Apps', desc: 'Telemedicine video calls, prescription downloads, and appointment alerts.', iconName: 'Hospital' },
-      { title: 'Retail & Outlets', subtitle: 'Loyalty & Ordering', desc: 'Customer digital loyalty cards, store locators, and mobile shopping.', iconName: 'ShoppingBag' },
-      { title: 'Field Service Teams', subtitle: 'Inspection Tools', desc: 'On-site technical inspection checklists, photo uploads, and signature logs.', iconName: 'Shield' },
-      { title: 'Educational Institutions', subtitle: 'Parent & Student Apps', desc: 'Attendance updates, fee payment notifications, and assignment tracking.', iconName: 'School' },
-    ],
+
+    proof: {
+      badge: 'MOBILE PROOF',
+      heading: 'Why Organizations Choose C&G',
+      subtitle: 'Delivering secure mobile applications for field workforce teams.',
+      cards: [
+        { rating: 5, title: 'Field Inspection Efficiency', quote: 'Our field engineers complete site audit checklists 50% faster using our custom React Native mobile app.', author: 'Logistics Group', role: 'Head of Mobility', tag: 'FIELD WORKFORCE' },
+        { rating: 5, title: 'Seamless Store Approval', quote: 'C&G handled the entire Apple App Store developer submission and privacy policy compliance effortlessly.', author: 'Retail Chain Brand', role: 'Digital Lead', tag: 'APP STORE LAUNCH' },
+        { rating: 5, title: 'Robust Offline Sync', quote: 'Technicians inspect remote telecom towers offline without losing a single form entry or photo upload.', author: 'Infrastructure Service', role: 'Operations Lead', tag: 'OFFLINE MODE' },
+      ],
+    },
+
+    mediaCTA: {
+      badge: 'MOBILE APP ENGINEERING',
+      title: 'Launch Your Enterprise Mobile App Today',
+      subtitle: 'Schedule an interactive mobile prototype scoping session to wireframe your iOS and Android mobile app.',
+      imageUrl: 'https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?auto=format&fit=crop&w=1600&q=80',
+      ctaText: 'Start App Project',
+      ctaLink: '/get-quote',
+      metrics: [
+        { label: 'Platforms', value: 'iOS & Android' },
+        { label: 'Framework', value: 'React Native' },
+        { label: 'Approval', value: '100% Store Pass' },
+      ],
+    },
+
     faqs: [
       { q: 'Should we build a native app or a cross-platform React Native app?', a: 'For most commercial apps, React Native is ideal as it deploys a single codebase onto both iOS and Android with top native performance at 40% lower cost.' },
       { q: 'Do you handle the App Store and Google Play Store publishing process?', a: 'Yes. We manage all store developer guidelines, privacy policy submissions, screenshot assets, and submission reviews.' },
