@@ -23,6 +23,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { BenefitDarkItem } from '@/data/services';
+import { OrbCard } from '@/components/common/OrbCard';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -113,9 +114,10 @@ export const ServiceBenefitsDark: React.FC<ServiceBenefitsDarkProps> = ({
           {benefits.map((item, idx) => {
             const IconComponent = ICON_MAP[item.iconName] || Shield;
             return (
-              <div
+              <OrbCard
                 key={idx}
-                className="p-8 rounded-3xl bg-[#1A1A1A] border border-white/10 hover:border-[#E65100]/40 transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-[#E65100]/10"
+                variant="dark"
+                className="p-8 rounded-3xl bg-[#1A1A1A] border border-white/10 group shadow-lg shadow-black/40"
               >
                 <div className="space-y-6">
                   {/* ICON */}
@@ -144,7 +146,7 @@ export const ServiceBenefitsDark: React.FC<ServiceBenefitsDarkProps> = ({
                     <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
                   </Link>
                 </div>
-              </div>
+              </OrbCard>
             );
           })}
         </div>

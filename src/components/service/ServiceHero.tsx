@@ -29,6 +29,15 @@ export const ServiceHero: React.FC<ServiceHeroProps> = ({
   useGSAP(
     () => {
       if (!containerRef.current) return;
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (prefersReducedMotion) {
+        gsap.set(
+          [bgImageRef.current, eyebrowRef.current, titleRef.current, descRef.current, buttonsRef.current],
+          { opacity: 1, filter: 'blur(0px)', y: 0, scale: 1 }
+        );
+        return;
+      }
 
       const timeline = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
@@ -51,53 +60,63 @@ export const ServiceHero: React.FC<ServiceHeroProps> = ({
         );
       }
 
-      // Heading lines reveal
+      // Word-by-word Blur-In reveal for Title
       if (titleRef.current) {
-        const titleLines = titleRef.current.querySelectorAll('.hero-line-inner');
-        if (titleLines.length > 0) {
+        const words = titleRef.current.querySelectorAll('.hero-blur-word');
+        if (words.length > 0) {
           timeline.fromTo(
-            titleLines,
-            { yPercent: 110, opacity: 0 },
-            { yPercent: 0, opacity: 1, duration: 0.9, stagger: 0.08 },
+            words,
+            {
+              opacity: 0,
+              filter: 'blur(14px)',
+              y: 28,
+              scale: 0.98,
+            },
+            {
+              opacity: 1,
+              filter: 'blur(0px)',
+              y: 0,
+              scale: 1,
+              duration: 0.85,
+              stagger: 0.06,
+            },
             0.2
           );
         } else {
           timeline.fromTo(
             titleRef.current,
-            { opacity: 0, y: 30 },
-            { opacity: 1, y: 0, duration: 0.8 },
+            { opacity: 0, y: 28, filter: 'blur(14px)', scale: 0.98 },
+            { opacity: 1, y: 0, filter: 'blur(0px)', scale: 1, duration: 0.85 },
             0.2
           );
         }
       }
 
-      // Description reveal
+      // Description reveal (y 18 -> 0)
       if (descRef.current) {
         timeline.fromTo(
           descRef.current,
-          { opacity: 0, y: 20 },
+          { opacity: 0, y: 18 },
           { opacity: 1, y: 0, duration: 0.7 },
-          0.5
+          '-=0.3'
         );
       }
 
-      // Buttons stagger reveal
+      // Buttons stagger reveal (y 14 -> 0, stagger 0.08)
       if (buttonsRef.current) {
         timeline.fromTo(
           buttonsRef.current.children,
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.6, stagger: 0.1 },
-          0.65
+          { opacity: 0, y: 14 },
+          { opacity: 1, y: 0, duration: 0.6, stagger: 0.08 },
+          '-=0.4'
         );
       }
     },
     { scope: containerRef, dependencies: [title, heroImage] }
   );
 
-  // Split title into 2 main display lines if accent text exists
-  const titleParts = accentText && title.includes(accentText)
-    ? [title.replace(accentText, '').trim(), accentText]
-    : [title];
+  // Split title into words safely
+  const words = title.split(' ');
 
   return (
     <section
@@ -110,7 +129,6 @@ export const ServiceHero: React.FC<ServiceHeroProps> = ({
         className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat transition-transform will-change-transform"
         style={{ backgroundImage: `url(${heroImage})` }}
       >
-        {/* Multilayered editorial gradient overlay for maximum readability */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0B] via-[#0B0B0B]/75 to-[#0B0B0B]/40" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#0B0B0B]/90 via-[#0B0B0B]/50 to-transparent" />
         <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px]" />
@@ -126,36 +144,40 @@ export const ServiceHero: React.FC<ServiceHeroProps> = ({
           </span>
         </div>
 
-        {/* HERO TITLE WITH OVERFLOW-HIDDEN WRAPPER FOR GSAP */}
+        {/* HERO TITLE WITH WORD-BY-WORD BLUR-IN REVEAL */}
         <h1
           ref={titleRef}
-          className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white font-heading leading-[1.04]"
+          aria-label={title}
+          className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white font-heading leading-[1.04] flex flex-wrap gap-x-[0.28em] gap-y-1"
         >
-          {titleParts.map((part, idx) => (
-            <span key={idx} className="block overflow-hidden pb-1">
-              <span className="hero-line-inner block">
-                {part}
-                {idx === titleParts.length - 1 && accentText && (
-                  <span className="text-[#E65100] font-semibold">.</span>
-                )}
+          {words.map((w, idx) => {
+            const isAccent = accentText && w.toLowerCase().includes(accentText.toLowerCase().trim());
+            return (
+              <span
+                key={idx}
+                className={`hero-blur-word inline-block opacity-0 will-change-[transform,filter,opacity] ${
+                  isAccent ? 'text-[#E65100]' : ''
+                }`}
+              >
+                {w}
               </span>
-            </span>
-          ))}
+            );
+          })}
         </h1>
 
         {/* SHORT DESCRIPTION */}
         <p
           ref={descRef}
-          className="text-base sm:text-xl text-neutral-300 max-w-2xl font-body font-normal leading-relaxed text-balance pt-1"
+          className="text-base sm:text-xl text-neutral-300 max-w-2xl font-body font-normal leading-relaxed text-balance pt-1 opacity-0"
         >
           {shortDescription}
         </p>
 
-        {/* ACTION BUTTONS (CUSTOMIZED CHAIUI BUTTON SYSTEM) */}
+        {/* ACTION BUTTONS */}
         <div ref={buttonsRef} className="flex flex-wrap items-center gap-4 pt-4">
           <Link
             to="/get-quote"
-            className="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full bg-[#E65100] text-white font-semibold text-sm tracking-wide transition-all duration-300 hover:bg-[#CF4700] hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-[#E65100]/25 group"
+            className="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full bg-[#E65100] text-white font-semibold text-sm tracking-wide transition-all duration-300 hover:bg-[#CF4700] hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-[#E65100]/25 group opacity-0"
           >
             <span>Get a Custom Quote</span>
             <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -163,7 +185,7 @@ export const ServiceHero: React.FC<ServiceHeroProps> = ({
 
           <a
             href="#tech-overview"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-white/10 hover:bg-white/15 text-white font-medium text-sm tracking-wide border border-white/20 backdrop-blur-md transition-all duration-300 hover:border-white/40"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-white/10 hover:bg-white/15 text-white font-medium text-sm tracking-wide border border-white/20 backdrop-blur-md transition-all duration-300 hover:border-white/40 opacity-0"
           >
             <span>Explore Technology</span>
             <ChevronRight className="w-4 h-4 text-neutral-400" />
@@ -171,7 +193,6 @@ export const ServiceHero: React.FC<ServiceHeroProps> = ({
         </div>
       </div>
 
-      {/* SUBTLE CORNER GRADIENT HIGHLIGHT */}
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#E65100]/10 rounded-full blur-3xl pointer-events-none" />
     </section>
   );

@@ -5,6 +5,7 @@ import { ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
+import { OrbCard } from '@/components/common/OrbCard';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -107,7 +108,6 @@ export const Expertise: React.FC = () => {
         if (!cards.length || !sectionRef.current) return;
 
         // INITIAL DECK STATE
-        // Card 0: Hero Stage
         gsap.set(cards[0], {
           x: 0,
           y: 0,
@@ -119,7 +119,6 @@ export const Expertise: React.FC = () => {
           pointerEvents: 'auto',
         });
 
-        // Card 1: Next preview
         if (cards[1]) {
           gsap.set(cards[1], {
             x: 220,
@@ -133,7 +132,6 @@ export const Expertise: React.FC = () => {
           });
         }
 
-        // Card 2: Far right preview
         if (cards[2]) {
           gsap.set(cards[2], {
             x: 360,
@@ -147,7 +145,6 @@ export const Expertise: React.FC = () => {
           });
         }
 
-        // Remaining cards: Offscreen right
         for (let i = 3; i < cards.length; i++) {
           gsap.set(cards[i], {
             x: 480,
@@ -161,7 +158,6 @@ export const Expertise: React.FC = () => {
           });
         }
 
-        // TIMELINE CREATION
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: sectionRef.current,
@@ -174,10 +170,8 @@ export const Expertise: React.FC = () => {
         });
 
         cards.forEach((_, index) => {
-          // HOLD SEGMENT: Give user distance to read active card
           tl.to({}, { duration: 0.7 });
 
-          // Update active index indicator at hold point
           tl.call(() => {
             setActiveIndex(index);
             if (counterRef.current) {
@@ -185,7 +179,6 @@ export const Expertise: React.FC = () => {
             }
           });
 
-          // If last card, we stop after its hold segment
           if (index === cards.length - 1) return;
 
           const current = cards[index];
@@ -194,7 +187,6 @@ export const Expertise: React.FC = () => {
           const hiddenNext = cards[index + 3];
           const prev = cards[index - 1];
 
-          // 1. Current active card moves to Left Background
           tl.to(current, {
             x: -220,
             y: 45,
@@ -208,7 +200,6 @@ export const Expertise: React.FC = () => {
             ease: 'power2.inOut',
           });
 
-          // 2. Next card moves to Active Hero Stage
           tl.to(
             next,
             {
@@ -226,7 +217,6 @@ export const Expertise: React.FC = () => {
             '<'
           );
 
-          // Animate text visibility on the new active card
           const nextText = next.querySelectorAll(
             '.service-number, .service-title, .service-description, .service-link'
           );
@@ -239,7 +229,6 @@ export const Expertise: React.FC = () => {
             );
           }
 
-          // 3. Next-next card moves into Preview position
           if (farNext) {
             tl.to(
               farNext,
@@ -258,7 +247,6 @@ export const Expertise: React.FC = () => {
             );
           }
 
-          // 4. Hidden right card moves into Far Right Preview position
           if (hiddenNext) {
             tl.to(
               hiddenNext,
@@ -277,7 +265,6 @@ export const Expertise: React.FC = () => {
             );
           }
 
-          // 5. Previous left cards shift further left
           if (prev) {
             tl.to(
               prev,
@@ -297,7 +284,6 @@ export const Expertise: React.FC = () => {
           }
         });
 
-        // Final hold for card 07
         tl.to({}, { duration: 0.8 });
 
         ScrollTrigger.refresh();
@@ -313,13 +299,11 @@ export const Expertise: React.FC = () => {
       ref={sectionRef}
       className="cg-master-canvas relative w-full h-screen min-h-[700px] overflow-hidden bg-[#F5F4F0] flex flex-col justify-between items-center py-6 select-none"
     >
-      {/* Subtle circular background shape */}
       <div
         className="absolute w-[900px] h-[900px] rounded-full bg-[#ebe8df] -bottom-[450px] left-1/2 -translate-x-1/2 pointer-events-none z-0"
         aria-hidden="true"
       />
 
-      {/* SECTION HEADING (Top 10–15% of viewport) */}
       <div className="relative z-20 text-center max-w-4xl mx-auto px-4 pt-2 md:pt-4">
         <h2 className="text-[#181715] font-bold text-[28px] sm:text-[36px] md:text-[46px] lg:text-[52px] leading-[1.08] tracking-tight">
           Everything your business <br className="hidden sm:inline" />
@@ -327,7 +311,6 @@ export const Expertise: React.FC = () => {
         </h2>
       </div>
 
-      {/* DESKTOP STAGE (>= 768px) */}
       <div className="hidden md:flex cards-stage relative w-full z-10 max-w-6xl mx-auto h-[530px] items-center justify-center my-auto overflow-visible">
         {SERVICES_CARDS.map((card, index) => (
           <div
@@ -345,7 +328,6 @@ export const Expertise: React.FC = () => {
         ))}
       </div>
 
-      {/* PROGRESS INDICATOR (Bottom of viewport) */}
       <div className="hidden md:flex relative z-20 items-center gap-4 pb-2">
         <span
           ref={counterRef}
@@ -367,7 +349,6 @@ export const Expertise: React.FC = () => {
         </div>
       </div>
 
-      {/* MOBILE SWIPE CAROUSEL (< 768px - NO PINNING) */}
       <div className="md:hidden relative w-full z-10 px-4 my-auto">
         <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-6 pt-2 no-scrollbar">
           {SERVICES_CARDS.map((card) => (
@@ -386,13 +367,11 @@ export const Expertise: React.FC = () => {
 
 const ServiceCardItem: React.FC<{ card: CardData }> = ({ card }) => {
   return (
-    <motion.div
-      whileHover={{ y: -6, scale: 1.012 }}
-      transition={{ duration: 0.2, ease: 'easeOut' }}
-      className="group relative w-full h-full rounded-[26px] p-6 flex flex-col justify-between border border-black/[0.08] shadow-[0_8px_30px_rgba(0,0,0,0.04)] cursor-pointer overflow-hidden transition-all duration-300"
+    <OrbCard
+      variant="light"
+      className="group relative w-full h-full rounded-[26px] p-6 border border-black/[0.08] shadow-[0_8px_30px_rgba(0,0,0,0.04)]"
       style={{ backgroundColor: card.bg }}
     >
-      {/* CARD TOP HEADER: Number & Eyebrow */}
       <div>
         <div className="flex items-center justify-between mb-3">
           <div className="service-number inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FDEEE9] text-[#E65100] text-xs font-mono font-bold tracking-wider">
@@ -403,18 +382,15 @@ const ServiceCardItem: React.FC<{ card: CardData }> = ({ card }) => {
           </span>
         </div>
 
-        {/* TITLE */}
         <h3 className="service-title text-xl font-bold tracking-tight text-[#181715] mb-2 leading-snug group-hover:text-[#E65100] transition-colors">
           {card.title}
         </h3>
 
-        {/* DESCRIPTION */}
         <p className="service-description text-[#66635C] text-xs sm:text-[13px] leading-relaxed line-clamp-2">
           {card.description}
         </p>
       </div>
 
-      {/* VISUAL AREA / IMAGE */}
       <div className="relative my-3 w-full h-[190px] sm:h-[210px] rounded-[18px] overflow-hidden border border-black/5 bg-[#F5F4F0]">
         <img
           src={card.image}
@@ -425,7 +401,6 @@ const ServiceCardItem: React.FC<{ card: CardData }> = ({ card }) => {
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
 
-      {/* CARD FOOTER */}
       <div className="pt-2 flex items-center justify-between border-t border-black/[0.06]">
         <Link
           to={card.link}
@@ -445,6 +420,6 @@ const ServiceCardItem: React.FC<{ card: CardData }> = ({ card }) => {
           C&G INFOTECH
         </span>
       </div>
-    </motion.div>
+    </OrbCard>
   );
 };

@@ -1,9 +1,10 @@
 import React, { useRef } from 'react';
-import { Star, Quote, Award } from 'lucide-react';
+import { Star, Award } from 'lucide-react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { ProofCardItem } from '@/data/services';
+import { OrbCard } from '@/components/common/OrbCard';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -70,9 +71,10 @@ export const ServiceProof: React.FC<ServiceProofProps> = ({
         {/* 3 PROOF CARDS GRID */}
         <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {cards.map((card, idx) => (
-            <div
+            <OrbCard
               key={idx}
-              className="p-8 rounded-3xl bg-[#F8F7F4] border border-black/[0.06] flex flex-col justify-between hover:border-[#E65100]/30 hover:shadow-lg transition-all duration-300 relative group"
+              variant="light"
+              className="p-8 rounded-3xl bg-[#F8F7F4] border border-black/[0.06] group shadow-xs"
             >
               <div className="space-y-6">
                 {/* RATING & TAG */}
@@ -112,7 +114,7 @@ export const ServiceProof: React.FC<ServiceProofProps> = ({
                   </div>
                 </div>
               </div>
-            </div>
+            </OrbCard>
           ))}
         </div>
       </div>

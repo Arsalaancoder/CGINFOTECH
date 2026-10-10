@@ -4,6 +4,7 @@ import { SERVICES_DATA } from '@/data/services';
 import { Shield, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { FinalCTA } from '@/components/home/FinalCTA';
 import { FadeUp } from '@/components/motion/FadeUp';
+import { OrbCard } from '@/components/common/OrbCard';
 
 export const Services: React.FC = () => {
   useEffect(() => {
@@ -40,9 +41,10 @@ export const Services: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {SERVICES_DATA.map((srv) => (
-                <div
+                <OrbCard
                   key={srv.id}
-                  className="cg-white-card p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-xl group border border-black/[0.08]"
+                  variant="light"
+                  className="cg-white-card p-6 border border-black/[0.08] shadow-xs group"
                 >
                   <div className="space-y-4">
                     <div className="w-12 h-12 rounded-xl bg-[#FDEEE9] text-[#E65100] flex items-center justify-center font-bold">
@@ -74,7 +76,7 @@ export const Services: React.FC = () => {
                       <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>
-                </div>
+                </OrbCard>
               ))}
             </div>
           </FadeUp>

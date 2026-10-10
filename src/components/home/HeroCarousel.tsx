@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ChevronLeft, ChevronRight, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
 
 interface HeroSlide {
   id: number;
@@ -44,6 +46,7 @@ const HERO_SLIDES: HeroSlide[] = [
 
 export const HeroCarousel: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const heroGridRef = useRef<HTMLDivElement>(null);
 
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
@@ -60,31 +63,89 @@ export const HeroCarousel: React.FC = () => {
     return () => clearInterval(timer);
   }, [nextSlide]);
 
+  useGSAP(
+    () => {
+      if (!heroGridRef.current) return;
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (prefersReducedMotion) {
+        gsap.set('.hero-blur-word, .hero-desc-text, .hero-cta-btn', {
+          opacity: 1,
+          filter: 'blur(0px)',
+          y: 0,
+          scale: 1,
+        });
+        return;
+      }
+
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+      tl.fromTo(
+        '.hero-blur-word',
+        {
+          opacity: 0,
+          filter: 'blur(14px)',
+          y: 28,
+          scale: 0.98,
+        },
+        {
+          opacity: 1,
+          filter: 'blur(0px)',
+          y: 0,
+          scale: 1,
+          duration: 0.85,
+          stagger: 0.06,
+          delay: 0.15,
+        }
+      )
+        .fromTo(
+          '.hero-desc-text',
+          { opacity: 0, y: 18 },
+          { opacity: 1, y: 0, duration: 0.7 },
+          '-=0.3'
+        )
+        .fromTo(
+          '.hero-cta-btn',
+          { opacity: 0, y: 14 },
+          { opacity: 1, y: 0, duration: 0.6, stagger: 0.08 },
+          '-=0.4'
+        );
+    },
+    { scope: heroGridRef }
+  );
+
   return (
     <section className="cg-master-canvas">
       <div className="cg-section-block !pt-10 md:!pt-14 lg:!pt-16 !pb-16 md:!pb-24 lg:!pb-32">
-        {/* TOP CONTENT GRID */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start mb-6 lg:mb-8">
-          {/* LEFT: HEADLINE */}
+        {/* TOP CONTENT GRID WITH GSAP BLUR-IN ANIMATION */}
+        <div ref={heroGridRef} className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start mb-6 lg:mb-8">
+          {/* LEFT: HEADLINE WITH WORD-BY-WORD BLUR-IN */}
           <div className="lg:col-span-7">
-            <h1 className="text-hero-title">
-              Technology built <br />
-              <span>for modern business</span>
+            <h1 className="text-hero-title" aria-label="Technology built for modern business">
+              <span className="block">
+                <span className="hero-blur-word inline-block opacity-0 will-change-[transform,filter,opacity]">Technology</span>{' '}
+                <span className="hero-blur-word inline-block opacity-0 will-change-[transform,filter,opacity]">built</span>
+              </span>
+              <span className="block pt-1">
+                <span className="hero-blur-word inline-block opacity-0 text-[#E65100] will-change-[transform,filter,opacity]">for</span>{' '}
+                <span className="hero-blur-word inline-block opacity-0 will-change-[transform,filter,opacity]">modern</span>{' '}
+                <span className="hero-blur-word inline-block opacity-0 will-change-[transform,filter,opacity]">business</span>
+              </span>
             </h1>
           </div>
 
-          {/* RIGHT: BUTTONS & SUPPORTING PARAGRAPH */}
+          {/* RIGHT: BUTTONS & SUPPORTING PARAGRAPH WITH STAGGERED REVEAL */}
           <div className="lg:col-span-5 flex flex-col items-start space-y-4 pt-1">
             <div className="flex flex-wrap items-center gap-3">
-              <Link to="/services" className="btn-primary-orange !h-[38px] !px-5 !text-[13px]">
+              <Link to="/services" className="hero-cta-btn opacity-0 btn-primary-orange !h-[38px] !px-5 !text-[13px]">
                 <span>Explore Solutions</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
-              <Link to="/get-quote" className="btn-secondary-outline !h-[38px] !px-5 !text-[13px]">
+              <Link to="/get-quote" className="hero-cta-btn opacity-0 btn-secondary-outline !h-[38px] !px-5 !text-[13px]">
                 <span>Get a Quote</span>
               </Link>
             </div>
-            <p className="text-[#66635C] text-xs sm:text-[13px] leading-relaxed max-w-[420px] pt-1">
+            <p className="hero-desc-text opacity-0 text-[#66635C] text-xs sm:text-[13px] leading-relaxed max-w-[420px] pt-1">
               C&G Infotech delivers reliable IT infrastructure, networking, surveillance, custom software development and UI/UX solutions for modern organizations.
             </p>
           </div>

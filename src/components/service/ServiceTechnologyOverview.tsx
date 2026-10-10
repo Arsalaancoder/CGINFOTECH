@@ -24,6 +24,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { TechOverviewItem, SolutionCardItem } from '@/data/services';
+import { OrbCard } from '@/components/common/OrbCard';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -144,9 +145,10 @@ export const ServiceTechnologyOverview: React.FC<ServiceTechnologyOverviewProps>
               {techItems.map((item, idx) => {
                 const IconComponent = ICON_MAP[item.iconName] || Shield;
                 return (
-                  <div
+                  <OrbCard
                     key={idx}
-                    className="p-5 rounded-2xl bg-[#F8F7F4] border border-black/[0.05] hover:border-[#E65100]/30 transition-all duration-300 group hover:shadow-md"
+                    variant="light"
+                    className="p-5 rounded-2xl bg-[#F8F7F4] border border-black/[0.05] group shadow-xs"
                   >
                     <div className="w-10 h-10 rounded-xl bg-white border border-black/5 text-[#E65100] flex items-center justify-center font-bold mb-3.5 group-hover:bg-[#E65100] group-hover:text-white transition-colors duration-300 shadow-xs">
                       <IconComponent className="w-5 h-5" />
@@ -157,7 +159,7 @@ export const ServiceTechnologyOverview: React.FC<ServiceTechnologyOverviewProps>
                     <p className="text-xs text-[#66635C] leading-relaxed font-body">
                       {item.desc}
                     </p>
-                  </div>
+                  </OrbCard>
                 );
               })}
             </div>
@@ -171,41 +173,44 @@ export const ServiceTechnologyOverview: React.FC<ServiceTechnologyOverviewProps>
 
             <div className="space-y-6 pt-2">
               {solutions.map((sol, idx) => (
-                <div
+                <OrbCard
                   key={idx}
-                  className="flex flex-col sm:flex-row gap-5 p-5 rounded-2xl bg-[#F8F7F4] border border-black/[0.05] hover:border-black/15 transition-all duration-300 group hover:shadow-lg"
+                  variant="light"
+                  className="p-5 rounded-2xl bg-[#F8F7F4] border border-black/[0.05] group shadow-xs"
                 >
-                  <div className="w-full sm:w-44 h-36 rounded-xl overflow-hidden shrink-0 bg-neutral-200">
-                    <img
-                      src={sol.imageUrl}
-                      alt={sol.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                  <div className="flex flex-col justify-between space-y-2">
-                    <div>
-                      <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#E65100]/10 text-[#E65100] mb-2 font-mono">
-                        {sol.tag}
-                      </span>
-                      <h4 className="text-lg font-bold text-[#111111] font-heading group-hover:text-[#E65100] transition-colors">
-                        {sol.title}
-                      </h4>
-                      <p className="text-xs text-[#66635C] leading-relaxed font-body mt-1">
-                        {sol.desc}
-                      </p>
+                  <div className="flex flex-col sm:flex-row gap-5">
+                    <div className="w-full sm:w-44 h-36 rounded-xl overflow-hidden shrink-0 bg-neutral-200">
+                      <img
+                        src={sol.imageUrl}
+                        alt={sol.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
                     </div>
+                    <div className="flex flex-col justify-between space-y-2">
+                      <div>
+                        <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#E65100]/10 text-[#E65100] mb-2 font-mono">
+                          {sol.tag}
+                        </span>
+                        <h4 className="text-lg font-bold text-[#111111] font-heading group-hover:text-[#E65100] transition-colors">
+                          {sol.title}
+                        </h4>
+                        <p className="text-xs text-[#66635C] leading-relaxed font-body mt-1">
+                          {sol.desc}
+                        </p>
+                      </div>
 
-                    <div className="pt-2">
-                      <Link
-                        to="/get-quote"
-                        className="inline-flex items-center gap-1.5 text-xs font-bold text-[#111111] group-hover:text-[#E65100] transition-colors"
-                      >
-                        <span>{sol.linkText || 'Explore Solutions'}</span>
-                        <ArrowUpRight className="w-3.5 h-3.5" />
-                      </Link>
+                      <div className="pt-2">
+                        <Link
+                          to="/get-quote"
+                          className="inline-flex items-center gap-1.5 text-xs font-bold text-[#111111] group-hover:text-[#E65100] transition-colors"
+                        >
+                          <span>{sol.linkText || 'Explore Solutions'}</span>
+                          <ArrowUpRight className="w-3.5 h-3.5" />
+                        </Link>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </OrbCard>
               ))}
             </div>
           </div>
