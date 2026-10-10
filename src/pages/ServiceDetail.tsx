@@ -40,8 +40,6 @@ export const ServiceDetail: React.FC = () => {
         sectionSubtitle={service.techOverview.sectionSubtitle}
         leftTitle={service.techOverview.leftTitle}
         techItems={service.techOverview.techItems}
-        rightTitle={service.techOverview.rightTitle}
-        solutions={service.techOverview.solutions}
       />
 
       {/* 03. LARGE ASYMMETRIC IMAGE + TEXT SPLIT (SECTION 03) */}
