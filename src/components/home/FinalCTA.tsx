@@ -1,53 +1,58 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, PhoneCall, Mail } from 'lucide-react';
-import { COMPANY_INFO } from '@/data/company';
+import { ArrowRight, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { FadeUp } from '@/components/motion/FadeUp';
 
 export const FinalCTA: React.FC = () => {
   return (
-    <section className="cg-master-canvas">
-      <div className="rounded-[32px] bg-[#181715] text-white p-8 sm:p-12 lg:p-16 relative overflow-hidden shadow-2xl">
-        {/* BACKGROUND SUBTLE ACCENT BLUR */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#E65100]/15 rounded-full filter blur-3xl pointer-events-none" />
+    <section className="cg-master-canvas py-16 md:py-24 lg:py-28 bg-[#F6F2EA] px-3 sm:px-6 lg:px-8">
+      {/* VIBRANT WARM ORANGE FLUID GRADIENT CARD */}
+      <div className="max-w-6xl mx-auto rounded-[32px] sm:rounded-[40px] md:rounded-[48px] bg-gradient-to-br from-[#FF3D00] via-[#F45100] to-[#FF9100] text-white p-8 sm:p-14 md:p-20 relative overflow-hidden shadow-2xl border border-white/20 text-center">
+        
+        {/* FLUID ORGANIC MESH GLOW OVERLAYS */}
+        <div className="absolute -top-24 -left-24 w-96 h-96 bg-white/20 rounded-full filter blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-[#FFB300]/30 rounded-full filter blur-3xl pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-gradient-to-r from-white/10 to-amber-300/20 rounded-full filter blur-2xl pointer-events-none transform -rotate-12" />
 
         <FadeUp>
-          <div className="relative z-10 max-w-3xl space-y-6">
-            <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-semibold uppercase tracking-wider text-[#E65100]">
-              Get In Touch With Experts
-            </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight">
-              Ready to upgrade your technology environment?
+          <div className="relative z-10 max-w-3xl mx-auto space-y-6">
+            
+            {/* TOP PILL ACCENT BADGE */}
+            <div className="flex justify-center">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-xs font-mono font-bold tracking-widest text-white uppercase shadow-xs">
+                <Sparkles className="w-3.5 h-3.5 text-white" />
+                <span>GET IN TOUCH WITH EXPERTS</span>
+              </span>
+            </div>
+
+            {/* MAIN CENTERING HEADING */}
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[54px] font-extrabold text-white tracking-tight font-heading leading-[1.08] max-w-3xl mx-auto drop-shadow-xs">
+              Let C&G Infotech take the tech hassle off your team's plate
             </h2>
-            <p className="text-white/70 text-base md:text-lg leading-relaxed">
-              Talk to C&G Infotech about your surveillance, enterprise networking, IT infrastructure, hardware supply or business software requirements today.
+
+            {/* SUPPORTING DESCRIPTION */}
+            <p className="text-white/90 text-sm sm:text-base md:text-lg leading-relaxed max-w-xl mx-auto font-normal">
+              From surveillance and networking to servers, hardware supply, and business software — we automate and secure your operations.
             </p>
 
-            {/* BUTTONS */}
-            <div className="flex flex-wrap items-center gap-4 pt-2">
-              <Link to="/get-quote" className="btn-primary-orange">
-                <span>Get a Free Quote</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link
-                to="/contact"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-sm border border-white/20 transition-all"
+            {/* CENTERED WHITE PILL BUTTON */}
+            <div className="pt-4 flex items-center justify-center">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ duration: 0.2 }}
               >
-                <span>Contact Us</span>
-              </Link>
+                <Link
+                  to="/get-quote"
+                  className="inline-flex items-center justify-center gap-2.5 bg-white hover:bg-[#FAF9F5] text-[#111111] font-bold text-sm sm:text-base px-8 py-3.5 rounded-full shadow-2xl transition-all duration-300 group"
+                >
+                  <span>Get In Touch With Experts</span>
+                  <ArrowRight className="w-4 h-4 text-[#111111] group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </motion.div>
             </div>
 
-            {/* DIRECT CONTACT MINIS */}
-            <div className="pt-8 border-t border-white/10 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-white/80 font-mono">
-              <div className="flex items-center gap-2.5">
-                <PhoneCall className="w-4 h-4 text-[#E65100]" />
-                <span>Call: {COMPANY_INFO.phone}</span>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <Mail className="w-4 h-4 text-[#E65100]" />
-                <span>Email: {COMPANY_INFO.email}</span>
-              </div>
-            </div>
           </div>
         </FadeUp>
       </div>

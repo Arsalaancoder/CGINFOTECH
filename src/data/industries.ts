@@ -2,6 +2,7 @@ export interface IndustryItem {
   id: string;
   title: string;
   name: string;
+  badges: string[];
   description: string;
   imageSlotId: string;
   image: string;
@@ -11,65 +12,62 @@ export interface IndustryItem {
 export const INDUSTRIES_DATA: IndustryItem[] = [
   {
     id: 'corporate',
-    title: 'Corporate Enterprises',
+    title: 'Corporate Offices',
     name: 'Corporate Offices',
-    description: 'High-density structured networking, multi-floor IP surveillance, server room design, UTM firewalls, and custom visitor management systems for enterprise headquarters.',
+    badges: ['Networking', 'Security'],
+    description: 'High-density structured networking, multi-floor IP surveillance, server room design, UTM firewalls, and custom IT infrastructure.',
     imageSlotId: 'industry-corporate',
-    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1000&q=80',
+    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80',
     keySolutions: ['Multi-floor IP Surveillance', 'Enterprise Wi-Fi Roaming', 'Visitor Check-in Kiosks', 'Server Room AMC']
   },
   {
     id: 'education',
-    title: 'Education & Schools',
+    title: 'Schools & Colleges',
     name: 'Schools & Colleges',
-    description: 'Campus-wide security camera coverage, secure student Wi-Fi management, classroom AV setups, and attendance automation for schools, colleges, and institutes.',
+    badges: ['Security', 'Wi-Fi'],
+    description: 'Campus-wide security camera coverage, secure student Wi-Fi management, classroom AV setups, and attendance solutions.',
     imageSlotId: 'industry-education',
-    image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1000&q=80',
+    image: 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=80',
     keySolutions: ['Campus Perimeter CCTV', 'Bandwidth Content Filtering', 'Biometric Staff Attendance', 'Computer Lab Setup']
   },
   {
     id: 'healthcare',
-    title: 'Healthcare & Hospitals',
+    title: 'Healthcare Facilities',
     name: 'Healthcare Facilities',
-    description: '24/7 high-uptime security monitoring, encrypted network infrastructure, patient records system integration, and access-controlled laboratory doors.',
+    badges: ['Security', 'Access Control'],
+    description: '24/7 high-uptime security monitoring, encrypted network infrastructure, patient records integration, and access control systems.',
     imageSlotId: 'industry-healthcare',
-    image: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1000&q=80',
+    image: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80',
     keySolutions: ['24/7 Critical Area CCTV', 'Zero-Downtime Network', 'Biometric Access Control', 'UPS Backup Power']
   },
   {
     id: 'retail',
-    title: 'Retail & Supermarkets',
+    title: 'Retail Stores',
     name: 'Retail Stores',
-    description: 'POS billing hardware, inventory barcode scanners, store anti-theft CCTV camera positioning, and cloud-synced multi-store billing software.',
+    badges: ['Surveillance', 'Analytics'],
+    description: 'Loss prevention, real-time video analytics, secure POS networking, and scalable IT infrastructure for single or multi-location stores.',
     imageSlotId: 'industry-retail',
-    image: 'https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?auto=format&fit=crop&w=1000&q=80',
+    image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80',
     keySolutions: ['Anti-theft HD CCTV', 'POS Billing Terminals', 'Inventory Management', 'Barcode Scanning']
   },
   {
-    id: 'offices',
-    title: 'Commercial Offices',
-    name: 'Commercial Establishments',
-    description: 'Turnkey IT setup for new office fit-outs, cabling, employee workstations, high-speed Wi-Fi, biometric entry, and corporate website design.',
-    imageSlotId: 'industry-offices',
-    image: 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=1000&q=80',
-    keySolutions: ['Office Fit-out Cabling', 'Workstation Procurement', 'Biometric Door Entry', 'Corporate Web Portal']
+    id: 'hospitality',
+    title: 'Hospitality',
+    name: 'Hospitality',
+    badges: ['Wi-Fi', 'Guest Access'],
+    description: 'Reliable guest Wi-Fi, access control, IP surveillance, and seamless IT support to create safe, connected, and memorable guest experiences.',
+    imageSlotId: 'industry-hospitality',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80',
+    keySolutions: ['High-Density Guest Wi-Fi', 'Lobby & Corridor CCTV', 'Keycard Access Control', '24/7 IT Support']
   },
   {
-    id: 'institutions',
-    title: 'Industrial & Government',
-    name: 'Industrial Businesses',
-    description: 'High-security surveillance monitoring rooms, redundant data center storage, enterprise-grade cybersecurity protection, and strict network segmentation.',
-    imageSlotId: 'industry-institutions',
-    image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1000&q=80',
-    keySolutions: ['Command Center Monitors', 'High-Redundancy NVRs', 'Intrusion Detection', 'System Hardening']
-  },
-  {
-    id: 'small-business',
-    title: 'Small & Medium Businesses',
-    name: 'Small & Medium Businesses',
-    description: 'Cost-effective security camera packages, plug-and-play office routers, laptop procurement, software automation, and reliable local AMC support.',
-    imageSlotId: 'industry-smb',
-    image: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1000&q=80',
-    keySolutions: ['Budget CCTV Bundles', 'Office Wi-Fi Setup', 'Business Laptop Supply', 'Local Technical Support']
+    id: 'industrial',
+    title: 'Manufacturing / Industrial',
+    name: 'Manufacturing / Industrial',
+    badges: ['Security', 'Network Infrastructure'],
+    description: 'Rugged security systems, secure network infrastructure, environmental monitoring, and 24/7 operational support.',
+    imageSlotId: 'industry-industrial',
+    image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80',
+    keySolutions: ['Command Center Monitors', 'Ruggedized Outdoor CCTV', 'Fiber Backbones', 'System Hardening']
   }
 ];

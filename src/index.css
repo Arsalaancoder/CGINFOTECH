@@ -41,6 +41,27 @@
 
   --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* ========================================================= */
+  /* GLOBAL REUSABLE SECTION SPACING SYSTEM                    */
+  /* ========================================================= */
+  --section-space-desktop: 120px;
+  --section-space-tablet: 88px;
+  --section-space-mobile: 64px;
+
+  --section-space-heavy-desktop: 140px;
+  --section-space-heavy-tablet: 100px;
+  --section-space-heavy-mobile: 72px;
+
+  --section-space-light-desktop: 100px;
+  --section-space-light-tablet: 76px;
+  --section-space-light-mobile: 56px;
+
+  /* Title & Content Gaps */
+  --gap-eyebrow-heading: 16px;
+  --gap-heading-desc: 20px;
+  --gap-desc-content: 52px;
+  --gap-grid-cards: 32px;
 }
 
 html,
@@ -79,15 +100,16 @@ main {
   padding: 0 !important;
 }
 
-/* SECTION BLOCK - 100% full width background touching left/right viewport edges (0px gap between sections) */
+/* SECTION BLOCK - 100% full width background touching left/right viewport edges */
 .cg-section-block {
   width: 100%;
   max-width: none !important;
   background-color: var(--bg-section);
   border-radius: 0;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  padding: 24px 20px;
+  padding-top: var(--section-space-mobile);
+  padding-bottom: var(--section-space-mobile);
+  padding-left: 20px;
+  padding-right: 20px;
   border-bottom: 1px solid rgba(24, 23, 21, 0.05);
   position: relative;
   overflow: hidden;
@@ -95,18 +117,61 @@ main {
 
 @media (min-width: 768px) {
   .cg-section-block {
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    padding: 30px clamp(28px, 4vw, 56px);
+    padding-top: var(--section-space-tablet);
+    padding-bottom: var(--section-space-tablet);
+    padding-left: clamp(28px, 4vw, 56px);
+    padding-right: clamp(28px, 4vw, 56px);
   }
 }
 
 @media (min-width: 1024px) {
   .cg-section-block {
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    padding: 34px clamp(28px, 4vw, 56px) 28px;
+    padding-top: var(--section-space-desktop);
+    padding-bottom: var(--section-space-desktop);
+    padding-left: clamp(32px, 5vw, 64px);
+    padding-right: clamp(32px, 5vw, 64px);
   }
+}
+
+/* HEAVY SECTION UTILITY (for Products / Hardware Catalog) */
+.cg-section-heavy {
+  padding-top: var(--section-space-heavy-mobile) !important;
+  padding-bottom: var(--section-space-heavy-mobile) !important;
+}
+@media (min-width: 768px) {
+  .cg-section-heavy {
+    padding-top: var(--section-space-heavy-tablet) !important;
+    padding-bottom: var(--section-space-heavy-tablet) !important;
+  }
+}
+@media (min-width: 1024px) {
+  .cg-section-heavy {
+    padding-top: var(--section-space-heavy-desktop) !important;
+    padding-bottom: var(--section-space-heavy-desktop) !important;
+  }
+}
+
+/* LIGHT SECTION UTILITY (for Client Logos / Small Strips) */
+.cg-section-light {
+  padding-top: var(--section-space-light-mobile) !important;
+  padding-bottom: var(--section-space-light-mobile) !important;
+}
+@media (min-width: 768px) {
+  .cg-section-light {
+    padding-top: var(--section-space-light-tablet) !important;
+    padding-bottom: var(--section-space-light-tablet) !important;
+  }
+}
+@media (min-width: 1024px) {
+  .cg-section-light {
+    padding-top: var(--section-space-light-desktop) !important;
+    padding-bottom: var(--section-space-light-desktop) !important;
+  }
+}
+
+/* PANELS SEPARATION UTILITY (When large contained cards follow each other) */
+.cg-panel-space + .cg-panel-space {
+  margin-top: 32px !important;
 }
 
 /* INNER WHITE CARD */

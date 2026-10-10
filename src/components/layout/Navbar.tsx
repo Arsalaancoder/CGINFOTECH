@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, ArrowRight, Shield, Network, Server, Lock, Laptop, Globe, Clock, UserCheck, Smartphone, Code } from 'lucide-react';
+import { Menu, ArrowRight, Shield, Network, Server, Lock, Laptop, Globe, Clock, UserCheck, Smartphone, Code, ChevronDown } from 'lucide-react';
 import { SERVICES_DATA } from '@/data/services';
 
 import {
@@ -38,6 +38,8 @@ const SERVICE_ICONS: Record<string, React.ReactNode> = {
 
 export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -47,6 +49,12 @@ export const Navbar: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Close mobile drawer on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+    setIsMobileServicesOpen(false);
+  }, [location.pathname]);
 
   return (
     <header className="sticky top-0 z-50 w-full m-0 p-0 mb-0">
@@ -172,7 +180,7 @@ export const Navbar: React.FC = () => {
         </div>
 
         {/* MOBILE TOGGLE */}
-        <Sheet>
+        <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
           <SheetTrigger asChild className="lg:hidden">
             <Button variant="outline" size="icon" className="!h-9 !w-9 !rounded-full !bg-white/60 !border-black/10">
               <Menu className="h-4 w-4 text-[#181715]" />
@@ -184,42 +192,94 @@ export const Navbar: React.FC = () => {
                 C&G INFOTECH
               </SheetTitle>
             </SheetHeader>
-            <div className="flex flex-col gap-1.5 text-sm">
-              <Link to="/" className="px-3 py-2 rounded-lg font-medium hover:bg-black/5">
+            <div className="flex flex-col gap-1 text-sm">
+              <Link
+                to="/"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-lg font-medium hover:bg-black/5"
+              >
                 Home
               </Link>
-              <Link to="/about" className="px-3 py-2 rounded-lg font-medium hover:bg-black/5">
+              <Link
+                to="/about"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-lg font-medium hover:bg-black/5"
+              >
                 About
               </Link>
 
-              {/* MOBILE SERVICES SUBMENU */}
-              <div className="px-3 py-2 font-bold text-xs uppercase tracking-wider text-[#E65100] pt-3 border-t border-black/5">
-                Services
-              </div>
-              <div className="grid grid-cols-1 gap-1 pl-2">
-                {SERVICES_DATA.map((srv) => (
-                  <Link
-                    key={srv.id}
-                    to={`/services/${srv.slug}`}
-                    className="flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-semibold text-[#181715] hover:bg-black/5"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#E65100]" />
-                    <span>{srv.title}</span>
-                  </Link>
-                ))}
+              {/* ACCORDION COLLAPSIBLE MOBILE SERVICES ITEM */}
+              <div className="border-y border-black/5 py-1 my-1">
+                <button
+                  type="button"
+                  onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
+                  className="w-full flex items-center justify-between px-3 py-2 rounded-lg font-semibold hover:bg-black/5 text-[#181715] transition-colors"
+                >
+                  <span className="flex items-center gap-2">
+                    <span>Services</span>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#E65100]/10 text-[#E65100] font-bold">
+                      {SERVICES_DATA.length}
+                    </span>
+                  </span>
+                  <ChevronDown
+                    className={`w-4 h-4 text-[#E65100] transition-transform duration-250 ${
+                      isMobileServicesOpen ? 'rotate-180' : ''
+                    }`}
+                  />
+                </button>
+
+                {isMobileServicesOpen && (
+                  <div className="grid grid-cols-1 gap-1 pl-3 pr-1 py-1 mt-1 bg-black/[0.03] rounded-lg">
+                    {SERVICES_DATA.map((srv) => (
+                      <Link
+                        key={srv.id}
+                        to={`/services/${srv.slug}`}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-semibold text-[#181715] hover:bg-black/5 hover:text-[#E65100] transition-colors"
+                      >
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#E65100] shrink-0" />
+                        <span>{srv.title}</span>
+                      </Link>
+                    ))}
+                    <Link
+                      to="/services"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center gap-1.5 px-3 py-2 rounded-md text-xs font-bold text-[#E65100] hover:bg-[#E65100]/10 transition-colors mt-0.5"
+                    >
+                      <span>View All Services</span>
+                      <ArrowRight className="w-3 h-3" />
+                    </Link>
+                  </div>
+                )}
               </div>
 
-              <Link to="/products" className="px-3 py-2 rounded-lg font-medium hover:bg-black/5 mt-2">
+              <Link
+                to="/products"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-lg font-medium hover:bg-black/5"
+              >
                 Products
               </Link>
-              <Link to="/industries" className="px-3 py-2 rounded-lg font-medium hover:bg-black/5">
+              <Link
+                to="/industries"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-lg font-medium hover:bg-black/5"
+              >
                 Industries
               </Link>
-              <Link to="/contact" className="px-3 py-2 rounded-lg font-medium hover:bg-black/5">
+              <Link
+                to="/contact"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-lg font-medium hover:bg-black/5"
+              >
                 Contact
               </Link>
               <div className="mt-3 pt-3 border-t border-black/10">
-                <Link to="/get-quote" className="btn-primary-orange w-full justify-center !h-10">
+                <Link
+                  to="/get-quote"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="btn-primary-orange w-full justify-center !h-10"
+                >
                   Get a Quote
                 </Link>
               </div>

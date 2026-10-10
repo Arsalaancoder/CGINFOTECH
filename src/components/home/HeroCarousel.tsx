@@ -62,9 +62,9 @@ export const HeroCarousel: React.FC = () => {
 
   return (
     <section className="cg-master-canvas">
-      <div className="cg-section-block !pt-8 sm:!pt-9 !pb-6">
+      <div className="cg-section-block !pt-10 md:!pt-14 lg:!pt-16 !pb-16 md:!pb-24 lg:!pb-32">
         {/* TOP CONTENT GRID */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start mb-5 lg:mb-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start mb-6 lg:mb-8">
           {/* LEFT: HEADLINE */}
           <div className="lg:col-span-7">
             <h1 className="text-hero-title">
@@ -74,13 +74,13 @@ export const HeroCarousel: React.FC = () => {
           </div>
 
           {/* RIGHT: BUTTONS & SUPPORTING PARAGRAPH */}
-          <div className="lg:col-span-5 flex flex-col items-start space-y-3 pt-1">
-            <div className="flex flex-wrap items-center gap-2.5">
-              <Link to="/services" className="btn-primary-orange !h-[36px] !px-4.5 !text-[12px]">
+          <div className="lg:col-span-5 flex flex-col items-start space-y-4 pt-1">
+            <div className="flex flex-wrap items-center gap-3">
+              <Link to="/services" className="btn-primary-orange !h-[38px] !px-5 !text-[13px]">
                 <span>Explore Solutions</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
-              <Link to="/get-quote" className="btn-secondary-outline !h-[36px] !px-4.5 !text-[12px]">
+              <Link to="/get-quote" className="btn-secondary-outline !h-[38px] !px-5 !text-[13px]">
                 <span>Get a Quote</span>
               </Link>
             </div>
@@ -91,7 +91,7 @@ export const HeroCarousel: React.FC = () => {
         </div>
 
         {/* HERO CAROUSEL CONTAINER */}
-        <div className="relative w-full h-[340px] sm:h-[400px] lg:h-[460px] rounded-[16px] overflow-hidden shadow-sm group bg-[#181715] mt-[22px]">
+        <div className="relative w-full h-[340px] sm:h-[400px] lg:h-[460px] rounded-[16px] overflow-hidden shadow-sm group bg-[#181715] mt-6">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentSlide}

@@ -19,12 +19,16 @@ import { GetQuote } from '@/pages/GetQuote';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// ScrollToTop helper on route change
+// ScrollToTop helper on route change with GSAP ScrollTrigger refresh
 const ScrollToTop: React.FC = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 100);
+    return () => clearTimeout(timer);
   }, [pathname]);
 
   return null;
@@ -51,7 +55,13 @@ export const AppContent: React.FC = () => {
     gsap.ticker.add(updateTicker);
     gsap.ticker.lagSmoothing(0);
 
+    // Refresh ScrollTrigger after initial mount layout rendering
+    const initTimer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 200);
+
     return () => {
+      clearTimeout(initTimer);
       gsap.ticker.remove(updateTicker);
       lenis.destroy();
     };

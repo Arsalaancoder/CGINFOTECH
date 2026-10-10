@@ -8,20 +8,21 @@ import { FadeUp } from '@/components/motion/FadeUp';
 export const Services: React.FC = () => {
   useEffect(() => {
     document.title = 'Services & Solutions | C&G Infotech';
+    window.scrollTo(0, 0);
   }, []);
 
   return (
-    <main className="py-4 space-y-3">
+    <main className="py-4 space-y-3 bg-[#F6F2EA]">
       {/* HERO BLOCK */}
       <section className="cg-master-canvas">
-        <div className="cg-section-block">
+        <div className="cg-section-block !bg-[#F6F2EA]">
           <div className="max-w-3xl space-y-4">
             <span className="cg-pill-badge">Technology Offerings</span>
             <h1 className="text-hero-title">
               Complete Technology Solutions <br />
               Under One Roof.
             </h1>
-            <p className="text-[#66635C] text-base md:text-lg leading-relaxed pt-2">
+            <p className="text-[#6E6960] text-base md:text-lg leading-relaxed pt-2">
               Explore our core technology domains engineered to protect, connect, power, and digitize modern business enterprises.
             </p>
           </div>
@@ -30,7 +31,7 @@ export const Services: React.FC = () => {
 
       {/* ALL SERVICES GRID */}
       <section className="cg-master-canvas">
-        <div className="cg-section-block">
+        <div className="cg-section-block !bg-[#F6F2EA]">
           <FadeUp>
             <div className="mb-10">
               <span className="cg-pill-badge mb-2">Service Catalog</span>
@@ -41,24 +42,24 @@ export const Services: React.FC = () => {
               {SERVICES_DATA.map((srv) => (
                 <div
                   key={srv.id}
-                  className="cg-white-card p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-xl group"
+                  className="cg-white-card p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-xl group border border-black/[0.08]"
                 >
                   <div className="space-y-4">
                     <div className="w-12 h-12 rounded-xl bg-[#FDEEE9] text-[#E65100] flex items-center justify-center font-bold">
                       <Shield className="w-6 h-6" />
                     </div>
-                    <h3 className="text-xl font-bold text-[#181715] group-hover:text-[#E65100] transition-colors">
+                    <h3 className="text-xl font-bold text-[#111111] group-hover:text-[#E65100] transition-colors font-heading">
                       {srv.title}
                     </h3>
-                    <p className="text-xs text-[#66635C] leading-relaxed">
+                    <p className="text-xs text-[#6E6960] leading-relaxed">
                       {srv.shortDescription}
                     </p>
 
                     <div className="space-y-1.5 pt-2">
-                      {srv.capabilities.slice(0, 4).map((cap, idx) => (
-                        <div key={idx} className="flex items-center gap-2 text-xs text-[#181715]">
+                      {srv.capabilityCards.slice(0, 4).map((cap, idx) => (
+                        <div key={idx} className="flex items-center gap-2 text-xs text-[#111111]">
                           <CheckCircle2 className="w-3.5 h-3.5 text-[#E65100] shrink-0" />
-                          <span>{cap}</span>
+                          <span>{cap.title} — {cap.tag}</span>
                         </div>
                       ))}
                     </div>
@@ -81,7 +82,9 @@ export const Services: React.FC = () => {
       </section>
 
       {/* FINAL CTA */}
-      <FinalCTA />
+      <div className="px-3 sm:px-6 lg:px-8">
+        <FinalCTA />
+      </div>
     </main>
   );
 };

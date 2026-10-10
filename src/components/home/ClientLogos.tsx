@@ -122,14 +122,14 @@ export const ClientLogos: React.FC = () => {
   return (
     <section
       ref={sectionRef}
-      className="cg-master-canvas relative w-full bg-[#f3f2ee] py-12 md:py-16 overflow-hidden select-none"
+      className="cg-master-canvas relative w-full bg-[#f3f2ee] py-16 md:py-24 lg:py-28 overflow-hidden select-none"
     >
       <div className="w-full max-w-[1400px] mx-auto px-4 md:px-8">
         
         {/* CENTERED SECTION HEADING */}
         <h2
           ref={headingRef}
-          className="text-center font-semibold text-[26px] sm:text-[32px] md:text-[36px] text-[#111111] tracking-tight mb-8 md:mb-10"
+          className="text-center font-semibold text-[26px] sm:text-[32px] md:text-[36px] text-[#111111] tracking-tight mb-8 md:mb-12"
         >
           Some of our valuable clients
         </h2>
